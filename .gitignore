@@ -35,3 +35,5 @@ build/
 ### code settings ###
 application.properties
 /src/main/ssl/*
+
+.DS_Store
