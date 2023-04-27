@@ -1,0 +1,61 @@
+<div class="container" th:fragment="bookCardOriginal">
+<!--    <div th:if="${books.empty}">-->
+<!--        <p>No books found</p>-->
+<!--    </div>-->
+    <div th:each="book : ${books}" class="card" style="width: 18rem;">
+            <a th:href="@{/books/{id}(id=${book.id})}">
+                <img th:src="@{/images/bookPlaceholder.jpg}" class="card-img-top" alt="Book placeholder">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${book.title}"></h5>
+                    <p class="card-text" th:text="${book.isbn}"></p>
+
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </a>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center">
+    <div th:if="${#lists.isEmpty(books)}">
+        <p>No books found</p>
+    </div>
+    <table th:fragment="bookCard">
+        <tr th:each="book : ${books}" th:if="${not #lists.isEmpty(books)}">
+            <div class="card custom-card text-center mr-2 mt-2 ml-2 mb-2" style="width: 15rem; display: inline-block">
+                <a th:href="@{/books/{id}(id=${book.id})}">
+                    <img th:src="@{/images/bookPlaceholder.jpg}" class="card-img-top" alt="Book placeholder">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${book.title}"></h5>
+                    <p class="card-text" th:text="${book.isbn}"></p>
+                    <p class="card-text" th:text="${book.price}"></p>
+                    <p th:each="author : ${book.writtenBy}" th:if="${not #lists.isEmpty(book.writtenBy)}">
+                        <span th:text="${author.firstName} + ${author.lastName}"></span>
+                    </p>
+                    <p th:if="${not #lists.isEmpty(book.favoritedBy)}">
+                        <span th:text="${#lists.size(book.favoritedBy)}"></span>
+                    </p>
+                    <a th:href="@{/books/{id}(id=${book.id})}" class="btn btn-primary">Details</a>
+                    <a class="btn btn-primary">Favorite</a>
+                </div>
+            </div>
+        </tr>
+    </table>
+</div>
+
+<div class="d-flex justify-content-center" th:fragment="alternativeBookCard">
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row no-gutters">
+        <div class="col-md-4">
+            <img th:src="@{/images/bookPlaceholder.jpg}" class="card-img-top" alt="Book placeholder">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
