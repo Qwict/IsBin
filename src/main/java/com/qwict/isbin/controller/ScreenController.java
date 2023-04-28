@@ -37,15 +37,11 @@ public class ScreenController {
     @RequestMapping("/favorites")
     public String favorites(Model model) {
         model.addAttribute("loggedIn", true);
-        model.addAttribute("isAdmin", false);
+        model.addAttribute("isAdmin", true);
         model.addAttribute("activePage", "dropdown");
 
-        model.addAttribute("title", "ISBIN Home");
-        model.addAttribute("message", "Welcome to the ISBIN home page!");
-
-        List<Book> books = bookService.findAll();
-        System.out.printf("books: %s\n", books);
-        model.addAttribute("books", books);
+        model.addAttribute("title", "My Favorites");
+        model.addAttribute("message", "This table represents all the books that you have added to favorites.");
         return "favorites";
     }
 

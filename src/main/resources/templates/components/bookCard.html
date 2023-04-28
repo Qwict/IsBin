@@ -3,7 +3,7 @@
 <!--        <p>No books found</p>-->
 <!--    </div>-->
     <div th:each="book : ${books}" class="card" style="width: 18rem;">
-            <a th:href="@{/books/{id}(id=${book.id})}">
+            <a th:href="@{/book/{id}(id=${book.id})}">
                 <img th:src="@{/images/bookPlaceholder.jpg}" class="card-img-top" alt="Book placeholder">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${book.title}"></h5>
@@ -22,20 +22,20 @@
     <table th:fragment="bookCard">
         <tr th:each="book : ${books}" th:if="${not #lists.isEmpty(books)}">
             <div class="card custom-card text-center mr-2 mt-2 ml-2 mb-2" style="width: 15rem; display: inline-block">
-                <a th:href="@{/books/{id}(id=${book.id})}">
+                <a th:href="@{/book/{id}(id=${book.id})}">
                     <img th:src="@{/images/bookPlaceholder.jpg}" class="card-img-top" alt="Book placeholder">
                 </a>
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${book.title}"></h5>
+                    <h5 class="card-title" style="min-height: 96px" th:text="${book.title}"></h5>
                     <p class="card-text" th:text="${book.isbn}"></p>
                     <p class="card-text" th:text="${book.price}"></p>
                     <p th:each="author : ${book.writtenBy}" th:if="${not #lists.isEmpty(book.writtenBy)}">
                         <span th:text="${author.firstName} + ${author.lastName}"></span>
                     </p>
                     <p th:if="${not #lists.isEmpty(book.favoritedBy)}">
-                        <span th:text="${#lists.size(book.favoritedBy)}"></span>
+                        <span th:text="${#lists.size(book.favoritedby)}"></span>
                     </p>
-                    <a th:href="@{/books/{id}(id=${book.id})}" class="btn btn-primary">Details</a>
+                    <a th:href="@{/book/{id}(id=${book.id})}" class="btn btn-primary">Details</a>
                     <a class="btn btn-primary">Favorite</a>
                 </div>
             </div>

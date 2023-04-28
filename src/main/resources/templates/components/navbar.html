@@ -24,13 +24,13 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" th:href="@{/pupular}">Most Popular</a>
                     <a class="dropdown-item" th:href="@{/favorites}">My Favorites</a>
-<!--                    <div class="dropdown-divider"></div>-->
-<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
+                    <div class="dropdown-divider"></div>
+                    <a th:class="${isAdmin} ? 'dropdown-item' : 'dropdown-item hidden'"  href="/add-book">Add book</a>
                 </div>
             </li>
-            <li th:class="${activePage == 'loggedIn'} ? 'nav-item active' : 'nav-item'">
-                <a class="nav-link" th:classappend="${loggedIn} ? hidden" href="#">Disabled</a>
-            </li>
+<!--            <li th:class="${activePage == 'loggedIn'} ? 'nav-item active' : 'nav-item'">-->
+<!--                <a class="nav-link" th:classappend="${loggedIn} ? hidden" href="#">Disabled</a>-->
+<!--            </li>-->
         </ul>
         <!--        <form class="form-inline my-2 my-lg-0">-->
         <!--            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->

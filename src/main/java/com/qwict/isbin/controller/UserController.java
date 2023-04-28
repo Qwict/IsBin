@@ -23,5 +23,4 @@ public class UserController {
         model.addAttribute("message", "Welcome to the ISBIN register page!");
         return "register";
     }
-
 }
