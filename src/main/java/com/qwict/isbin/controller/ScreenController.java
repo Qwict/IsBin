@@ -3,6 +3,7 @@ package com.qwict.isbin.controller;
 import com.qwict.isbin.model.Book;
 import com.qwict.isbin.repository.BookRepository;
 import com.qwict.isbin.service.BookService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,7 @@ public class ScreenController {
         return "home";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping("/favorites")
     public String favorites(Model model) {
         model.addAttribute("loggedIn", true);

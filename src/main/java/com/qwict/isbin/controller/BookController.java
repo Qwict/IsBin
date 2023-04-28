@@ -4,6 +4,7 @@ import com.qwict.isbin.model.Book;
 import com.qwict.isbin.service.BookService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,8 @@ public class BookController {
 //        return "book";
 //    }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping("/add-book")
     public String addBook(Model model) {
         model.addAttribute("title", "ISBIN add book");
