@@ -1,10 +1,19 @@
 package com.qwict.isbin.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
 // My authors are the owning side of books!
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "authors")
 public class Author {
@@ -26,52 +35,10 @@ public class Author {
 
 //  ----------------- Constructors -----------------
 
-    public Author() {}
-
     // constructor that allows author to be added without any books
     public Author(String firstName, String lastName) {
         setFirstName(firstName);
         setLastName(lastName);
-    }
-
-    public Author(String firstName, String lastName, Set<Book> writtenBooks) {
-        setFirstName(firstName);
-        setLastName(lastName);
-        setBooks(writtenBooks);
-    }
-
-//  ----------------- Getters and Setters -----------------
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
     }
 
     @Override

@@ -1,7 +1,11 @@
 package com.qwict.isbin.model;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "locations")
 public class Location {
@@ -25,7 +29,6 @@ public class Location {
     private Book book;
 
 //  ----------------- Constructors -----------------
-    public Location() {}
     public Location(
             String name,
             Integer placeCode1,
@@ -36,49 +39,6 @@ public class Location {
         setPlaceCode1(placeCode1);
         setPlaceCode2(placeCode2);
         setBook(book);
-    }
-
-
-//  ----------------- Getters and Setters -----------------
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getPlaceCode1() {
-        return placeCode1;
-    }
-
-    public void setPlaceCode1(Integer placeCode1) {
-        this.placeCode1 = placeCode1;
-    }
-
-    public Integer getPlaceCode2() {
-        return placeCode2;
-    }
-
-    public void setPlaceCode2(Integer placeCode2) {
-        this.placeCode2 = placeCode2;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
     }
 
     @Override

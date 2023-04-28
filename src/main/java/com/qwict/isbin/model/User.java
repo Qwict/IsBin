@@ -1,10 +1,14 @@
 package com.qwict.isbin.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -48,72 +52,6 @@ public class User {
         setHash(hash);
         setSalt(salt);
 
-    }
-
-    public User() {}
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Integer getMaxFavorites() {
-        return maxFavorites;
-    }
-
-    public void setMaxFavorites(Integer maxFavorites) {
-        this.maxFavorites = maxFavorites;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public Set<Book> getFavoritedBooks() {
-        return favoritedBooks;
-    }
-
-    public void setFavoritedBooks(Set<Book> favoritedBooks) {
-        this.favoritedBooks = favoritedBooks;
     }
 
     @Override

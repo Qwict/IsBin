@@ -1,11 +1,20 @@
 package com.qwict.isbin.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
 import static jakarta.persistence.CascadeType.ALL;
 
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "books", uniqueConstraints = { @UniqueConstraint(columnNames = { "isbn" }) })
 //@Table(name="book")
@@ -39,26 +48,6 @@ public class Book {
     @ManyToMany(mappedBy="favoritedBooks")
     private Set<User> favoritedBy;
 
-// ----------------- Constructors -----------------
-
-    public Book() {}
-
-    public Book(
-            String isbn,
-            String title,
-            Double price,
-            Set<Location> locations,
-            Set<Author> writtenBy,
-            Set<User> favoritedBy
-    ) {
-        setIsbn(isbn);
-        setTitle(title);
-        setPrice(price);
-        setLocations(locations);
-        setWrittenBy(writtenBy);
-        setFavoritedBy(favoritedBy);
-    }
-
     public Book(String isbn, String title, Double price, Set<Author> writtenBy, Set<User> favoritedBy) {
         this.isbn = isbn;
         this.title = title;
@@ -78,65 +67,6 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.price = price;
-    }
-
-    // ----------------- Getters and Setters -----------------
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        // TODO: check if the isbn is valid!
-        this.isbn = isbn;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Set<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(Set<Location> locations) {
-        this.locations = locations;
-    }
-
-    public Set<Author> getWrittenBy() {
-        return writtenBy;
-    }
-
-    public void setWrittenBy(Set<Author> writtenBy) {
-        this.writtenBy = writtenBy;
-    }
-
-    public Set<User> getFavoritedBy() {
-        return favoritedBy;
-    }
-
-    public void setFavoritedBy(Set<User> favoritedBy) {
-        this.favoritedBy = favoritedBy;
     }
 
     @Override
