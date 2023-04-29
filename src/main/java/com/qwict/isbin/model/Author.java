@@ -32,7 +32,7 @@ public class Author {
     private String lastName;
 
 //  Author is the owning side of books (an author has many books)
-    @ManyToMany
+    @ManyToMany(cascade= CascadeType.ALL)
     @JoinTable(name="author_books")
     public Set<Book> books;
 

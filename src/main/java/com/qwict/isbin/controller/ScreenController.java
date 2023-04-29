@@ -35,12 +35,26 @@ public class ScreenController {
         return "home";
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping
+    public String index(Model model) {
+        model.addAttribute("loggedIn", true);
+        model.addAttribute("isAdmin", false);
+        model.addAttribute("activePage", "home");
+
+        model.addAttribute("title", "ISBIN Home");
+        model.addAttribute("message", "Welcome to the ISBIN home page!");
+
+        List<Book> books = bookService.findAll();
+        System.out.printf("books: %s\n", books);
+        model.addAttribute("books", books);
+        return "home";
+    }
+
     @RequestMapping("/user/favorites")
     public String favorites(Model model) {
         model.addAttribute("loggedIn", true);
         model.addAttribute("isAdmin", true);
-        model.addAttribute("activePage", "dropdown");
+        model.addAttribute("activePage", "book");
 
         model.addAttribute("title", "My Favorites");
         model.addAttribute("message", "This table represents all the books that you have added to favorites.");

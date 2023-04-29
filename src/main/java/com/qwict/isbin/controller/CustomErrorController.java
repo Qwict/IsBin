@@ -18,8 +18,9 @@ public class CustomErrorController implements ErrorController {
         if (status != null) {
             int statusCode = Integer.parseInt(status.toString());
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
-                model.addAttribute("title", "Not Found");
-                model.addAttribute("message", "This page was not found.");
+//                model.addAttribute("title", "Not Found");
+//                model.addAttribute("message", "This page was not found.");
+                model.addAttribute("errorImage", "/images/error-404.jpg");
             } else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 model.addAttribute("title", "Internal Server Error");
                 model.addAttribute("message", "An internal server error has occurred.");

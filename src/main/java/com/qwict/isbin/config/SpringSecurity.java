@@ -32,11 +32,18 @@ public class SpringSecurity {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
+                                .requestMatchers("/").permitAll()
                                 .requestMatchers("/home/**").permitAll()
+                                .requestMatchers("/images/**").permitAll()
                                 .requestMatchers("/book/**").permitAll()
-                                .requestMatchers("/owner/*").hasRole("OWNER")
-                                .requestMatchers("/admin/*").hasRole("ADMIN")
-                                .requestMatchers("/user/*").hasRole("USER")
+                                .requestMatchers("/error/").permitAll()
+                                .requestMatchers("/error").permitAll()
+                                .requestMatchers("/owner/**").hasRole("OWNER")
+                                .requestMatchers("/owner").hasRole("OWNER")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/admin").hasRole("ADMIN")
+                                .requestMatchers("/user/**").hasRole("USER")
+                                .requestMatchers("/user").hasRole("USER")
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")

@@ -19,9 +19,7 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -35,13 +33,66 @@ public class UserServiceImpl implements UserService {
         // encrypt the password using spring security
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
+        Role role1 = roleRepository.findByName("ROLE_OWNER");
+        if(role1 == null){
+            role1 = checkRoleExist("ROLE_OWNER");
+        }
+
+        Role role2 = roleRepository.findByName("ROLE_ADMIN");
+        if(role2 == null){
+            role2 = checkRoleExist("ROLE_ADMIN");
+        }
+
+        Role role3 = roleRepository.findByName("ROLE_USER");
+        if(role3 == null){
+            role3 = checkRoleExist("ROLE_USER");
+        }
+        user.setRoles(Arrays.asList(role1, role2, role3));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void saveAdmin(UserDto userDto) {
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        // encrypt the password using spring security
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
         Role role = roleRepository.findByName("ROLE_ADMIN");
         if(role == null){
-            role = checkRoleExist();
+            role = checkRoleExist("ROLE_ADMIN");
         }
         user.setRoles(Arrays.asList(role));
         userRepository.save(user);
     }
+
+    @Override
+    public void saveOwner(UserDto userDto) {
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        // encrypt the password using spring security
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        Role role1 = roleRepository.findByName("ROLE_OWNER");
+        if(role1 == null){
+            role1 = checkRoleExist("ROLE_OWNER");
+        }
+
+        Role role2 = roleRepository.findByName("ROLE_ADMIN");
+        if(role2 == null){
+            role2 = checkRoleExist("ROLE_ADMIN");
+        }
+
+        Role role3 = roleRepository.findByName("ROLE_USER");
+        if(role3 == null){
+            role3 = checkRoleExist("ROLE_USER");
+        }
+        user.setRoles(Arrays.asList(role1, role2, role3));
+        userRepository.save(user);
+    }
+
 
     @Override
     public User findUserByEmail(String email) {
@@ -63,9 +114,9 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
-    private Role checkRoleExist(){
+    private Role checkRoleExist(String roleName){
         Role role = new Role();
-        role.setName("ROLE_ADMIN");
+        role.setName(roleName);
         return roleRepository.save(role);
     }
 }

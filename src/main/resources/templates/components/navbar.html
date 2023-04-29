@@ -1,11 +1,9 @@
-
-<div th:fragment="navbar">
+<div th:fragment="navbar" xmlns:sec="http://www.w3.org/1999/xhtml">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" th:href="@{/}">ISBiN</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li th:class="${activePage == 'home'} ? 'nav-item active' : 'nav-item'">
@@ -17,19 +15,33 @@
 <!--            <li class="nav-item">-->
 <!--                <a class="nav-link" href="#">Link</a>-->
 <!--            </li>-->
-            <li th:class="${activePage == 'dropdown'} ? 'nav-item active dropdown' : 'nav-item dropdown'">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li th:class="${activePage == 'book'} ? 'nav-item active dropdown' : 'nav-item dropdown'">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarBookDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Books
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu" aria-labelledby="navbarBookDropdown">
                     <a class="dropdown-item" th:href="@{/book/most-popular}">Most Popular</a>
-                    <a class="dropdown-item" th:href="@{/user/favorites}">My Favorites</a>
-                    <div class="dropdown-divider"></div>
-                    <a th:class="${isAdmin} ? 'dropdown-item' : 'dropdown-item hidden'"  href="/admin/add-book">Add book</a>
-                    <div class="dropdown-divider"></div>
-                    <a th:class="${isOwner} ? 'dropdown-item' : 'dropdown-item hidden'"  href="/owner/users">All registerd Users</a>
+                    <div sec:authorize="hasRole('ROLE_USER')">
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="@{/user/favorites}">My Favorites</a>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/admin/add-book">Add book</a>
+                    </div>
                 </div>
             </li>
+
+            <li sec:authorize="hasRole('ROLE_OWNER')" th:class="${activePage == 'owner'} ? 'nav-item active dropdown' : 'nav-item dropdown'">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarOwnerDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Owner functions
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarOwnerDropdown">
+                    <a class="dropdown-item" href="/owner/registered-users">Registered Users</a>
+                </div>
+            </li>
+
+
 <!--            <li th:class="${activePage == 'loggedIn'} ? 'nav-item active' : 'nav-item'">-->
 <!--                <a class="nav-link" th:classappend="${loggedIn} ? hidden" href="#">Disabled</a>-->
 <!--            </li>-->
@@ -39,17 +51,32 @@
         <!--            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
         <!--        </form>-->
         <div class="my-2 my-lg-0">
+
             <!--            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-            <a th:href="@{/login}">
-                <button class="btn btn-outline-success my-2 my-sm-0" th:classappend="${activePage == 'login' ? 'active' : ''}">
-                    Login
-                </button>
-            </a>
-            <a th:href="@{/register}">
-                <button class="btn btn-outline-success my-2 my-sm-0" th:classappend="${activePage == 'register' ? 'active' : ''}">
-                    Register
-                </button>
-            </a>
+            <div sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/profile}">
+                    <button class="btn btn-outline-success my-2 my-sm-0" th:classappend="${activePage == 'profile' ? 'active' : ''}">
+                        Profile
+                    </button>
+                </a>
+                <a th:href="@{/logout}">
+                    <button class="btn btn-outline-success my-2 my-sm-0" th:classappend="${activePage == 'logout' ? 'active' : ''}">
+                        Logout
+                    </button>
+                </a>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">
+                    <button class="btn btn-outline-success my-2 my-sm-0" th:classappend="${activePage == 'login' ? 'active' : ''}">
+                        Login
+                    </button>
+                </a>
+                <a th:href="@{/register}">
+                    <button class="btn btn-outline-success my-2 my-sm-0" th:classappend="${activePage == 'register' ? 'active' : ''}">
+                        Register
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
 </nav>

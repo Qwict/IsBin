@@ -65,17 +65,16 @@ public class UserController {
         }
 
         userService.saveUser(userDto);
-        return "redirect:/register?success";
+        return "redirect:/login";
+//        return "redirect:/register?success";
     }
 
 
-    // handler method to handle list of users
-
-    @PreAuthorize("hasRole('ROLE_OWNER')")
-    @GetMapping("/owner/users")
+    @GetMapping("/owner/registered-users")
     public String users(Model model){
         List<UserDto> users = userService.findAllUsers();
         model.addAttribute("users", users);
+        model.addAttribute("activePage", "owner");
         return "registered-users";
     }
 }

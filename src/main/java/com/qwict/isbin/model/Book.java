@@ -45,7 +45,7 @@ public class Book {
     private Set<Location> locations;
 
     // Book is the inverse side of authors (a book is owned by an author)
-    @ManyToMany(mappedBy= "books")
+    @ManyToMany(mappedBy= "books", cascade= CascadeType.ALL)
     private Set<Author> writtenBy;
 
 

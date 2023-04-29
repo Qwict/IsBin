@@ -1,37 +1,23 @@
 package com.qwict.isbin.service;
 
-import com.qwict.isbin.domein.RemoteAPI;
+import com.qwict.isbin.dto.BookDto;
+import com.qwict.isbin.dto.UserDto;
 import com.qwict.isbin.model.Book;
-import com.qwict.isbin.repository.BookRepository;
+import com.qwict.isbin.model.Role;
+import com.qwict.isbin.model.User;
 import org.json.simple.JSONObject;
-import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 
-@Service
-public class BookService {
-    private BookRepository bookRepository;
+public interface BookService {
+    void saveBook(BookDto bookDto);
 
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    Book findBookByIsbn(String isbn);
+    List<BookDto> findAllBooks();
 
-    public List<Book> findAll() {
-        return bookRepository.findAll();
-    }
+    List<Book> findAll();
 
-    public Book getById(String id) {
-        return bookRepository.findById(id).orElse(null);
-    }
+    Book getById(String id);
 
-    public JSONObject getBookFromRemoteAPI(String isbn) {
-        JSONObject emplyJSONObject = new JSONObject();
-        try {
-            return RemoteAPI.get(String.format("https://openlibrary.org/api/books?bibkeys=ISBN:%s&jscmd=details&format=json", isbn));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return emplyJSONObject;
-        }
-    }
+    JSONObject getBookFromRemoteAPI(String isbn);
 }
