@@ -20,9 +20,14 @@ import static jakarta.persistence.CascadeType.ALL;
 //@Table(name="book")
 public class Book {
 //  ----------------- Fields -----------------
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.UUID)
+//    private String id;
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name="isbn")
     private String isbn;

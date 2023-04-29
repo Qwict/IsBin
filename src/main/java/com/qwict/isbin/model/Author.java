@@ -17,10 +17,13 @@ import java.util.Set;
 @Entity
 @Table(name = "authors")
 public class Author {
-//  ----------------- Fields -----------------
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.UUID)
+//    private String id;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name="first_name")
     private String firstName;

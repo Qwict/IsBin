@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li th:class="${activePage == 'home'} ? 'nav-item active' : 'nav-item'">
-                <a class="nav-link" href="/">
+                <a class="nav-link" href="/home">
                     Home
 <!--                    <span class="sr-only">(current)</span>-->
                 </a>
@@ -22,10 +22,12 @@
                     Books
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" th:href="@{/pupular}">Most Popular</a>
-                    <a class="dropdown-item" th:href="@{/favorites}">My Favorites</a>
+                    <a class="dropdown-item" th:href="@{/book/most-popular}">Most Popular</a>
+                    <a class="dropdown-item" th:href="@{/user/favorites}">My Favorites</a>
                     <div class="dropdown-divider"></div>
-                    <a th:class="${isAdmin} ? 'dropdown-item' : 'dropdown-item hidden'"  href="/add-book">Add book</a>
+                    <a th:class="${isAdmin} ? 'dropdown-item' : 'dropdown-item hidden'"  href="/admin/add-book">Add book</a>
+                    <div class="dropdown-divider"></div>
+                    <a th:class="${isOwner} ? 'dropdown-item' : 'dropdown-item hidden'"  href="/owner/users">All registerd Users</a>
                 </div>
             </li>
 <!--            <li th:class="${activePage == 'loggedIn'} ? 'nav-item active' : 'nav-item'">-->

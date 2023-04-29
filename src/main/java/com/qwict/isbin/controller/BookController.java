@@ -31,9 +31,8 @@ public class BookController {
 //        return "book";
 //    }
 
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping("/add-book")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping("/admin/add-book")
     public String addBook(Model model) {
         model.addAttribute("title", "ISBIN add book");
         model.addAttribute("message", "Welcome to the ISBIN add book page!");

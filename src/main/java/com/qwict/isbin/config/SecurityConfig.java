@@ -1,4 +1,4 @@
-package com.qwict.isbin.security;
+package com.qwict.isbin.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +18,8 @@ import org.springframework.security.web.authentication.www.DigestAuthenticationF
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@Configuration
-@EnableMethodSecurity
+//@Configuration
+//@EnableMethodSecurity
 public class SecurityConfig {
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -50,17 +50,24 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
-            .username("user")
-            .password(passwordEncoder().encode("user"))
-            .roles("USER")
-            .build();
+                .username("user")
+                .password(passwordEncoder().encode("user"))
+                .roles("USER")
+                .build();
 
         UserDetails admin = User.builder()
-            .username("admin")
-            .password(passwordEncoder().encode("admin"))
-            .roles("ADMIN")
-            .build();
+                .username("admin")
+                .password(passwordEncoder().encode("admin"))
+                .roles("ADMIN", "USER")
+                .build();
 
-        return new InMemoryUserDetailsManager(user, admin);
+        UserDetails owner = User.builder()
+                .username("owner")
+                .password(passwordEncoder().encode("owner"))
+                .roles("ADMIN", "USER", "OWNER")
+                .build();
+
+
+        return new InMemoryUserDetailsManager(user, admin, owner);
     }
 }

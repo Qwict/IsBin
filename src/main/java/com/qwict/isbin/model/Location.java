@@ -10,9 +10,13 @@ import lombok.*;
 @Table(name = "locations")
 public class Location {
 //  ----------------- Fields -----------------
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.UUID)
+//    private String id;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name="name")
     private String name;

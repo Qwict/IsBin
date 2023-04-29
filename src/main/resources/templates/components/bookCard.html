@@ -4,7 +4,7 @@
 <!--    </div>-->
     <div th:each="book : ${books}" class="card" style="width: 18rem;">
             <a th:href="@{/book/{id}(id=${book.id})}">
-                <img th:src="@{/images/bookPlaceholder.jpg}" class="card-img-top" alt="Book placeholder">
+                <img th:src="@{/static/images/bookPlaceholder.jpg}" class="card-img-top" alt="Book placeholder">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${book.title}"></h5>
                     <p class="card-text" th:text="${book.isbn}"></p>
@@ -23,7 +23,7 @@
         <tr th:each="book : ${books}" th:if="${not #lists.isEmpty(books)}">
             <div class="card custom-card text-center mr-2 mt-2 ml-2 mb-2" style="width: 15rem; display: inline-block">
                 <a th:href="@{/book/{id}(id=${book.id})}">
-                    <img th:src="@{/images/bookPlaceholder.jpg}" class="card-img-top" alt="Book placeholder">
+                    <img th:src="@{/static/images/bookPlaceholder.jpg}" class="card-img-top" alt="Book placeholder">
                 </a>
                 <div class="card-body">
                     <h5 class="card-title" style="min-height: 96px" th:text="${book.title}"></h5>

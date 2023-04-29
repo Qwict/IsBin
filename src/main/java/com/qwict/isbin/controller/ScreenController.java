@@ -20,7 +20,7 @@ public class ScreenController {
         this.bookService = bookService;
     }
 
-    @RequestMapping
+    @RequestMapping("/home")
     public String home(Model model) {
         model.addAttribute("loggedIn", true);
         model.addAttribute("isAdmin", false);
@@ -35,8 +35,8 @@ public class ScreenController {
         return "home";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping("/favorites")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping("/user/favorites")
     public String favorites(Model model) {
         model.addAttribute("loggedIn", true);
         model.addAttribute("isAdmin", true);
