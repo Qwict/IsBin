@@ -1,7 +1,9 @@
 package com.qwict.isbin.model;
 
+import com.qwict.isbin.repository.RoleRepository;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,17 +42,24 @@ public class User {
 //    @Column(name="salt")
 //    private String salt;
 
+    // User is the owning side of roles (a user has many roles)
     @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinTable(
             name="users_roles",
             joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
-            inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
+            inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")}
+    )
     private List<Role> roles = new ArrayList<>();
 
-// User is the owning side of books (a user has many books in his favorites
-    @ManyToMany
-    @JoinTable(name="users_books")
-    public Set<Book> favoritedBooks;
+// User is the owning side of books (a user has many books in his favorites)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinTable(
+            name="users_books",
+            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="BOOK_ID", referencedColumnName="ID")}
+    )
+    public List<Book> books = new ArrayList<>();
+//    public Set<Book> favoritedBooks;
 
     public User(String email, String username, Integer maxFavorites, String password) {
         this.email = email;
@@ -59,21 +68,19 @@ public class User {
         this.password = password;
     }
 
-//    public User(
-//            String email,
-//            String username,
-//            Set<Role> role,
-//            Integer maxFavorites,
-//            String hash,
-//            String salt
-//    ) {
-//        setEmail(email);
-//        setUsername(username);
-//        setRoles(role);
-//        setMaxFavorites(maxFavorites);
-//        setHash(hash);
-//        setSalt(salt);
-//    }
+    public User(String email, String username, Integer maxFavorites, String password, List<Role> roles) {
+        this.email = email;
+        this.username = username;
+        this.maxFavorites = maxFavorites;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public void addBookToFavorites(Book book) {
+        System.out.printf("User.addBookToFavorites: book=%s%n", book);
+        this.books.add(book);
+        book.getUsers().add(this);
+    }
 
     @Override
     public String toString() {
@@ -84,7 +91,7 @@ public class User {
                 ", maxFavorites=" + maxFavorites +
                 ", password='" + password +
                 ", roles=" + roles +
-                ", favoritedBooks=" + favoritedBooks +
+                ", books=" + books +
                 '}';
     }
 }

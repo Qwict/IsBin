@@ -11,76 +11,100 @@
 <div th:replace="~{components/title :: title}"></div>
 
 
-
-
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="text-center">Login Form</h2>
+                    <h2 class="text-center">Book Form</h2>
+                </div>
+                <div th:if="${param.success}">
+                    <div class="alert alert-info">Successfully added new book</div>
                 </div>
                 <div class="card-body">
                     <form
                             method="post"
                             role="form"
-                            th:action="@{/admin/add-book}"
-                            class="form-horizontal"
+                            th:action="@{/admin/book}"
+                            th:object="${book}"
                     >
                         <div class="form-group mb-3">
-                            <label class="control-label"> Title</label>
+                            <label class="form-label">Title</label>
                             <input
-                                    type="text"
+                                    class="form-control"
+                                    id="title"
                                     name="title"
-                                    class="form-control"
                                     placeholder="Enter the book's title"
+                                    th:field="*{title}"
+                                    type="text"
                             />
+                            <p th:errors="*{title}" class="text-danger"
+                               th:if="${#fields.hasErrors('title')}"></p>
                         </div>
                         <div class="form-group mb-3">
-                            <label class="control-label"> ISBN</label>
+                            <label class="form-label">ISBN13</label>
                             <input
-                                    type="number"
+                                    class="form-control"
+                                    id="isbn"
                                     name="isbn"
-                                    class="form-control"
                                     placeholder="Enter the book's ISBN13"
-                            />
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="control-label"> Primary Author</label>
-                            <input
-                                    type="text"
-                                    name="author_1"
-                                    class="form-control"
-                                    placeholder="Enter an author's name"
-                            />
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="control-label"> Second Author</label>
-                            <input
-                                    type="text"
-                                    name="author_2"
-                                    class="form-control"
-                                    placeholder="Enter a second author's name"
-                            />
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="control-label"> Third Author</label>
-                            <input
-                                    type="text"
-                                    name="author_3"
-                                    class="form-control"
-                                    placeholder="Enter a third author's name"
-                            />
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="control-label"> Price</label>
-                            <input
+                                    th:field="*{isbn}"
                                     type="number"
-                                    step="0.01"
-                                    name="price"
-                                    class="form-control"
-                                    placeholder="price"
                             />
+                            <p th:errors="*{isbn}" class="text-danger"
+                               th:if="${#fields.hasErrors('isbn')}"></p>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Primary Author</label>
+                            <input
+                                    class="form-control"
+                                    id="author_1"
+                                    name="author_1"
+                                    placeholder="Enter an author's name"
+                                    th:field="*{author_1}"
+                                    type="text"
+                            />
+                            <p th:errors="*{author_1}" class="text-danger"
+                               th:if="${#fields.hasErrors('author_1')}"></p>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label"> Second Author</label>
+                            <input
+                                    class="form-control"
+                                    id="author_2"
+                                    name="author_2"
+                                    placeholder="Enter a second author's name"
+                                    th:field="*{author_2}"
+                                    type="text"
+                            />
+                            <p th:errors="*{author_2}" class="text-danger"
+                               th:if="${#fields.hasErrors('author_2')}"></p>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label"> Third Author</label>
+                            <input
+                                    class="form-control"
+                                    id="author_3"
+                                    name="author_3"
+                                    placeholder="Enter a third author's name"
+                                    th:field="*{author_3}"
+                                    type="text"
+                            />
+                            <p th:errors="*{author_3}" class="text-danger"
+                               th:if="${#fields.hasErrors('author_3')}"></p>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label"> Price</label>
+                            <input
+                                    class="form-control"
+                                    type="number"
+                                    name="price"
+                                    placeholder="price"
+                                    th:field="*{price}"
+                                    step="0.01"
+                            />
+                            <p th:errors="*{price}" class="text-danger"
+                            th:if="${#fields.hasErrors('price')}"></p>
                         </div>
                         <div class="form-group mb-3">
                             <button type="submit" class="btn btn-primary" >Submit</button>

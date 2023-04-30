@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 // My authors are the owning side of books!
@@ -32,9 +34,14 @@ public class Author {
     private String lastName;
 
 //  Author is the owning side of books (an author has many books)
-    @ManyToMany(cascade= CascadeType.ALL)
-    @JoinTable(name="author_books")
-    public Set<Book> books;
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinTable(
+            name="authors_books",
+            joinColumns={@JoinColumn(name="AUTHOR_ID", referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="BOOK_ID", referencedColumnName="ID")}
+    )
+    public List<Book> written = new ArrayList<>();
+//    public Set<Book> books;
 
 //  ----------------- Constructors -----------------
 

@@ -40,10 +40,25 @@ public class BookController {
 
     @RequestMapping("/admin/add-book")
     public String addBook(Model model) {
-        model.addAttribute("title", "ISBIN add book");
-        model.addAttribute("message", "Welcome to the ISBIN add book page!");
+        BookDto book = new BookDto();
+//        model.addAttribute("title", "ISBIN add book");
+//        model.addAttribute("message", "Welcome to the ISBIN add book page!");
         model.addAttribute("activePage", "book");
 
+        model.addAttribute("book", book);
+        return "add-book";
+    }
+
+    @RequestMapping("/admin/edit-book/{id}")
+    public String editBook(@PathVariable("id") String id, Model model) {
+        Book bookFromDatabase = bookService.getById(id);
+
+        BookDto book = bookService.mapToBookDto(bookFromDatabase);
+//        model.addAttribute("title", "ISBIN edit book");
+//        model.addAttribute("message", "Welcome to the ISBIN edit book page!");
+        model.addAttribute("activePage", "book");
+
+        model.addAttribute("book", book);
         return "add-book";
     }
 
@@ -52,30 +67,40 @@ public class BookController {
                                BindingResult result,
                                Model model) {
         model.addAttribute("activePage", "book");
-        model.addAttribute("title", "Add a Book");
-        model.addAttribute("message", "An admin can add a book to the database.");
+//        model.addAttribute("title", "Add a Book");
+//        model.addAttribute("message", "An admin can add a book to the database.");
 
-//        User existingUser = userService.findUserByEmail(userDto.getEmail());
         Book existingBook = bookService.findBookByIsbn(bookDto.getIsbn());
+        if(existingBook != null && existingBook.getIsbn() != null && !existingBook.getIsbn().isEmpty()){
+            result.rejectValue("isbn", null,
+                    "A book with this isbn was already added to the catalog.");
+        }
 
+        if(result.hasErrors()){
+            System.out.printf("Had errors: %s\n", result.getAllErrors());
+            model.addAttribute("book", bookDto);
+            return "/add-book";
+        }
 
-//        if(existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()){
-//            result.rejectValue("email", null,
-//                    "There is already an account registered with the same email");
-//        }
+        bookService.saveBook(bookDto);
+        return "redirect:/admin/add-book?success";
 
-//        if(result.hasErrors()){
-//            model.addAttribute("user", userDto);
-//            return "/register";
-//        }
+    }
 
-//        userService.saveUser(userDto);
-        return "redirect:/admin/book?success";
+    @RequestMapping(value = "/user/catalog")
+    public String catalog(Model model) {
+        model.addAttribute("activePage", "book");
+        model.addAttribute("title", "ISBIN Catalog");
+        model.addAttribute("message", "Welcome to the ISBIN Catalog page! This page is for logged in users.");
 
+        List<Book> books = bookService.findAll();
+            model.addAttribute("books", books);
+        return "catalog";
     }
 
     @RequestMapping(value = "/book/{id}")
     public String getBookById(@PathVariable("id") String id, Model model) {
+        model.addAttribute("activePage", "book");
         Book bookFromDatabase = bookService.getById(id);
         String coverURL = "/images/bookPlaceholder.jpg";
         model.addAttribute("book", bookFromDatabase);

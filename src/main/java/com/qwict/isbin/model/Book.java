@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 import static jakarta.persistence.CascadeType.ALL;
@@ -45,27 +46,31 @@ public class Book {
     private Set<Location> locations;
 
     // Book is the inverse side of authors (a book is owned by an author)
-    @ManyToMany(mappedBy= "books", cascade= CascadeType.ALL)
-    private Set<Author> writtenBy;
+    @ManyToMany(mappedBy= "written")
+    private List<Author> writers;
+//    private Set<Author> writtenBy;
 
 
     // Book is the inverse side of favoritedBy (a book is favorited by a user)
-    @ManyToMany(mappedBy="favoritedBooks")
-    private Set<User> favoritedBy;
+//    @ManyToMany(mappedBy="favoritedBooks")
+//    private Set<User> favoritedBy;
 
-    public Book(String isbn, String title, Double price, Set<Author> writtenBy, Set<User> favoritedBy) {
+    @ManyToMany(mappedBy="books")
+    private List<User> users;
+
+    public Book(String isbn, String title, Double price, List<Author> writers, List<User> users) {
         this.isbn = isbn;
         this.title = title;
         this.price = price;
-        this.writtenBy = writtenBy;
-        this.favoritedBy = favoritedBy;
+        this.writers = writers;
+        this.users = users;
     }
 
-    public Book(String isbn, String title, Double price, Set<Author> writtenBy) {
+    public Book(String isbn, String title, Double price, List<Author> writers) {
         this.isbn = isbn;
         this.title = title;
         this.price = price;
-        this.writtenBy = writtenBy;
+        this.writers = writers;
     }
 
     public Book(String isbn, String title, Double price) {
@@ -82,8 +87,8 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", price=" + price +
                 ", locations=" + locations +
-                ", writtenBy=" + writtenBy +
-                ", favoritedBy=" + favoritedBy +
+                ", writers=" + writers +
+                ", users=" + users +
                 "}\n";
     }
 }

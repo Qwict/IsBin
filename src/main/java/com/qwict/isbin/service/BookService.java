@@ -10,6 +10,8 @@ import org.json.simple.JSONObject;
 import java.util.List;
 
 public interface BookService {
+    Book findBookById(String id);
+
     void saveBook(BookDto bookDto);
 
     Book findBookByIsbn(String isbn);
@@ -20,4 +22,5 @@ public interface BookService {
     Book getById(String id);
 
     JSONObject getBookFromRemoteAPI(String isbn);
+    BookDto mapToBookDto(Book book);
 }

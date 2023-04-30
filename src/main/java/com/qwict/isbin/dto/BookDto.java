@@ -1,11 +1,14 @@
 package com.qwict.isbin.dto;
 
-import jakarta.validation.constraints.Email;
+import com.qwict.isbin.model.Location;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 // TODO: validate isbn
 @Getter
@@ -15,19 +18,22 @@ import lombok.Setter;
 public class BookDto
 {
     private Long id;
-    @NotEmpty
+    @NotEmpty(message = "ISBN13 should not be empty")
     private String isbn;
 
-    @NotEmpty
+    @NotEmpty(message = "Title should not be empty")
     private String title;
 
-    @NotEmpty
+    @NotEmpty(message = "Author should not be empty")
     private String author_1;
 
     private String author_2;
 
     private String author_3;
 
-    @NotEmpty
+//    @NotEmpty(message = "Location should not be empty")
+//    private List<Location> location;
+
+    @NotNull(message = "Price should not be empty")
     private double price;
 }

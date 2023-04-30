@@ -25,6 +25,12 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" th:href="@{/user/favorites}">My Favorites</a>
                     </div>
+
+                    <div  sec:authorize="hasRole('ROLE_USER')">
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/user/catalog">Catalog</a>
+                    </div>
+
                     <div sec:authorize="hasRole('ROLE_ADMIN')">
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/admin/add-book">Add book</a>

@@ -2,9 +2,7 @@ package com.qwict.isbin.service;
 
 import com.qwict.isbin.domein.RemoteAPI;
 import com.qwict.isbin.dto.BookDto;
-import com.qwict.isbin.dto.UserDto;
 import com.qwict.isbin.model.Book;
-import com.qwict.isbin.model.User;
 import com.qwict.isbin.repository.BookRepository;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
@@ -37,6 +35,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Book findBookById(String id) {
+        return bookRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public void saveBook(BookDto bookDto) {
         Book book = new Book();
         book.setTitle(bookDto.getTitle());
@@ -63,7 +66,8 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    private BookDto mapToBookDto(Book book){
+    @Override
+    public BookDto mapToBookDto(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setTitle(book.getTitle());
         bookDto.setIsbn(book.getIsbn());
