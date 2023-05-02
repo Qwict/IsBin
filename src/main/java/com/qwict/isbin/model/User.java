@@ -82,16 +82,16 @@ public class User {
         book.getUsers().add(this);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email +
-                ", username='" + username +
-                ", maxFavorites=" + maxFavorites +
-                ", password='" + password +
-                ", roles=" + roles +
-                ", books=" + books +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "id=" + id +
+//                ", email='" + email +
+//                ", username='" + username +
+//                ", maxFavorites=" + maxFavorites +
+//                ", password='" + password +
+//                ", roles=" + roles +
+//                ", books=" + books +
+//                '}';
+//    }
 }

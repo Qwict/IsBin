@@ -23,4 +23,6 @@ public interface BookService {
 
     JSONObject getBookFromRemoteAPI(String isbn);
     BookDto mapToBookDto(Book book);
+
+    List<BookDto> getMostPopularBookDtos();
 }

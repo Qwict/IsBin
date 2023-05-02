@@ -15,9 +15,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookDto
-{
+public class BookDto {
     private Long id;
+
     @NotEmpty(message = "ISBN13 should not be empty")
     private String isbn;
 
@@ -31,9 +31,26 @@ public class BookDto
 
     private String author_3;
 
+    private long hearts;
+    private boolean favorited;
+
 //    @NotEmpty(message = "Location should not be empty")
 //    private List<Location> location;
 
     @NotNull(message = "Price should not be empty")
     private double price;
+
+    @Override
+    public String toString() {
+        return "BookDto{" +
+                "id=" + id +
+                ", isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", author_1='" + author_1 + '\'' +
+                ", author_2='" + author_2 + '\'' +
+                ", author_3='" + author_3 + '\'' +
+                ", hearts=" + hearts +
+                ", price=" + price +
+                '}';
+    }
 }

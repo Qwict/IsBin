@@ -1,10 +1,14 @@
 package com.qwict.isbin.service;
 
+import com.qwict.isbin.dto.AuthUserDto;
+import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.dto.UserDto;
+import com.qwict.isbin.model.Book;
 import com.qwict.isbin.model.Role;
 import com.qwict.isbin.model.User;
-import com.qwict.isbin.repository.RoleRepository;
 import com.qwict.isbin.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +20,13 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private RoleService roleService;
     private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -32,67 +37,13 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         // encrypt the password using spring security
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        Role role1 = roleRepository.findByName("ROLE_OWNER");
-        if(role1 == null){
-            role1 = checkRoleExist("ROLE_OWNER");
+        Role roleUser = roleService.findRoleByName("ROLE_USER");
+        if(roleUser == null){
+            roleUser = checkRoleExist("ROLE_USER");
         }
-
-        Role role2 = roleRepository.findByName("ROLE_ADMIN");
-        if(role2 == null){
-            role2 = checkRoleExist("ROLE_ADMIN");
-        }
-
-        Role role3 = roleRepository.findByName("ROLE_USER");
-        if(role3 == null){
-            role3 = checkRoleExist("ROLE_USER");
-        }
-        user.setRoles(Arrays.asList(role1, role2, role3));
+        user.setRoles(Arrays.asList(roleUser));
         userRepository.save(user);
     }
-
-    @Override
-    public void saveAdmin(UserDto userDto) {
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setEmail(userDto.getEmail());
-        // encrypt the password using spring security
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        Role role = roleRepository.findByName("ROLE_ADMIN");
-        if(role == null){
-            role = checkRoleExist("ROLE_ADMIN");
-        }
-        user.setRoles(Arrays.asList(role));
-        userRepository.save(user);
-    }
-
-    @Override
-    public void saveOwner(UserDto userDto) {
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setEmail(userDto.getEmail());
-        // encrypt the password using spring security
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        Role role1 = roleRepository.findByName("ROLE_OWNER");
-        if(role1 == null){
-            role1 = checkRoleExist("ROLE_OWNER");
-        }
-
-        Role role2 = roleRepository.findByName("ROLE_ADMIN");
-        if(role2 == null){
-            role2 = checkRoleExist("ROLE_ADMIN");
-        }
-
-        Role role3 = roleRepository.findByName("ROLE_USER");
-        if(role3 == null){
-            role3 = checkRoleExist("ROLE_USER");
-        }
-        user.setRoles(Arrays.asList(role1, role2, role3));
-        userRepository.save(user);
-    }
-
 
     @Override
     public User findUserByEmail(String email) {
@@ -107,16 +58,92 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    private UserDto mapToUserDto(User user){
+    @Override
+    public UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setUsername(user.getUsername());
         userDto.setEmail(user.getEmail());
         return userDto;
     }
 
+    @Override
+    public AuthUserDto mapToAuthenticatedUserDto(User user) {
+        AuthUserDto authenticatedUserDto = new AuthUserDto();
+        authenticatedUserDto.setUsername(user.getUsername());
+        authenticatedUserDto.setEmail(user.getEmail());
+        authenticatedUserDto.setRoles(user.getRoles().stream()
+                .map((role) -> roleService.mapToRoleDto(role))
+                .collect(Collectors.toList())
+        );
+        authenticatedUserDto.setBooks(user.getBooks().stream()
+                .map((book) -> mapToBookDto(book))
+                .collect(Collectors.toList())
+        );
+
+        authenticatedUserDto.setMaxFavorites(user.getMaxFavorites());
+        authenticatedUserDto.setFavoritedBooksCount(user.getBooks().size());
+
+        return authenticatedUserDto;
+    }
+
     private Role checkRoleExist(String roleName){
         Role role = new Role();
         role.setName(roleName);
-        return roleRepository.save(role);
+        return roleService.saveRole(role);
+    }
+
+
+    @Override
+    public AuthUserDto getAuthUserDto() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!auth.isAuthenticated() || auth.getName().equals("anonymousUser")) {
+            AuthUserDto anon = new AuthUserDto();
+            anon.setUsername(auth.getName());
+            return anon;
+        }
+        User user = findUserByEmail(auth.getName());
+        return mapToAuthenticatedUserDto(user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
+
+    // causes cirtular dependency if taken from UserServiceImpl
+    private BookDto mapToBookDto(Book book) {
+        BookDto bookDto = new BookDto();
+        bookDto.setId(book.getId());
+        bookDto.setTitle(book.getTitle());
+        bookDto.setIsbn(book.getIsbn());
+        bookDto.setPrice(book.getPrice());
+
+        // get the current authenticated user
+//        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated() ||
+//                SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")
+//        ) {
+//            AuthUserDto authUserDto = getAuthUserDto();
+//            // check if the book is in the user's list of books
+//            if (authUserDto.getBooks() != null) {
+//                List<BookDto> books = authUserDto.getBooks();
+//                if (books.contains(book)) {
+//                    bookDto.setFavorited(true);
+//                }
+//            }
+//        }
+
+        if (book.getWriters().size() > 0)
+            bookDto.setAuthor_1(book.getWriters().get(0).getFirstName() + " " + book.getWriters().get(0).getLastName());
+        if (book.getWriters().size() > 1) {
+            bookDto.setAuthor_2(book.getWriters().get(1).getFirstName() + " " + book.getWriters().get(1).getLastName());
+        }
+        if (book.getWriters().size() > 2) {
+            bookDto.setAuthor_3(book.getWriters().get(2).getFirstName() + " " + book.getWriters().get(2).getLastName());
+        }
+
+        bookDto.setHearts(book.getUsers().size());
+
+        return bookDto;
     }
 }

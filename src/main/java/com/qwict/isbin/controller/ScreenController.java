@@ -1,5 +1,6 @@
 package com.qwict.isbin.controller;
 
+import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.model.Book;
 import com.qwict.isbin.repository.BookRepository;
 import com.qwict.isbin.service.BookService;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,9 +31,12 @@ public class ScreenController {
         model.addAttribute("title", "ISBIN Home");
         model.addAttribute("message", "Welcome to the ISBIN home page!");
 
+        List<BookDto> bookDtos = new ArrayList<>();
         List<Book> books = bookService.findAll();
-        System.out.printf("books: %s\n", books);
-        model.addAttribute("books", books);
+        for (Book book : books) {
+            bookDtos.add(bookService.mapToBookDto(book));
+        }
+        model.addAttribute("bookDtos", bookDtos);
         return "home";
     }
 
@@ -44,21 +49,13 @@ public class ScreenController {
         model.addAttribute("title", "ISBIN Home");
         model.addAttribute("message", "Welcome to the ISBIN home page!");
 
+        List<BookDto> bookDtos = new ArrayList<>();
         List<Book> books = bookService.findAll();
-        System.out.printf("books: %s\n", books);
-        model.addAttribute("books", books);
+        for (Book book : books) {
+            bookDtos.add(bookService.mapToBookDto(book));
+        }
+        model.addAttribute("bookDtos", bookDtos);
         return "home";
-    }
-
-    @RequestMapping("/user/favorites")
-    public String favorites(Model model) {
-        model.addAttribute("loggedIn", true);
-        model.addAttribute("isAdmin", true);
-        model.addAttribute("activePage", "book");
-
-        model.addAttribute("title", "My Favorites");
-        model.addAttribute("message", "This table represents all the books that you have added to favorites.");
-        return "favorites";
     }
 
 

@@ -79,16 +79,16 @@ public class Book {
         this.price = price;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id='" + id + '\'' +
-                ", isbn='" + isbn + '\'' +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                ", locations=" + locations +
-                ", writers=" + writers +
-                ", users=" + users +
-                "}\n";
-    }
+//    @Override
+//    public String toString() {
+//        return "Book{" +
+//                "id='" + id + '\'' +
+//                ", isbn='" + isbn + '\'' +
+//                ", title='" + title + '\'' +
+//                ", price=" + price +
+//                ", locations=" + locations +
+//                ", writers=" + writers +
+//                ", users=" + users +
+//                "}\n";
+//    }
 }

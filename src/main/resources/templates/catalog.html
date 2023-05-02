@@ -16,28 +16,7 @@
   <div class="row col-md-10">
     <h2>List of Books in the catalog</h2>
   </div>
-  <table class="table table-bordered table-hover">
-    <thead class="table">
-    <tr>
-      <th>ISBN 13</th>
-      <th>Title</th>
-      <th>Price</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each = "book : ${books}">
-      <td th:text = "${book.isbn}"></td>
-      <td th:text = "${book.title}"></td>
-      <td th:text = "${book.price}"></td>
-      <td>
-        <div th:replace="~{components/BookButtonGroup :: IconButtonGroup}"></div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-
+  <div th:replace="~{components/BookTables :: BookTable}"></div>
 
 </div>
 

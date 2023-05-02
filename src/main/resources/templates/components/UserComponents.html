@@ -1,0 +1,26 @@
+<div th:fragment="favbar">
+    <div class="progress mt-3 mb-3">
+        <div
+                class="progress-bar"
+                role="progressbar"
+                th:style="'width:' + ( ${authMaxFavorites} == 0  ? '0' : (${authFavoritesBooks * 1.0} / ${authMaxFavorites}) * 100.0 ) + '%;'"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                th:text="${authMaxFavorites == 0  ? '0%' : (authFavoritesBooks * 1.0 / authMaxFavorites) * 100.0  }
+                + '% (' + ${authFavoritesBooks} + '/' + ${authMaxFavorites} + ')'">
+        </div>
+    </div>
+</div>
+
+<div th:fragment="favbarNoText">
+    <div class="progress mt-3 mb-3">
+        <div
+                class="progress-bar"
+                role="progressbar"
+                th:style="'width:' + ( ${authMaxFavorites} == 0  ? '0' : (${authFavoritesBooks * 1.0} / ${authMaxFavorites}) * 100.0 ) + '%;'"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                >
+        </div>
+    </div>
+</div>

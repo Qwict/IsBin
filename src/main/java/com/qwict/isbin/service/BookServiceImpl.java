@@ -1,22 +1,28 @@
 package com.qwict.isbin.service;
 
 import com.qwict.isbin.domein.RemoteAPI;
+import com.qwict.isbin.dto.AuthUserDto;
 import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.model.Book;
 import com.qwict.isbin.repository.BookRepository;
 import org.json.simple.JSONObject;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;
+    private UserService userService;
 
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, UserService userService) {
         this.bookRepository = bookRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -67,10 +73,53 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<BookDto> getMostPopularBookDtos() {
+        // Does not work :/
+//        List<Book> books = bookRepository.findTop10ByUsers();
+
+        List<Book> books = bookRepository.findAll();
+        Collections.sort(books, (b1, b2) -> b2.getUsers().size() - b1.getUsers().size());
+        List<Book> topTen = books.subList(0, 10);
+        return topTen.stream()
+                .map((book) -> mapToBookDto(book))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public BookDto mapToBookDto(Book book) {
         BookDto bookDto = new BookDto();
+        bookDto.setId(book.getId());
         bookDto.setTitle(book.getTitle());
         bookDto.setIsbn(book.getIsbn());
+        bookDto.setPrice(book.getPrice());
+
+        // get the current authenticated user
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated() ||
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")
+        ) {
+            AuthUserDto authUserDto = userService.getAuthUserDto();
+            // check if the book is in the user's list of books
+            if (authUserDto.getBooks() != null) {
+                List<BookDto> books = authUserDto.getBooks();
+                books.stream().filter((b) -> b.getId().equals(book.getId()))
+                        .findFirst()
+                        .ifPresent((b) -> {
+                                bookDto.setFavorited(true);
+                        });
+            }
+        }
+
+        if (book.getWriters().size() > 0)
+            bookDto.setAuthor_1(book.getWriters().get(0).getFirstName() + " " + book.getWriters().get(0).getLastName());
+        if (book.getWriters().size() > 1) {
+            bookDto.setAuthor_2(book.getWriters().get(1).getFirstName() + " " + book.getWriters().get(1).getLastName());
+        }
+        if (book.getWriters().size() > 2) {
+            bookDto.setAuthor_3(book.getWriters().get(2).getFirstName() + " " + book.getWriters().get(2).getLastName());
+        }
+
+        bookDto.setHearts(book.getUsers().size());
+
         return bookDto;
     }
 }

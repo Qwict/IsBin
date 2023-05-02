@@ -8,6 +8,7 @@ import com.qwict.isbin.service.BookService;
 import jakarta.validation.Valid;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +79,6 @@ public class BookController {
         }
 
         if(result.hasErrors()){
-            System.out.printf("Had errors: %s\n", result.getAllErrors());
             model.addAttribute("book", bookDto);
             return "/add-book";
         }
@@ -93,45 +94,60 @@ public class BookController {
         model.addAttribute("title", "ISBIN Catalog");
         model.addAttribute("message", "Welcome to the ISBIN Catalog page! This page is for logged in users.");
 
+        List<BookDto> bookDtos = new ArrayList<>();
         List<Book> books = bookService.findAll();
-            model.addAttribute("books", books);
+        books.stream().forEach(book -> {
+            bookDtos.add(bookService.mapToBookDto(book));
+        });
+        model.addAttribute("bookDtos", bookDtos);
         return "catalog";
     }
 
     @RequestMapping(value = "/book/{id}")
     public String getBookById(@PathVariable("id") String id, Model model) {
         model.addAttribute("activePage", "book");
-        Book bookFromDatabase = bookService.getById(id);
+        // throw a 404 if the book doesn't exist
+
+        try {
+            Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            // TODO: make a BAD_REQUEST response page
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The id must be a number.");
+        }
+        if (id == null || id.isEmpty() ) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
+        }
+        Book bookFromDatabase;
+        bookFromDatabase = bookService.getById(id);
+        if (bookFromDatabase == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
+        }
+        BookDto bookDto = bookService.mapToBookDto(bookFromDatabase);
         String coverURL = "/images/bookPlaceholder.jpg";
-        model.addAttribute("book", bookFromDatabase);
+
+        model.addAttribute("book", bookDto);
         JSONObject response = bookService.getBookFromRemoteAPI(bookFromDatabase.getIsbn());
 
         JSONObject remoteBook = (JSONObject) response.get(String.format("ISBN:%s", bookFromDatabase.getIsbn()));
         if (remoteBook != null) {
             model.addAttribute("hasRemoteDetails", true);
 
-            System.out.printf("remoteBook: %s\n", remoteBook);
             JSONObject details = (JSONObject) remoteBook.get("details");
-            System.out.printf("details: %s\n", details);
             JSONArray covers = (JSONArray) details.get("covers");
             if (covers != null) {
-                System.out.printf("covers: %s\n", covers);
                 List<String> coverIds = new ArrayList<>();
                 for (Object cover : covers) {
                     coverIds.add(cover.toString());
                 }
-                System.out.printf("coverIds: %s\n", coverIds);
                 coverURL = String.format("https://covers.openlibrary.org/b/id/%s-L.jpg", coverIds.get(0));
             }
 
             // date part
             String remotePublishDate = (String) details.get("publish_date");
-            System.out.printf("remotePublishDate: %s\n", remotePublishDate);
             model.addAttribute("remotePublishDate", remotePublishDate);
 
             // description part
             String remoteDescription = (String) details.get("description");
-            System.out.printf("remoteDescription: %s\n", remoteDescription);
             model.addAttribute("remoteDescription", remoteDescription);
         } else {
             model.addAttribute("hasRemoteDetails", false);
@@ -150,8 +166,9 @@ public class BookController {
         model.addAttribute("title", "ISBIN Most Popular");
         model.addAttribute("message", "Welcome to the ISBIN Most Popular page!");
 
-        List<Book> books = bookService.findAll();
-            model.addAttribute("books", books);
+        List<BookDto> bookDtos = bookService.getMostPopularBookDtos();
+
+        model.addAttribute("bookDtos", bookDtos);
         return "most-popular";
 }
 

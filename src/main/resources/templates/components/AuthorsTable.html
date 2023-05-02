@@ -1,0 +1,12 @@
+<div th:fragment="AuthorsTable" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="card mx-auto" style="min-height: 197px">
+        <div class="card-header">
+            Authors
+        </div>
+        <ul class="list-group list-group-flush">
+            <li th:if="${book.author_1}" class="list-group-item" th:text="${book.author_1}"></li>
+            <li th:if="${book.author_2}" class="list-group-item" th:text="${book.author_2}"></li>
+            <li th:if="${book.author_3}" class="list-group-item" th:text="${book.author_3}"></li>
+        </ul>
+    </div>
+</div>

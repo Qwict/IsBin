@@ -11,6 +11,80 @@
 <div th:replace="~{components/navbar :: navbar}"></div>
 <div th:replace="~{components/title :: title}"></div>
 
+<div class="container mb-3">
+    <div class="card">
+        <h5 class="card-header">Welcome!</h5>
+        <div class="card-body">
+            <p class="card-text">This is the ISBiN page; where users can read about, add, list, catalog, mark -> BOOKS!</p>
+<!--            <a href="#" class="btn btn-primary">Go somewhere</a>-->
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <!--    What can an anonymous user do?-->
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header">Anonymous user</h5>
+                <div class="card-body">
+<!--                    <h5 class="card-title">Special title treatment</h5>-->
+                    <p class="card-text">
+                        An anonymous user is able to see the Top 10 books!
+                        In order to do more; register an account.</p>
+                    <a href="/book/most-popular" class="btn btn-primary">Top 10</a>
+                </div>
+            </div>
+        </div>
+        <!--    What can a user do-->
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header">A registered user</h5>
+                <div class="card-body">
+                    <!--                    <h5 class="card-title">Special title treatment</h5>-->
+                    <p class="card-text">
+                        A user that is logged in can add books to a favorite list.
+                        This way books get more hearts and are rated higher.
+                        Will your favorite book make it to the top 10?
+                    </p>
+                    <a href="/user/catalog" class="btn btn-primary">View the catalog</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <!--    What can an admin do?-->
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header">The administrator role</h5>
+                <div class="card-body">
+                    <!--                    <h5 class="card-title">Special title treatment</h5>-->
+                    <p class="card-text">
+                        The administrator can do everything a user can do.
+                        But also add new books and authors.
+                        And edit or delete them.
+                    </p>
+                    <a href="/admin/add-book" class="btn btn-primary">Add a book</a>
+                </div>
+            </div>
+        </div>
+<!--    What can an owner do?-->
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header">The owner role</h5>
+                <div class="card-body">
+                    <!--                    <h5 class="card-title">Special title treatment</h5>-->
+                    <p class="card-text">
+                        The owner can do everything an admin can do.
+                        But is also able to change the role of a user.
+                    </p>
+                    <a href="/owner/registered-users" class="btn btn-primary">Who is who?</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
 <div class="container">
     <div class="text-center">
         <div th:replace="~{components/bookCard :: bookCard}"></div>

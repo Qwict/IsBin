@@ -50,6 +50,11 @@
                                     placeholder="Enter the book's ISBN13"
                                     th:field="*{isbn}"
                                     type="number"
+                                    style="
+                                        -webkit-appearance: none;
+                                        margin: 0;
+                                        -moz-appearance: textfield;
+                                    "
                             />
                             <p th:errors="*{isbn}" class="text-danger"
                                th:if="${#fields.hasErrors('isbn')}"></p>
@@ -95,14 +100,24 @@
                         </div>
                         <div class="form-group mb-3">
                             <label class="form-label"> Price</label>
-                            <input
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">€</span>
+                                </div>
+                                <input
                                     class="form-control"
                                     type="number"
                                     name="price"
                                     placeholder="price"
                                     th:field="*{price}"
                                     step="0.01"
-                            />
+                                    style="
+                                        -webkit-appearance: none;
+                                        margin: 0;
+                                        -moz-appearance: textfield;
+                                    "
+                                />
+                            </div>
                             <p th:errors="*{price}" class="text-danger"
                             th:if="${#fields.hasErrors('price')}"></p>
                         </div>
