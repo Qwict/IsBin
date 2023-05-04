@@ -59,47 +59,101 @@
                             <p th:errors="*{isbn}" class="text-danger"
                                th:if="${#fields.hasErrors('isbn')}"></p>
                         </div>
-                        <div class="form-group mb-3">
+                        <div class="form-row mb-3">
                             <label class="form-label">Primary Author</label>
-                            <input
-                                    class="form-control"
-                                    id="author_1"
-                                    name="author_1"
-                                    placeholder="Enter an author's name"
-                                    th:field="*{author_1}"
-                                    type="text"
-                            />
-                            <p th:errors="*{author_1}" class="text-danger"
-                               th:if="${#fields.hasErrors('author_1')}"></p>
+                            <div class="col">
+                                <input
+                                        class="form-control"
+                                        id="primaryAuthorFirstName"
+                                        name="primaryAuthorFirstName"
+                                        placeholder="First name"
+                                        th:field="*{primaryAuthorFirstName}"
+                                        type="text"
+                                >
+                                <p
+                                        th:errors="*{primaryAuthorFirstName}" class="text-danger"
+                                        th:if="${#fields.hasErrors('primaryAuthorFirstName')}">
+                                </p>
+                            </div>
+                            <div class="col">
+                                <input
+                                        class="form-control"
+                                        id="primaryAuthorLastName"
+                                        name="primaryAuthorLastName"
+                                        placeholder="Last name"
+                                        th:field="*{primaryAuthorLastName}"
+                                        type="text"
+                                >
+                                <p
+                                        th:errors="*{primaryAuthorLastName}" class="text-danger"
+                                        th:if="${#fields.hasErrors('primaryAuthorLastName')}">
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-row mb-3">
+                            <label class="form-label">Secondary Author</label>
+                            <div class="col">
+                                <input
+                                        class="form-control"
+                                        id="secondaryAuthorFirstName"
+                                        name="secondaryAuthorFirstName"
+                                        placeholder="First name"
+                                        th:field="*{secondaryAuthorFirstName}"
+                                        type="text"
+                                >
+                                <p
+                                        th:errors="*{secondaryAuthorFirstName}" class="text-danger"
+                                        th:if="${#fields.hasErrors('secondaryAuthorFirstName')}">
+                                </p>
+                            </div>
+                            <div class="col">
+                                <input
+                                        class="form-control"
+                                        id="secondaryAuthorLastName"
+                                        name="secondaryAuthorLastName"
+                                        placeholder="Last name"
+                                        th:field="*{secondaryAuthorLastName}"
+                                        type="text"
+                                >
+                                <p
+                                        th:errors="*{secondaryAuthorLastName}" class="text-danger"
+                                        th:if="${#fields.hasErrors('secondaryAuthorLastName')}">
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-row mb-3">
+                            <label class="form-label">Tertiary Author</label>
+                            <div class="col">
+                                <input
+                                        class="form-control"
+                                        id="tertiaryAuthorFirstName"
+                                        name="tertiaryAuthorFirstName"
+                                        placeholder="First name"
+                                        th:field="*{tertiaryAuthorFirstName}"
+                                        type="text"
+                                >
+                                <p
+                                        th:errors="*{tertiaryAuthorFirstName}" class="text-danger"
+                                        th:if="${#fields.hasErrors('tertiaryAuthorFirstName')}">
+                                </p>
+                            </div>
+                            <div class="col">
+                                <input
+                                        class="form-control"
+                                        id="tertiaryAuthorLastName"
+                                        name="tertiaryAuthorLastName"
+                                        placeholder="Last name"
+                                        th:field="*{tertiaryAuthorLastName}"
+                                        type="text"
+                                >
+                                <p
+                                        th:errors="*{tertiaryAuthorLastName}" class="text-danger"
+                                        th:if="${#fields.hasErrors('tertiaryAuthorLastName')}">
+                                </p>
+                            </div>
                         </div>
                         <div class="form-group mb-3">
-                            <label class="form-label"> Second Author</label>
-                            <input
-                                    class="form-control"
-                                    id="author_2"
-                                    name="author_2"
-                                    placeholder="Enter a second author's name"
-                                    th:field="*{author_2}"
-                                    type="text"
-                            />
-                            <p th:errors="*{author_2}" class="text-danger"
-                               th:if="${#fields.hasErrors('author_2')}"></p>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label"> Third Author</label>
-                            <input
-                                    class="form-control"
-                                    id="author_3"
-                                    name="author_3"
-                                    placeholder="Enter a third author's name"
-                                    th:field="*{author_3}"
-                                    type="text"
-                            />
-                            <p th:errors="*{author_3}" class="text-danger"
-                               th:if="${#fields.hasErrors('author_3')}"></p>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label"> Price</label>
+                            <label class="form-label">Price</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">€</span>

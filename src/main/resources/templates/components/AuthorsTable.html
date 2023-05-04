@@ -4,9 +4,26 @@
             Authors
         </div>
         <ul class="list-group list-group-flush">
-            <li th:if="${book.author_1}" class="list-group-item" th:text="${book.author_1}"></li>
-            <li th:if="${book.author_2}" class="list-group-item" th:text="${book.author_2}"></li>
-            <li th:if="${book.author_3}" class="list-group-item" th:text="${book.author_3}"></li>
+<!--            TODO: Check if author has first name and lastname!-->
+            <li
+                    th:if="${book.primaryAuthorFirstName}"
+                    class="list-group-item"
+                    th:text="${book.primaryAuthorFirstName} + ' ' + ${book.primaryAuthorLastName}"
+            >
+            </li>
+            <li
+                    th:if="${book.secondaryAuthorFirstName}"
+                    class="list-group-item"
+                    th:text="${book.secondaryAuthorFirstName} + ' ' + ${book.secondaryAuthorLastName}"
+            >
+
+            </li>
+            <li
+                    th:if="${book.tertiaryAuthorFirstName}"
+                    class="list-group-item"
+                    th:text="${book.tertiaryAuthorFirstName} + ' ' + ${book.tertiaryAuthorLastName}"
+            >
+            </li>
         </ul>
     </div>
 </div>

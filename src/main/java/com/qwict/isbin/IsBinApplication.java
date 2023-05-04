@@ -12,6 +12,7 @@ import java.util.Properties;
 public class IsBinApplication {
     public static final Properties appProps = new Properties();
     private static String port;
+    private static String env;
 
     public static void main(String[] args) {
         SpringApplication isBinApplication = new SpringApplication(IsBinApplication.class);
@@ -22,6 +23,7 @@ public class IsBinApplication {
         try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
             appProps.load(resourceStream);
             port = appProps.getProperty("application.port");
+            env = appProps.getProperty("application.env");
         } catch (IOException e) {
             System.out.println("ERROR -- UserServiceImpl -- UserServiceImpl -- Could not load application.properties" + e.getMessage());
             System.exit(1);
@@ -42,4 +44,7 @@ public class IsBinApplication {
         isBinApplication.run(args);
     }
 
+    public static String getEnv() {
+        return env;
+    }
 }

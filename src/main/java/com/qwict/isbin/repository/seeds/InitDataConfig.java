@@ -1,5 +1,6 @@
 package com.qwict.isbin.repository.seeds;
 
+import com.qwict.isbin.IsBinApplication;
 import com.qwict.isbin.model.*;
 import com.qwict.isbin.repository.*;
 import org.springframework.boot.CommandLineRunner;
@@ -26,19 +27,21 @@ public class InitDataConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        System.out.printf("ADDING DATA TO DATABASE...%n");
-        addBooksToDatabase();
-        AddAuthorsToDatabase();
+        if (Objects.equals(IsBinApplication.getEnv(), "development")) {
+            System.out.printf("ADDING DATA TO DATABASE...%n");
+            addBooksToDatabase();
+            AddAuthorsToDatabase();
 
-        updateAuthorsWithBooks();
+            updateAuthorsWithBooks();
 
-        addRolesToDatabase();
+            addRolesToDatabase();
 
-        addUsersToDatabase();
-        updateUsersWithRoles();
-        updateUsersWithBooks();
-//        User joris = new User("jorisduyse@qwict.com", "jorisduyse", adminRoles, 10, "b1hJZPuM4LvPcjovXVlnmIrdcwK0tsra6+0b+5wDA38lNRCMHx1doeVeXOS9NaAgtjH/HJ6t2cYt6tf3r8aebI0WJfzyftoRFCfkvg2VLS841DzEWLtO+NKaGvacaxhTmxMVv0sgmUYRsu8ck6skhpayyvl3Pf53ajirkfSxKIU=", "+C+tbWUa+PF8u7iWMDW4bj4Bh9nwDCcdGUeG4yEWDHG8GlURa/HvSwcudfzc7T+JhasQON1kLl+dkCI5fOBH3w==");
-
+            addUsersToDatabase();
+            updateUsersWithRoles();
+            updateUsersWithBooks();
+        } else {
+            System.out.printf("SKIPPING ADDING DATA TO DATABASE...%n");
+        }
     }
 
     private void addRolesToDatabase() {
@@ -161,6 +164,7 @@ public class InitDataConfig implements CommandLineRunner {
         Author gabrielGarciaMarquez = authorRepository.findByFirstNameAndLastName("Gabriel", "García Márquez");
         gabrielGarciaMarquez.setWritten(List.of(oneHundred));
         Author shameAuthor = authorRepository.findByFirstNameAndLastName("Salman", "Rushdie");
+        shameAuthor.setWritten(List.of(shame));
 
         authorRepository.saveAll(List.of(
                 sunTzu, georgeOrwell, aldousHuxley, axelBouts, jordanPeterson, markManson, aaronJames,

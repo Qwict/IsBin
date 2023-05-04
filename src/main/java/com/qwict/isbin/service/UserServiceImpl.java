@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
         if(roleUser == null){
             roleUser = checkRoleExist("ROLE_USER");
         }
+        user.setMaxFavorites(10);
         user.setRoles(Arrays.asList(roleUser));
         userRepository.save(user);
     }
@@ -112,38 +113,26 @@ public class UserServiceImpl implements UserService {
 
 
     // causes cirtular dependency if taken from UserServiceImpl
-    private BookDto mapToBookDto(Book book) {
+    public BookDto mapToBookDto(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());
         bookDto.setTitle(book.getTitle());
         bookDto.setIsbn(book.getIsbn());
         bookDto.setPrice(book.getPrice());
 
-        // get the current authenticated user
-//        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated() ||
-//                SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")
-//        ) {
-//            AuthUserDto authUserDto = getAuthUserDto();
-//            // check if the book is in the user's list of books
-//            if (authUserDto.getBooks() != null) {
-//                List<BookDto> books = authUserDto.getBooks();
-//                if (books.contains(book)) {
-//                    bookDto.setFavorited(true);
-//                }
-//            }
-//        }
 
-        if (book.getWriters().size() > 0)
-            bookDto.setAuthor_1(book.getWriters().get(0).getFirstName() + " " + book.getWriters().get(0).getLastName());
-        if (book.getWriters().size() > 1) {
-            bookDto.setAuthor_2(book.getWriters().get(1).getFirstName() + " " + book.getWriters().get(1).getLastName());
-        }
-        if (book.getWriters().size() > 2) {
-            bookDto.setAuthor_3(book.getWriters().get(2).getFirstName() + " " + book.getWriters().get(2).getLastName());
+        if (book.getWriters().size() > 0) {
+            bookDto.setPrimaryAuthorFirstName(book.getWriters().get(0).getFirstName());
+            bookDto.setPrimaryAuthorLastName(book.getWriters().get(0).getLastName());
+        } if (book.getWriters().size() > 1) {
+            bookDto.setSecondaryAuthorFirstName(book.getWriters().get(1).getFirstName());
+            bookDto.setSecondaryAuthorLastName(book.getWriters().get(1).getLastName());
+        } if (book.getWriters().size() > 2) {
+            bookDto.setTertiaryAuthorFirstName(book.getWriters().get(2).getFirstName());
+            bookDto.setTertiaryAuthorLastName(book.getWriters().get(2).getLastName());
         }
 
         bookDto.setHearts(book.getUsers().size());
-
         return bookDto;
     }
 }

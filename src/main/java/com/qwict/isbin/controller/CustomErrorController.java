@@ -27,6 +27,7 @@ public class CustomErrorController implements ErrorController {
             } else if(statusCode == HttpStatus.FORBIDDEN.value()) {
                 model.addAttribute("title", "Forbidden");
                 model.addAttribute("message", "You do not have permission to access this page.");
+                model.addAttribute("errorImage", "/images/error-403.jpg");
             } else {
                 model.addAttribute("title", "Error");
                 model.addAttribute("message", "An error has occurred.");

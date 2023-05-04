@@ -1,5 +1,6 @@
 package com.qwict.isbin.service;
 
+import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.dto.UserDto;
 import com.qwict.isbin.model.Book;
@@ -25,4 +26,6 @@ public interface BookService {
     BookDto mapToBookDto(Book book);
 
     List<BookDto> getMostPopularBookDtos();
+
+    List<BookDto> searchBooksByAuthorDtos(List<AuthorDto> authorDtos);
 }

@@ -36,6 +36,7 @@ public class SpringSecurity {
                                 .requestMatchers("/home/**").permitAll()
                                 .requestMatchers("/images/**").permitAll()
                                 .requestMatchers("/book/**").permitAll()
+                                .requestMatchers("/author/**").permitAll()
                                 .requestMatchers("/error/").permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers("/owner/**").hasRole("OWNER")
@@ -43,6 +44,7 @@ public class SpringSecurity {
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/admin").hasRole("ADMIN")
                                 .requestMatchers("/user/**").hasRole("USER")
+                                .requestMatchers("/search/**").hasRole("USER")
                                 .requestMatchers("/user").hasRole("USER")
                 ).formLogin(
                         form -> form

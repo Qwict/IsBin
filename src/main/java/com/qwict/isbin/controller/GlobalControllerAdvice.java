@@ -3,6 +3,7 @@ package com.qwict.isbin.controller;
 import com.qwict.isbin.dto.AuthUserDto;
 import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.dto.RoleDto;
+import com.qwict.isbin.dto.SearchDto;
 import com.qwict.isbin.model.User;
 import com.qwict.isbin.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -67,9 +68,16 @@ public class GlobalControllerAdvice {
     public boolean populateReachedMaxFavorites() {
 //        return true;
         AuthUserDto authUser = getAuthUser();
+        if (authUser.getMaxFavorites() == null) {
+            return true;
+        }
         return authUser.getMaxFavorites() <= authUser.getFavoritedBooksCount();
     }
 
+    @ModelAttribute("searchDto")
+    public SearchDto populateSearchObject() {
+        return new SearchDto();
+    }
 
     private AuthUserDto getAuthUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

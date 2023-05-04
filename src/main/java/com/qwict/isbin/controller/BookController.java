@@ -1,9 +1,11 @@
 package com.qwict.isbin.controller;
 
+import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.dto.UserDto;
 import com.qwict.isbin.model.Book;
 import com.qwict.isbin.model.User;
+import com.qwict.isbin.service.AuthorService;
 import com.qwict.isbin.service.BookService;
 import jakarta.validation.Valid;
 import org.json.simple.JSONArray;
@@ -25,9 +27,11 @@ import java.util.List;
 @Controller
 public class BookController {
     private final BookService bookService;
+    private final AuthorService authorService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
+        this.authorService = authorService;
     }
 
 //    @RequestMapping("/book")
@@ -73,12 +77,12 @@ public class BookController {
 //        model.addAttribute("message", "An admin can add a book to the database.");
 
         Book existingBook = bookService.findBookByIsbn(bookDto.getIsbn());
-        if(existingBook != null && existingBook.getIsbn() != null && !existingBook.getIsbn().isEmpty()){
+        if (existingBook != null && existingBook.getIsbn() != null && !existingBook.getIsbn().isEmpty()) {
             result.rejectValue("isbn", null,
                     "A book with this isbn was already added to the catalog.");
         }
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             model.addAttribute("book", bookDto);
             return "/add-book";
         }
@@ -114,7 +118,7 @@ public class BookController {
             // TODO: make a BAD_REQUEST response page
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The id must be a number.");
         }
-        if (id == null || id.isEmpty() ) {
+        if (id == null || id.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
         }
         Book bookFromDatabase;
@@ -170,6 +174,11 @@ public class BookController {
 
         model.addAttribute("bookDtos", bookDtos);
         return "most-popular";
-}
+    }
+
+
+//    TODO: add a search by isbn
+//    @RequestMapping(value = "/book/search/isbn/{isbn}")
+
 
 }
