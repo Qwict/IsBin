@@ -47,8 +47,8 @@ public class BookDto {
 //    @NotEmpty(message = "Location should not be empty")
 //    private List<Location> location;
 
-    @Min(value = 0, message = "Price must be above 1")
-    @Max(value = 100, message = "Price must be below 100")
+    @DecimalMin(value = "0.01", message = "Price must be above 0")
+    @DecimalMax(value = "99.99", message = "Price must be below 100")
     private double price;
 
     @Override

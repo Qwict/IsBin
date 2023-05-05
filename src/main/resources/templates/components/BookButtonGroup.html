@@ -29,8 +29,9 @@
                     id="submitButton"
                     th:classappend="${reachedMaxFavorites && !book.favorited} ? 'btn-outline-secondary disabled' : 'btn-outline-danger'"
                     th:disabled="${reachedMaxFavorites && !book.favorited}"
-                    th:title="${book.favorited} ? 'Remove from favorites' : 'Add to favorites'"
+                    th:title="${(book.favorited) ? 'Remove from favorites' : (reachedMaxFavorites) ? 'Maximum favorites reached' : 'Add to favorites'}"
             >
+<!--                th:title="${book.favorited} ? 'Remove from favorites' : 'Add to favorites'"-->
 <!--                    ${reachedMaxFavorites} ? 'Maximum favorites reached' : -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
                      th:classAppend="${book.favorited} ? '-fill'" viewBox="0 0 16 16">

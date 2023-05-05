@@ -8,6 +8,7 @@ import com.qwict.isbin.model.Book;
 import com.qwict.isbin.model.User;
 import com.qwict.isbin.service.BookService;
 import com.qwict.isbin.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,13 +32,11 @@ public class UserController {
         this.bookService = bookService;
     }
 
-    @PostMapping("/user/book/{id}")
+//    @PostMapping("/user/book/{id}")
     public ModelAndView addBookToFavorites(@PathVariable String id){
 
         User user = userService.findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-
         Book book = bookService.findBookById(id);
-
         user.getBooks().stream().filter(b -> String.valueOf(b.getId()).equals(String.valueOf(book.getId())))
             .findFirst().ifPresentOrElse(
                 b -> {
@@ -65,6 +65,38 @@ public class UserController {
 //        userService.saveUser(userService.mapToUserDto(user));
 //        return "redirect:/";
 //        return "redirect:/user/favorites";
+    }
+
+    @PostMapping("/user/book/{id}")
+    public String favoriteBook(@PathVariable String id, Model model, HttpServletRequest request) {
+        // Get the URL of the current page
+        String referer = request.getHeader("Referer");
+
+        User user = userService.findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Book book = bookService.findBookById(id);
+        user.getBooks().stream().filter(b -> String.valueOf(b.getId()).equals(String.valueOf(book.getId())))
+                .findFirst().ifPresentOrElse(
+                        b -> {
+                            System.out.printf("Book %s is already in favorites%n", b.getTitle());
+                            user.getBooks().remove(b);
+
+                        },
+                        () -> {
+                            System.out.printf("Book %s added to favorites%n", book.getTitle());
+                            user.getBooks().add(book);
+                        }
+                );
+
+        if (user.getMaxFavorites() < user.getBooks().size()) {
+            System.out.println("User has reached max favorites");
+            return "redirect:" + referer;
+        }
+
+        userService.updateUser(user);
+        model.addAttribute("authUser", userService.mapToAuthenticatedUserDto(user));
+
+//        redirectAttributes.addFlashAttribute("successMessage", "Book added to favorites!");
+        return "redirect:" + referer;
     }
 
     @RequestMapping("/login")
