@@ -2,12 +2,16 @@ package com.qwict.isbin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Properties;
 
+@EnableJpaRepositories(basePackages = "com.qwict.isbin.repository")
+@EntityScan(basePackages = "com.qwict.isbin.model")
 @SpringBootApplication
 public class IsBinApplication {
     public static final Properties appProps = new Properties();

@@ -3,6 +3,7 @@ package com.qwict.isbin.repository.seeds;
 import com.qwict.isbin.IsBinApplication;
 import com.qwict.isbin.model.*;
 import com.qwict.isbin.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -10,20 +11,16 @@ import java.util.*;
 
 @Component
 public class InitDataConfig implements CommandLineRunner {
+    @Autowired
     private BookRepository bookRepository;
+    @Autowired
     private AuthorRepository authorRepository;
+    @Autowired
     private LocationRepository locationRepository;
+    @Autowired
     private RoleRepository roleRepository;
+    @Autowired
     private UserRepository userRepository;
-
-
-    public InitDataConfig(BookRepository bookRepository, AuthorRepository authorRepository, LocationRepository locationRepository, RoleRepository roleRepository, UserRepository userRepository) {
-        this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
-        this.locationRepository = locationRepository;
-        this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public void run(String... args) {
@@ -67,7 +64,6 @@ public class InitDataConfig implements CommandLineRunner {
         owner.setBooks(List.of());
         userRepository.save(owner);
     }
-
 
     private void addBooksToDatabase() {
         // sunTzu

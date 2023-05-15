@@ -23,7 +23,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author getById(String id) {
-        return authorRepository.findById(id).orElse(null);
+        // TODO: Change this when using UUID
+        return authorRepository.findById(Long.valueOf(id)).orElse(null);
     }
 
     @Override

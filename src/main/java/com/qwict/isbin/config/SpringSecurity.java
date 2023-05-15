@@ -40,6 +40,7 @@ public class SpringSecurity {
                                 .requestMatchers("/error/**").permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers("/js/**").permitAll()
+                                .requestMatchers("/jquery-3.6.4.min.js").permitAll()
                                 .requestMatchers("/owner/**").hasRole("OWNER")
                                 .requestMatchers("/owner").hasRole("OWNER")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")

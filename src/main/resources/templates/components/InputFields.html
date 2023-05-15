@@ -1,0 +1,217 @@
+<div th:fragment="AuthorInputFieldEachCompatible">
+    <label class="form-label" th:text="'Author ' + ${index + 1}"></label>
+    <div class="form-row mb-3">
+        <div class="col">
+            <input
+                    class="form-control"
+                    th:id="'author' + ${index} + 'FirstName'"
+                    name="authorFirstName"
+                    placeholder="First name"
+                    th:field="*{authorDtos[__${index}__].firstName}"
+                    type="text"
+            >
+<!--            <p-->
+<!--                    th:errors="'author' + ${index} + 'FirstName'" class="text-danger"-->
+<!--                    th:if="*{__${index}__ == 0 && #fields.hasErrors(authorDtos[__${index}__].firstName)}"-->
+<!--            >-->
+        </div>
+        <div class="col">
+            <input
+                    class="form-control"
+                    th:id="'author' + ${index} + 'LastName'"
+                    name="authorLastName"
+                    placeholder="Last name"
+                    th:field="*{authorDtos[__${index}__].lastName}"
+                    type="text"
+            >
+<!--            <p-->
+<!--                    th:errors="'author' + ${index} + 'LastName'" class="text-danger"-->
+<!--                    th:if="*{__${index}__ == 0 && #fields.hasErrors(authorDtos[__${index}__].lastName)}"-->
+<!--            >-->
+<!--            </p>-->
+        </div>
+    </div>
+</div>
+
+<div th:fragment="LocationInputFieldEachCompatible">
+    <label class="form-label" th:text="'Location ' + *{__${locationStat.index}__ + 1}"></label>
+    <p th:errors="*{'location_' + __${locationStat.index}__}" class="text-danger"
+       th:if="${#fields.hasErrors()}">
+    </p>
+    <input
+            class="form-control"
+            id="location"
+            name="location"
+            th:placeholder="'Enter the ' + *{__${locationStat.index}__ + 1} + ' location name'"
+            th:field="*{locationDtos[__${locationStat.index}__].name}"
+            type="text"
+    />
+    <div class="form-row mb-3">
+        <div class="col">
+<!--                    id="place_code_1"-->
+            <input
+                    class="form-control mt-2"
+                    name="place_code_1"
+                    placeholder="place code 1"
+                    th:field="*{locationDtos[__${locationStat.index}__].placeCode1}"
+                    type="number"
+                    style="
+                                                -webkit-appearance: none;
+                                                margin: 0;
+                                                -moz-appearance: textfield;
+                                            "
+            >
+            <!--                                <p-->
+            <!--                                        th:errors="*{tertiaryAuthorFirstName}" class="text-danger"-->
+            <!--                                        th:if="${#fields.hasErrors('tertiaryAuthorFirstName')}">-->
+            <!--                                </p>-->
+        </div>
+        <div class="col">
+<!--                    id="place_code_2"-->
+            <input
+                    class="form-control mt-2"
+                    name="place_code_2"
+                    placeholder="place code 2"
+                    th:field="*{locationDtos[__${locationStat.index}__].placeCode2}"
+                    type="number"
+                    style="
+                                                -webkit-appearance: none;
+                                                margin: 0;
+                                                -moz-appearance: textfield;
+                                            "
+            >
+            <!--                                <p-->
+            <!--                                        th:errors="*{tertiaryAuthorLastName}" class="text-danger"-->
+            <!--                                        th:if="${#fields.hasErrors('tertiaryAuthorLastName')}">-->
+            <!--                                </p>-->
+        </div>
+    </div>
+</div>
+
+<div th:fragment="AuthorInputFieldOld">
+    <label class="form-label">Author</label>
+    <div class="form-row mb-3">
+        <div class="col">
+            <input
+                    class="form-control"
+                    id="authorFirstName"
+                    name="authorFirstName"
+                    placeholder="First name"
+                    th:field="*{authorDtos[__${index}__].firstName}"
+                    type="text"
+            >
+            <p
+                    th:errors="*{authorDtos[__${index}__].firstName}" class="text-danger"
+                    th:if="${#fields.hasErrors('authorDtos')}">
+            </p>
+        </div>
+        <div class="col">
+            <input
+                    class="form-control"
+                    id="authorLastName"
+                    name="authorLastName"
+                    placeholder="Last name"
+                    th:field="*{authorDtos[__${index}__].lastName}"
+                    type="text"
+            >
+            <p
+                    th:errors="*{authorDtos[__${index}__].lastName}" class="text-danger"
+                    th:if="${#fields.hasErrors('authorDtos')}">
+            </p>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="AuthorInputField">
+    <div th:each="author, status : *{authorDtos}" class="form-group m-5 gap-2" id="authorContainer">
+        <label th:text="#{author} + ' ' + (${status.index} + 1) + ':'"></label>
+        <input type="text" th:field="*{authors[__${status.index}__].firstname}" placeholder="First name"
+               class="form-control ms-5 me-5 mb-1"/>
+        <input type="text" th:field="*{authors[__${status.index}__].lastname}" placeholder="Last name"
+               class="form-control ms-5 me-5"/>
+        <span th:errors="*{authors}"></span>
+        <br/>
+    </div>
+</div>
+
+<div th:fragment="LocationInputField">
+    <label class="form-label" th:text="'Location' + __${index}__"></label>
+    <input
+            class="form-control"
+            id="locationName"
+            name="location"
+            placeholder="Enter the location name"
+            th:field="*{locationDtos[__${index}__].name}"
+            type="text"
+    />
+    <div class="form-row mb-3">
+        <div class="col">
+            <input
+                    class="form-control mt-2"
+                    id="place_code_1"
+                    name="place_code_1"
+                    placeholder="place code 1"
+                    th:field="*{locationDtos[__${index}__].placeCode1}"
+                    type="number"
+                    style="
+                        -webkit-appearance: none;
+                        margin: 0;
+                        -moz-appearance: textfield;
+                    "
+            >
+<!--            <p-->
+<!--                    th:errors="*{tertiaryAuthorFirstName}" class="text-danger"-->
+<!--                    th:if="${#fields.hasErrors('tertiaryAuthorFirstName')}">-->
+<!--            </p>-->
+        </div>
+        <div class="col">
+            <input
+                    class="form-control mt-2"
+                    id="place_code_2"
+                    name="place_code_2"
+                    placeholder="place code 2"
+                    th:field="*{locationDtos[__${index}__].placeCode2}"
+                    type="number"
+                    style="
+                        -webkit-appearance: none;
+                        margin: 0;
+                        -moz-appearance: textfield;
+                    "
+            >
+<!--            <p-->
+<!--                    th:errors="*{tertiaryAuthorLastName}" class="text-danger"-->
+<!--                    th:if="${#fields.hasErrors('tertiaryAuthorLastName')}">-->
+<!--            </p>-->
+        </div>
+    </div>
+
+</div>
+
+<div th:fragment="PriceInputField">
+    <label class="form-label">Price</label>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">€</span>
+        </div>
+        <input
+                class="form-control"
+                type="text"
+                name="price"
+                placeholder="price"
+                th:field="*{price}"
+                step="0.01"
+                style="
+                                        -webkit-appearance: none;
+                                        margin: 0;
+                                        -moz-appearance: textfield;
+                                    "
+                formnovalidate
+        />
+        <!--min="0.01"-->
+        <!--max="99.99"-->
+    </div>
+<!--    <p-->
+<!--            th:errors="*{price}" class="text-danger"-->
+<!--            th:if="${#fields.hasErrors('price')}">-->
+<!--    </p>-->
+</div>

@@ -1,6 +1,5 @@
 package com.qwict.isbin.dto;
 
-import com.qwict.isbin.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

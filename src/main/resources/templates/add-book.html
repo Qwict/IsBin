@@ -55,130 +55,27 @@
                                         margin: 0;
                                         -moz-appearance: textfield;
                                     "
+                                    formnovalidate
                             />
                             <p th:errors="*{isbn}" class="text-danger"
                                th:if="${#fields.hasErrors('isbn')}"></p>
                         </div>
-                        <div class="form-row mb-3">
-                            <label class="form-label">Primary Author</label>
-                            <div class="col">
-                                <input
-                                        class="form-control"
-                                        id="primaryAuthorFirstName"
-                                        name="primaryAuthorFirstName"
-                                        placeholder="First name"
-                                        th:field="*{primaryAuthorFirstName}"
-                                        type="text"
-                                >
-                                <p
-                                        th:errors="*{primaryAuthorFirstName}" class="text-danger"
-                                        th:if="${#fields.hasErrors('primaryAuthorFirstName')}">
-                                </p>
-                            </div>
-                            <div class="col">
-                                <input
-                                        class="form-control"
-                                        id="primaryAuthorLastName"
-                                        name="primaryAuthorLastName"
-                                        placeholder="Last name"
-                                        th:field="*{primaryAuthorLastName}"
-                                        type="text"
-                                >
-                                <p
-                                        th:errors="*{primaryAuthorLastName}" class="text-danger"
-                                        th:if="${#fields.hasErrors('primaryAuthorLastName')}">
-                                </p>
-                            </div>
+<!--                        <div class="form-row mb-3" th:each="author : *{getAuthorDtos}">-->
+                        <div class="form-row mb-3" th:each="index: ${#numbers.sequence(0, 2)}">
+                            <div th:replace="~{components/InputFields :: AuthorInputField}"></div>
                         </div>
-                        <div class="form-row mb-3">
-                            <label class="form-label">Secondary Author</label>
-                            <div class="col">
-                                <input
-                                        class="form-control"
-                                        id="secondaryAuthorFirstName"
-                                        name="secondaryAuthorFirstName"
-                                        placeholder="First name"
-                                        th:field="*{secondaryAuthorFirstName}"
-                                        type="text"
-                                >
-                                <p
-                                        th:errors="*{secondaryAuthorFirstName}" class="text-danger"
-                                        th:if="${#fields.hasErrors('secondaryAuthorFirstName')}">
-                                </p>
-                            </div>
-                            <div class="col">
-                                <input
-                                        class="form-control"
-                                        id="secondaryAuthorLastName"
-                                        name="secondaryAuthorLastName"
-                                        placeholder="Last name"
-                                        th:field="*{secondaryAuthorLastName}"
-                                        type="text"
-                                >
-                                <p
-                                        th:errors="*{secondaryAuthorLastName}" class="text-danger"
-                                        th:if="${#fields.hasErrors('secondaryAuthorLastName')}">
-                                </p>
-                            </div>
-                        </div>
-                        <div class="form-row mb-3">
-                            <label class="form-label">Tertiary Author</label>
-                            <div class="col">
-                                <input
-                                        class="form-control"
-                                        id="tertiaryAuthorFirstName"
-                                        name="tertiaryAuthorFirstName"
-                                        placeholder="First name"
-                                        th:field="*{tertiaryAuthorFirstName}"
-                                        type="text"
-                                >
-                                <p
-                                        th:errors="*{tertiaryAuthorFirstName}" class="text-danger"
-                                        th:if="${#fields.hasErrors('tertiaryAuthorFirstName')}">
-                                </p>
-                            </div>
-                            <div class="col">
-                                <input
-                                        class="form-control"
-                                        id="tertiaryAuthorLastName"
-                                        name="tertiaryAuthorLastName"
-                                        placeholder="Last name"
-                                        th:field="*{tertiaryAuthorLastName}"
-                                        type="text"
-                                >
-                                <p
-                                        th:errors="*{tertiaryAuthorLastName}" class="text-danger"
-                                        th:if="${#fields.hasErrors('tertiaryAuthorLastName')}">
-                                </p>
-                            </div>
+<!--                        <div class="form-group mb-3" th:each="location : *{getLocationDtos}">-->
+                        <p th:errors="*{locationDtos}" class="text-danger"
+                           th:if="${#fields.hasErrors('locationDtos')}">
+                        </p>
+                        <div class="form-row mb-3" th:each="index: ${#numbers.sequence(0, 2)}">
+                            <div th:replace="~{components/InputFields :: LocationInputField}"></div>
                         </div>
                         <div class="form-group mb-3">
-                            <label class="form-label">Price</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">€</span>
-                                </div>
-                                <input
-                                    class="form-control"
-                                    type="number"
-                                    name="price"
-                                    placeholder="price"
-                                    th:field="*{price}"
-                                    step="0.01"
-                                    style="
-                                        -webkit-appearance: none;
-                                        margin: 0;
-                                        -moz-appearance: textfield;
-                                    "
-                                />
-                                <!--min="0.01"-->
-                                <!--max="99.99"-->
-                            </div>
-                            <p th:errors="*{price}" class="text-danger"
-                            th:if="${#fields.hasErrors('price')}"></p>
+                            <div th:replace="~{components/InputFields :: PriceInputField}"></div>
                         </div>
                         <div class="form-group mb-3">
-                            <button type="submit" class="btn btn-primary" >Submit</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>

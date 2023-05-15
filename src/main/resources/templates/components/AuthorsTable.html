@@ -1,4 +1,4 @@
-<div th:fragment="AuthorsTable" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div th:fragment="AuthorsTableOld" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="card mx-auto" style="min-height: 197px">
         <div class="card-header">
             Authors
@@ -24,6 +24,22 @@
                     th:text="${book.tertiaryAuthorFirstName} + ' ' + ${book.tertiaryAuthorLastName}"
             >
             </li>
+        </ul>
+    </div>
+</div>
+
+<div th:fragment="AuthorsTable" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="card mx-auto" style="min-height: 197px">
+        <div class="card-header">
+            Authors
+        </div>
+        <ul class="list-group list-group-flush">
+            <li
+                    th:each="author : ${book.authorDtos}"
+                    th:if="${author.firstName}"
+                    class="list-group-item"
+                    th:text="${author.firstName} + ' ' + ${author.lastName}"
+            >
         </ul>
     </div>
 </div>

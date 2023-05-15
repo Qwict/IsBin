@@ -6,8 +6,10 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "id")
+@ToString(exclude = "id")
 @Entity
-@Table(name = "locations")
+@Table(name = "locations", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "place_code_1", "place_code_2" }) })
 public class Location {
 //  ----------------- Fields -----------------
 //    @Id

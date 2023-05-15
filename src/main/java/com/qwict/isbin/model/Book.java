@@ -1,10 +1,7 @@
 package com.qwict.isbin.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.Set;
@@ -16,6 +13,8 @@ import static jakarta.persistence.CascadeType.ALL;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "id")
+@ToString(exclude = "id")
 @Entity
 @Table(name = "books", uniqueConstraints = { @UniqueConstraint(columnNames = { "isbn" }) })
 //@Table(name="book")
@@ -38,7 +37,7 @@ public class Book {
 
 
     @Column(name="price")
-    private double price;
+    private Double price;
 
 
     // Book is the owning side of locations (a book has many locations)

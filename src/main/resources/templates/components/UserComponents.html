@@ -7,7 +7,13 @@
                 aria-valuemin="0"
                 aria-valuemax="100"
                 th:text="${authMaxFavorites == 0  ? '0%' : (authFavoritesBooks * 1.0 / authMaxFavorites) * 100.0  }
-                + '% (' + ${authFavoritesBooks} + '/' + ${authMaxFavorites} + ')'">
+                + '% (' + ${authFavoritesBooks} + '/' + ${authMaxFavorites} + ')'"
+                th:classAppend="${
+                    (authMaxFavorites == authFavoritesBooks)
+                    ? 'bg-danger' : ((authFavoritesBooks * 1.0 / authMaxFavorites) * 100.0 < 70)
+                    ? 'bg-success' : 'bg-warning'
+                }"
+        >
         </div>
     </div>
 </div>
@@ -20,7 +26,12 @@
                 th:style="'width:' + ( ${authMaxFavorites} == 0  ? '0' : (${authFavoritesBooks * 1.0} / ${authMaxFavorites}) * 100.0 ) + '%;'"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                >
+                th:classAppend="${
+                    (authMaxFavorites == authFavoritesBooks)
+                    ? 'bg-danger' : ((authFavoritesBooks * 1.0 / authMaxFavorites) * 100.0 < 70)
+                    ? 'bg-success' : 'bg-warning'
+                }"
+        >
         </div>
     </div>
 </div>

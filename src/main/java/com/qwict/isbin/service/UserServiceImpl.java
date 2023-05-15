@@ -1,8 +1,10 @@
 package com.qwict.isbin.service;
 
 import com.qwict.isbin.dto.AuthUserDto;
+import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.dto.UserDto;
+import com.qwict.isbin.model.Author;
 import com.qwict.isbin.model.Book;
 import com.qwict.isbin.model.Role;
 import com.qwict.isbin.model.User;
@@ -118,18 +120,13 @@ public class UserServiceImpl implements UserService {
         bookDto.setId(book.getId());
         bookDto.setTitle(book.getTitle());
         bookDto.setIsbn(book.getIsbn());
-        bookDto.setPrice(book.getPrice());
+        bookDto.setPrice(String.format("€%s", book.getPrice()));
 
-
-        if (book.getWriters().size() > 0) {
-            bookDto.setPrimaryAuthorFirstName(book.getWriters().get(0).getFirstName());
-            bookDto.setPrimaryAuthorLastName(book.getWriters().get(0).getLastName());
-        } if (book.getWriters().size() > 1) {
-            bookDto.setSecondaryAuthorFirstName(book.getWriters().get(1).getFirstName());
-            bookDto.setSecondaryAuthorLastName(book.getWriters().get(1).getLastName());
-        } if (book.getWriters().size() > 2) {
-            bookDto.setTertiaryAuthorFirstName(book.getWriters().get(2).getFirstName());
-            bookDto.setTertiaryAuthorLastName(book.getWriters().get(2).getLastName());
+        for (Author author : book.getWriters()) {
+            AuthorDto authorDto = new AuthorDto();
+            authorDto.setFirstName(author.getFirstName());
+            authorDto.setLastName(author.getLastName());
+            bookDto.getAuthorDtos().add(authorDto);
         }
 
         bookDto.setHearts(book.getUsers().size());

@@ -2,14 +2,18 @@ package com.qwict.isbin.controller;
 
 import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
+import com.qwict.isbin.dto.LocationDto;
 import com.qwict.isbin.dto.UserDto;
 import com.qwict.isbin.model.Book;
 import com.qwict.isbin.model.User;
+import com.qwict.isbin.repository.LocationRepository;
 import com.qwict.isbin.service.AuthorService;
 import com.qwict.isbin.service.BookService;
+import com.qwict.isbin.service.LocationService;
 import jakarta.validation.Valid;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -28,10 +32,15 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
     private final AuthorService authorService;
+    private final LocationService locationService;
 
-    public BookController(BookService bookService, AuthorService authorService) {
+    public BookController(
+            BookService bookService, AuthorService authorService,
+            LocationService locationService
+    ) {
         this.bookService = bookService;
         this.authorService = authorService;
+        this.locationService = locationService;
     }
 
 //    @RequestMapping("/book")
@@ -66,30 +75,6 @@ public class BookController {
 
         model.addAttribute("book", book);
         return "add-book";
-    }
-
-    @PostMapping("/admin/book")
-    public String registration(@Valid @ModelAttribute("book") BookDto bookDto,
-                               BindingResult result,
-                               Model model) {
-        model.addAttribute("activePage", "book");
-//        model.addAttribute("title", "Add a Book");
-//        model.addAttribute("message", "An admin can add a book to the database.");
-
-        Book existingBook = bookService.findBookByIsbn(bookDto.getIsbn());
-        if (existingBook != null && existingBook.getIsbn() != null && !existingBook.getIsbn().isEmpty()) {
-            result.rejectValue("isbn", null,
-                    "A book with this isbn was already added to the catalog.");
-        }
-
-        if (result.hasErrors()) {
-            model.addAttribute("book", bookDto);
-            return "/add-book";
-        }
-
-        bookService.saveBook(bookDto);
-        return "redirect:/admin/add-book?success";
-
     }
 
     @RequestMapping(value = "/user/catalog")

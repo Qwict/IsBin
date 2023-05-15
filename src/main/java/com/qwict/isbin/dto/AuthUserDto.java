@@ -21,7 +21,7 @@ public class AuthUserDto {
 
     @Override
     public String toString() {
-        return "AuthUserDto{" +
+        return "%n%tAuthUserDto{" +
                 "username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", maxFavorites=" + maxFavorites +

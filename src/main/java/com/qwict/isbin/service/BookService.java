@@ -7,13 +7,14 @@ import com.qwict.isbin.model.Book;
 import com.qwict.isbin.model.Role;
 import com.qwict.isbin.model.User;
 import org.json.simple.JSONObject;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
 public interface BookService {
     Book findBookById(String id);
 
-    void saveBook(BookDto bookDto);
+    void saveBook(BookDto bookDto, BindingResult result);
 
     Book findBookByIsbn(String isbn);
     List<BookDto> findAllBooks();

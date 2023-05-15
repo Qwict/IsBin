@@ -1,10 +1,7 @@
 package com.qwict.isbin.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +13,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "id")
+@ToString(exclude = "id")
 @Entity
 @Table(name = "authors", uniqueConstraints = { @UniqueConstraint(columnNames = { "first_name", "last_name" }) })
 public class Author {
@@ -51,13 +50,4 @@ public class Author {
         setLastName(lastName);
     }
 
-    @Override
-    public String toString() {
-        return "Author{" +
-                "id='" + id + '\'' +
-                ", firstName=" + firstName +
-                ", lastName=" + lastName +
-//                ", writtenBooks=" + books +
-                '}';
-    }
 }
