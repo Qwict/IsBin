@@ -4,7 +4,9 @@ import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.dto.LocationDto;
 import com.qwict.isbin.dto.UserDto;
+import com.qwict.isbin.model.Author;
 import com.qwict.isbin.model.Book;
+import com.qwict.isbin.model.Location;
 import com.qwict.isbin.model.User;
 import com.qwict.isbin.repository.LocationRepository;
 import com.qwict.isbin.service.AuthorService;
@@ -53,30 +55,6 @@ public class BookController {
 //        return "book";
 //    }
 
-    @RequestMapping("/admin/add-book")
-    public String addBook(Model model) {
-        BookDto book = new BookDto();
-//        model.addAttribute("title", "ISBIN add book");
-//        model.addAttribute("message", "Welcome to the ISBIN add book page!");
-        model.addAttribute("activePage", "book");
-
-        model.addAttribute("book", book);
-        return "add-book";
-    }
-
-    @RequestMapping("/admin/edit-book/{id}")
-    public String editBook(@PathVariable("id") String id, Model model) {
-        Book bookFromDatabase = bookService.getById(id);
-
-        BookDto book = bookService.mapToBookDto(bookFromDatabase);
-//        model.addAttribute("title", "ISBIN edit book");
-//        model.addAttribute("message", "Welcome to the ISBIN edit book page!");
-        model.addAttribute("activePage", "book");
-
-        model.addAttribute("book", book);
-        return "add-book";
-    }
-
     @RequestMapping(value = "/user/catalog")
     public String catalog(Model model) {
         model.addAttribute("activePage", "book");
@@ -115,6 +93,7 @@ public class BookController {
         String coverURL = "/images/bookPlaceholder.jpg";
 
         model.addAttribute("book", bookDto);
+        System.out.printf("bookDto: %s\n", bookDto);
         JSONObject response = bookService.getBookFromRemoteAPI(bookFromDatabase.getIsbn());
 
         JSONObject remoteBook = (JSONObject) response.get(String.format("ISBN:%s", bookFromDatabase.getIsbn()));

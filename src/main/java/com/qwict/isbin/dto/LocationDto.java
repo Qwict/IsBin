@@ -22,13 +22,13 @@ public class LocationDto {
     @Max(value = 300, message = "Place code 1 should not be greater than 300")
     @NotNull(message = "Place code 1 should not be null")
     @NotEmpty(message = "Place code 1 should not be empty")
-    private Integer placeCode1;
+    private int placeCode1;
 
     @Min(value = 0, message = "Place code 2 should not be less than 0")
     @Max(value = 300, message = "Place code 2 should not be greater than 300")
     @NotNull(message = "Place code 2 should not be null")
     @NotEmpty(message = "Place code 2 should not be empty")
-    private Integer placeCode2;
+    private int placeCode2;
 
     @Override
     public String toString() {
@@ -41,6 +41,6 @@ public class LocationDto {
     }
 
     public boolean isNotBlank() {
-        return this.name != null && !this.name.isBlank() && this.placeCode1 != null && this.placeCode2 != null;
+        return this.name != null && !this.name.isBlank() && this.placeCode1 != 0 && this.placeCode2 != 0;
     }
 }

@@ -1,0 +1,18 @@
+<div th:fragment="LocationTable" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <table class="table table-bordered table-hover">
+        <thead class="table">
+        <tr>
+            <th>Location name</th>
+            <th>Place code 1</th>
+            <th>Place code 2</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each = "location : ${book.locationDtos}">
+                <td th:text = "${location.name}"></td>
+                <td th:text = "${location.placeCode1}"></td>
+                <td th:text = "${location.placeCode2}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

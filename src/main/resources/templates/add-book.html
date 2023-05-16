@@ -19,7 +19,10 @@
                     <h2 class="text-center">Book Form</h2>
                 </div>
                 <div th:if="${param.success}">
-                    <div class="alert alert-info">Successfully added new book</div>
+                    <div class="alert alert-success">Successfully added new book</div>
+                </div>
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger" th:text="'Failed to save book: ' + ${param.errorMessage}"></div>
                 </div>
                 <div class="card-body">
                     <form
@@ -28,52 +31,20 @@
                             th:action="@{/admin/book}"
                             th:object="${book}"
                     >
-                        <div class="form-group mb-3">
-                            <label class="form-label">Title</label>
-                            <input
-                                    class="form-control"
-                                    id="title"
-                                    name="title"
-                                    placeholder="Enter the book's title"
-                                    th:field="*{title}"
-                                    type="text"
-                            />
-                            <p th:errors="*{title}" class="text-danger"
-                               th:if="${#fields.hasErrors('title')}"></p>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">ISBN13</label>
-                            <input
-                                    class="form-control"
-                                    id="isbn"
-                                    name="isbn"
-                                    placeholder="Enter the book's ISBN13"
-                                    th:field="*{isbn}"
-                                    type="number"
-                                    style="
-                                        -webkit-appearance: none;
-                                        margin: 0;
-                                        -moz-appearance: textfield;
-                                    "
-                                    formnovalidate
-                            />
-                            <p th:errors="*{isbn}" class="text-danger"
-                               th:if="${#fields.hasErrors('isbn')}"></p>
-                        </div>
-<!--                        <div class="form-row mb-3" th:each="author : *{getAuthorDtos}">-->
-                        <div class="form-row mb-3" th:each="index: ${#numbers.sequence(0, 2)}">
-                            <div th:replace="~{components/InputFields :: AuthorInputField}"></div>
-                        </div>
-<!--                        <div class="form-group mb-3" th:each="location : *{getLocationDtos}">-->
-                        <p th:errors="*{locationDtos}" class="text-danger"
-                           th:if="${#fields.hasErrors('locationDtos')}">
-                        </p>
-                        <div class="form-row mb-3" th:each="index: ${#numbers.sequence(0, 2)}">
-                            <div th:replace="~{components/InputFields :: LocationInputField}"></div>
-                        </div>
+                        <div th:replace="~{components/InputFields :: TitleInputField}"></div>
+                        <div th:replace="~{components/InputFields :: IsbnInputField}"></div>
                         <div class="form-group mb-3">
                             <div th:replace="~{components/InputFields :: PriceInputField}"></div>
                         </div>
+                        <hr class="hr" />
+                        <div th:each="author : *{authorDtos}" class="form-group mb-3" id="authorContainer">
+                            <div th:replace="~{components/InputFields :: AuthorInputField}"></div>
+                        </div>
+                        <hr class="hr" />
+                        <div th:each="location : *{locationDtos}" class="form-group mb-3" id="locationContainer">
+                            <div th:replace="~{components/InputFields :: LocationInputField}"></div>
+                        </div>
+                        <hr class="hr" />
                         <div class="form-group mb-3">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>

@@ -1,8 +1,10 @@
 package com.qwict.isbin;
 
+import com.qwict.isbin.validator.BookDtoValidator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.io.IOException;
@@ -17,6 +19,12 @@ public class IsBinApplication {
     public static final Properties appProps = new Properties();
     private static String port;
     private static String env;
+
+
+    @Bean
+    public BookDtoValidator bookValidator() {
+        return new BookDtoValidator();
+    }
 
     public static void main(String[] args) {
         SpringApplication isBinApplication = new SpringApplication(IsBinApplication.class);

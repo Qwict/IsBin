@@ -77,23 +77,4 @@ public class User {
         this.password = password;
         this.roles = roles;
     }
-
-    public void addBookToFavorites(Book book) {
-        System.out.printf("User.addBookToFavorites: book=%s%n", book);
-        this.books.add(book);
-        book.getUsers().add(this);
-    }
-
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//                "id=" + id +
-//                ", email='" + email +
-//                ", username='" + username +
-//                ", maxFavorites=" + maxFavorites +
-//                ", password='" + password +
-//                ", roles=" + roles +
-//                ", books=" + books +
-//                '}';
-//    }
 }

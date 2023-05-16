@@ -14,7 +14,7 @@ import java.util.List;
 public interface BookService {
     Book findBookById(String id);
 
-    void saveBook(BookDto bookDto, BindingResult result);
+    void saveBook(BookDto bookDto, BindingResult result, boolean isEdit);
 
     Book findBookByIsbn(String isbn);
     List<BookDto> findAllBooks();

@@ -47,6 +47,16 @@ public class Location {
         setBook(book);
     }
 
+    public Location(
+            String name,
+            Integer placeCode1,
+            Integer placeCode2
+            ) {
+        setName(name);
+        setPlaceCode1(placeCode1);
+        setPlaceCode2(placeCode2);
+    }
+
     @Override
     public String toString() {
         return "Location{" +

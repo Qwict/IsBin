@@ -1,6 +1,8 @@
 package com.qwict.isbin.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -11,7 +13,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @ToString(exclude = "id")
@@ -27,9 +28,13 @@ public class Author {
     private Long id;
 
     @Column(name="first_name", nullable=false)
+    @NotBlank
+    @Size(min=2, max=60)
     private String firstName;
 
     @Column(name="last_name", nullable=false)
+    @NotBlank
+    @Size(min=2, max=60)
     private String lastName;
 
 //  Author is the owning side of books (an author has many books)
@@ -44,10 +49,12 @@ public class Author {
 
 //  ----------------- Constructors -----------------
 
-    // constructor that allows author to be added without any books
     public Author(String firstName, String lastName) {
-        setFirstName(firstName);
-        setLastName(lastName);
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Author() {
     }
 
 }

@@ -17,6 +17,13 @@
         <java.version>17</java.version>
     </properties>
     <dependencies>
+
+<!-- Voor Validatie -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
 <!--        Voor testen -->
         <dependency>
             <groupId>junit</groupId>

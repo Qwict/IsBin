@@ -26,14 +26,13 @@ public class InitDataConfig implements CommandLineRunner {
     public void run(String... args) {
         if (Objects.equals(IsBinApplication.getEnv(), "development")) {
             System.out.printf("ADDING DATA TO DATABASE...%n");
+            addRolesToDatabase();
+            addUsersToDatabase();
             addBooksToDatabase();
-            AddAuthorsToDatabase();
+            addAuthorsToDatabase();
+            addLocationsWithBooksToDatabase();
 
             updateAuthorsWithBooks();
-
-            addRolesToDatabase();
-
-            addUsersToDatabase();
             updateUsersWithRoles();
             updateUsersWithBooks();
         } else {
@@ -100,7 +99,7 @@ public class InitDataConfig implements CommandLineRunner {
         ));
     }
 
-    private void AddAuthorsToDatabase() {
+    private void addAuthorsToDatabase() {
         Author sunTzu = new Author("Sun", "Tzu");
         Author georgeOrwell = new Author("George", "Orwell");
         Author aldousHuxley = new Author("Aldous", "Huxley");
@@ -118,6 +117,15 @@ public class InitDataConfig implements CommandLineRunner {
                 sunTzu, aldousHuxley, georgeOrwell, axelBouts, jordanPeterson, markManson, aaronJames,
                 robertCBartlett, susanDCollins, nicoDros, stephenHawking, gabrielGarciaMarquez, salmanRushdie
         ));
+    }
+
+    private void addLocationsWithBooksToDatabase() {
+        Book artOfWar = bookRepository.findByIsbn("9780140455526");
+        Book nineteenEight = bookRepository.findByIsbn("9781432839680");
+
+        locationRepository.save(new Location("EA",50, 100, artOfWar));
+        locationRepository.save(new Location("EA",51, 101, artOfWar));
+        locationRepository.save(new Location("EA",52, 102, nineteenEight));
     }
 
     private void updateAuthorsWithBooks() {

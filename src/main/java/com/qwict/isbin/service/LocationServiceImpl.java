@@ -29,4 +29,9 @@ public class LocationServiceImpl implements LocationService {
             throw new DuplicateKeyException("Location already taken!");
         }
     }
+
+    @Override
+    public boolean locationAlreadyExists(String name, Integer placeCode1, Integer placeCode2) {
+        return locationRepository.findByNameAndPlaceCode1AndPlaceCode2(name, placeCode1, placeCode2) != null;
+    }
 }

@@ -1,6 +1,7 @@
 package com.qwict.isbin.service;
 
 import com.qwict.isbin.domein.DomeinController;
+import com.qwict.isbin.domein.Formatter;
 import com.qwict.isbin.dto.AuthUserDto;
 import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
@@ -11,6 +12,7 @@ import com.qwict.isbin.model.Location;
 import com.qwict.isbin.repository.AuthorRepository;
 import com.qwict.isbin.repository.BookRepository;
 import com.qwict.isbin.repository.LocationRepository;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.json.simple.JSONObject;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -61,104 +63,73 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void saveBook(BookDto bookDto, BindingResult result) {
+    public void saveBook(BookDto bookDto, BindingResult result, boolean isEdit) {
         Book book = new Book();
         book.setTitle(bookDto.getTitle());
-        book.setIsbn(bookDto.getIsbn());
+        book.setIsbn(Formatter.formatISBNToString(bookDto.getIsbn()));
 
-        List<Author> authors = new ArrayList<>();
-        List<Location> locations = new ArrayList<>();
-
+        double price;
+        bookDto.getPrice().replace("$", "");
+        bookDto.getPrice().replace(",", ".");
+        bookDto.getPrice().replace(" ", "");
+        bookDto.getPrice().replace("€", "");
         try {
-            book.setPrice(Double.valueOf(bookDto.getPrice()));
+            price = Double.parseDouble(bookDto.getPrice());
+            double priceTwoDecimals = Math.round(price * 100.0) / 100.0;
+            if (priceTwoDecimals > 0.01 && priceTwoDecimals < 99.99) {
+                book.setPrice(priceTwoDecimals);
+            } else {
+                book.setPrice(null);
+            }
         } catch (NumberFormatException e) {
-            result.rejectValue("price", "price", "Price must be a number");
+            book.setPrice(null);
         }
 
-        int authorCount = 1;
-        // Create authors or get them from database if they already exist
-        System.out.printf("AuthorDtos: %s%n", bookDto.getAuthorDtos());
-        for (AuthorDto authorDto : bookDto.getAuthorDtos()) {
-            if (!authorDto.isNotBlank()) {
-                if (authorDto.getFirstName().isBlank()) {
-                    result.rejectValue("firstName", null,
-                            "firstname should not be empty"
-                    );
-                    throw new IllegalArgumentException("Author firstname should not be empty");
-                } if (authorDto.getLastName().isBlank()) {
-                    result.rejectValue("lastName", null,
-                            "lastname should not be empty"
-                    );
-                    throw new IllegalArgumentException("Author lastname should not be empty");
+        bookRepository.save(book);
+        List<AuthorDto> authorDtos = bookDto.getAuthorDtos();
+        for (AuthorDto authorDto : authorDtos) {
+            if (!authorDto.getFirstName().isEmpty() && !authorDto.getLastName().isEmpty()) {
+                System.out.printf("Looking in database for author: %s %s\n", authorDto.getFirstName(), authorDto.getLastName());
+                Author authorFromDatabase = authorRepository.findByFirstNameAndLastName(authorDto.getFirstName(), authorDto.getLastName());
+
+                if (authorFromDatabase != null) {
+                    System.out.printf("Found author in database: %s %s\n", authorFromDatabase.getFirstName(), authorFromDatabase.getLastName());
+                    addBookToAuthor(authorFromDatabase, book);
+                } else {
+                    System.out.printf("Author not found in database: %s %s\n", authorDto.getFirstName(), authorDto.getLastName());
+                    Author newAuthor = new Author();
+                    newAuthor.setFirstName(authorDto.getFirstName());
+                    newAuthor.setLastName(authorDto.getLastName());
+                    authorRepository.save(newAuthor);
+                    addBookToAuthor(newAuthor, book);
                 }
             }
-            Author authorFromDatabase = authorRepository.findByFirstNameAndLastName(
-                    authorDto.getFirstName(), authorDto.getLastName()
-            );
-            if (authorFromDatabase != null) {
-                authorFromDatabase.getWritten().add(book);
-                authors.add(authorFromDatabase);
-            } else {
-                Author author = new Author();
-                author.setFirstName(authorDto.getFirstName());
-                author.setLastName(authorDto.getLastName());
-                author.getWritten().add(book);
-                authors.add(author);
-            }
-
-            authorCount++;
         }
 
-        int locationCount = 1;
-        // Create locations
-        System.out.printf("LocationDtos: %s%n", bookDto.getLocationDtos());
-        for (LocationDto locationDto : bookDto.getLocationDtos()) {
-            if (!locationDto.isNotBlank()) {
-                result.rejectValue(
-                        "locationDtos", null,
-                        "Location name should not be empty"
-                );
-                throw new IllegalArgumentException("Location name should not be empty");
+        List<LocationDto> locationDtos = bookDto.getLocationDtos();
+        for (LocationDto locationDto : locationDtos) {
+            if (locationDto.getPlaceCode1() != 0 && locationDto.getPlaceCode2() != 0 && !locationDto.getName().isEmpty()) {
+                Location locationFromDatabase = locationRepository.findByNameAndPlaceCode1AndPlaceCode2(locationDto.getName(), locationDto.getPlaceCode1(), locationDto.getPlaceCode2());
+                if (locationFromDatabase == null) {
+                    Location newLocation = new Location();
+                    newLocation.setName(locationDto.getName());
+                    newLocation.setPlaceCode1(locationDto.getPlaceCode1());
+                    newLocation.setPlaceCode2(locationDto.getPlaceCode2());
+                    newLocation.setBook(book);
+                    locationRepository.save(newLocation);
+                } else {
+                    if (locationFromDatabase.getBook() != null) {
+                        System.out.printf("Location already has a book: %s\n", locationFromDatabase.getName());
+                    } else {
+                        System.out.printf("Location has no book yet: %s\n", locationFromDatabase.getName());
+                        locationFromDatabase.setBook(book);
+                        locationRepository.save(locationFromDatabase);
+                    }
+                }
             }
-            Location locationFromDatabase = locationRepository.findByNameAndPlaceCode1AndPlaceCode2(
-                    locationDto.getName(), locationDto.getPlaceCode1(), locationDto.getPlaceCode2()
-            );
-
-            if (
-                    Math.abs(locationDto.getPlaceCode1()-locationDto.getPlaceCode2()) < 50
-            ) {
-                result.rejectValue(
-                        "location", null,
-                        "Place codes must be at least 50 apart."
-                );
-                throw new IllegalArgumentException("Place codes must be at least 50 apart.");
-            }
-
-            if (locationFromDatabase != null) {
-                result.rejectValue(
-                        String.format("location", locationCount), null,
-                        "Location is already taken by another book."
-                );
-                throw new IllegalArgumentException("Location is already in taken by another book.");
-            }
-
-            Location location = new Location();
-            location.setName(locationDto.getName());
-            location.setPlaceCode1(locationDto.getPlaceCode1());
-            location.setPlaceCode2(locationDto.getPlaceCode2());
-            location.setBook(book);
-            locations.add(location);
-            locationCount++;
         }
-
-        try {
-            authorRepository.saveAll(authors);
-            locationRepository.saveAll(locations);
-            bookRepository.save(book);
-
-        } catch (Exception e) {
-            System.out.printf("Error: %s", e.getMessage());
-        }
+//        throw new NotYetImplementedException("this method is not yet implemented");
+        System.out.printf("Book saved: %s\n", book.getTitle());
     }
 
     @Override
@@ -221,7 +192,21 @@ public class BookServiceImpl implements BookService {
             AuthorDto authorDto = new AuthorDto();
             authorDto.setFirstName(author.getFirstName());
             authorDto.setLastName(author.getLastName());
+            if (bookDto.getAuthorDtos() == null) {
+                bookDto.setAuthorDtos(new ArrayList<>());
+            }
             bookDto.getAuthorDtos().add(authorDto);
+        }
+
+        for (Location location : book.getLocations()) {
+            LocationDto locationDto = new LocationDto();
+            locationDto.setName(location.getName());
+            locationDto.setPlaceCode1(location.getPlaceCode1());
+            locationDto.setPlaceCode2(location.getPlaceCode2());
+            if (bookDto.getLocationDtos() == null) {
+                bookDto.setLocationDtos(new ArrayList<>());
+            }
+            bookDto.getLocationDtos().add(locationDto);
         }
 
         bookDto.setHearts(book.getUsers().size());
@@ -239,6 +224,18 @@ public class BookServiceImpl implements BookService {
         return books.stream()
                 .map(this::mapToBookDto)
                 .collect(Collectors.toList());
+    }
+
+    private void addBookToAuthor(Author author, Book book) {
+        if (author.getWritten() == null) {
+            author.setWritten(new ArrayList<>());
+            author.getWritten().add(book);
+        } else {
+            List<Book> written = author.getWritten();
+            written.add(book);
+            author.setWritten(written);
+        }
+        authorRepository.save(author);
     }
 }
 

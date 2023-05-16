@@ -6,4 +6,5 @@ import com.qwict.isbin.model.Location;
 
 public interface LocationService {
     Location saveLocation(LocationDto locationDto, Book book);
+    boolean locationAlreadyExists(String name, Integer placeCode1, Integer placeCode2);
 }

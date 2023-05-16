@@ -1,19 +1,14 @@
 package com.qwict.isbin.service;
 
-import com.qwict.isbin.dto.AuthUserDto;
-import com.qwict.isbin.dto.AuthorDto;
-import com.qwict.isbin.dto.BookDto;
-import com.qwict.isbin.dto.UserDto;
-import com.qwict.isbin.model.Author;
-import com.qwict.isbin.model.Book;
-import com.qwict.isbin.model.Role;
-import com.qwict.isbin.model.User;
+import com.qwict.isbin.dto.*;
+import com.qwict.isbin.model.*;
 import com.qwict.isbin.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -126,7 +121,21 @@ public class UserServiceImpl implements UserService {
             AuthorDto authorDto = new AuthorDto();
             authorDto.setFirstName(author.getFirstName());
             authorDto.setLastName(author.getLastName());
+            if (bookDto.getAuthorDtos() == null) {
+                bookDto.setAuthorDtos(new ArrayList<>());
+            }
             bookDto.getAuthorDtos().add(authorDto);
+        }
+
+        for (Location location : book.getLocations()) {
+            LocationDto locationDto = new LocationDto();
+            locationDto.setName(location.getName());
+            locationDto.setPlaceCode1(location.getPlaceCode1());
+            locationDto.setPlaceCode2(location.getPlaceCode2());
+            if (bookDto.getLocationDtos() == null) {
+                bookDto.setLocationDtos(new ArrayList<>());
+            }
+            bookDto.getLocationDtos().add(locationDto);
         }
 
         bookDto.setHearts(book.getUsers().size());

@@ -42,7 +42,7 @@ public class Book {
 
     // Book is the owning side of locations (a book has many locations)
     @OneToMany(cascade=ALL, mappedBy="book")
-    private Set<Location> locations;
+    private List<Location> locations;
 
     // Book is the inverse side of authors (a book is owned by an author)
     @ManyToMany(mappedBy= "written")
