@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.qwict</groupId>
     <artifactId>IsBin</artifactId>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
     <name>IsBin</name>
     <description>IsBin</description>
     <properties>
@@ -169,6 +169,7 @@
 
     <!--  based on tutorial (https://www.javaguides.net/2018/10/user-registration-module-using-springboot-springmvc-springsecurity-hibernate5-thymeleaf-mysql.html)  -->
     <build>
+        <finalName>IsBin</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

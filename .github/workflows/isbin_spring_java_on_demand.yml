@@ -1,0 +1,33 @@
+name: Manually deploy isbin Spring server
+on: workflow_dispatch
+
+jobs:
+  build:
+    name: Force manually deploy isbin Spring server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove repo and clone it -> large footprint!
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.ISBIN_DEPLOY }}
+          port: ${{ secrets.PORT }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            cd /var/www/qwict/
+            
+            pm2 list
+            pm2 delete isbin_java_prod
+
+            rm -rf IsBin
+            git clone git@github.com-isbin:JorisVanDuyseHogent/IsBin.git
+            cd IsBin/
+            git status
+            
+            cp ../isbin_server_files/application.properties ./src/main/resources/
+            cp ../isbin_server_files/start_server_for_pm2.sh ./
+
+            mvn package
+            mvn install
+            pm2 start start_server_for_pm2.sh --name isbin_java_prod --watch
