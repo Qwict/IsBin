@@ -1,6 +1,6 @@
 # The IsBin application
 
-This application will allow users to add books to their favorite list, view books in detail, search for isbns and authors.
+This application allows users to add books to their favorite list, view books in detail, search for isbns and authors.
 It also allows administrators to add books to the database. A user can register and login to the application. 
 Depending on the role of a user he or she has access to different parts of the application.
 
