@@ -1,12 +1,12 @@
 <div th:fragment="TitleInputField">
     <div class="form-group row">
-        <label for="titleLabel" class="col-md-3 col-form-label pr-1">Title</label>
+        <label for="titleLabel" class="col-md-3 col-form-label pr-1" th:text="#{bookForm.title}"></label>
         <div class="col-md-9 pl-1">
             <input
                     class="form-control"
                     id="titleLabel"
                     name="title"
-                    placeholder="Enter the book's title"
+                    th:placeholder="#{bookForm.enterTitle}"
                     th:field="*{title}"
                     type="text"
             />
@@ -17,13 +17,13 @@
 
 <div th:fragment="IsbnInputField">
     <div class="form-group row">
-        <label for="isbnLabel" class="col-md-3 col-form-label pr-1">ISBN13</label>
+        <label for="isbnLabel" class="col-md-3 col-form-label pr-1" th:text="#{bookForm.isbn13}"></label>
         <div class="col-md-9 pl-1">
             <input
                     class="form-control"
                     id="isbnLabel"
                     name="isbn"
-                    placeholder="Enter the book's ISBN13"
+                    th:placeholder="#{bookForm.enterIsbn13}"
                     th:field="*{isbn}"
                     type="text"
                     style="
@@ -39,16 +39,15 @@
 </div>
 
 <div th:fragment="PriceInputField">
-    <!--    <label class="form-label">Price</label>-->
     <div class="input-group">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">€</span>
+            <span class="input-group-text" id="basic-addon1" th:text="#{bookForm.money}"></span>
         </div>
         <input
                 class="form-control"
                 type="text"
                 name="price"
-                placeholder="price"
+                th:placeholder="#{bookForm.price}"
                 th:field="*{price}"
                 step="0.01"
                 style="
@@ -70,20 +69,20 @@
     <div class="form-group row">
         <label
                 for="authorLabel" class="col-md-3 col-form-label pr-1"
-                th:text="#{author} + ' ' + *{__${authorStat.index}__ + 1} + ':'">
+                th:text="#{bookForm.author} + ' ' + *{__${authorStat.index}__ + 1} + ':'">
         </label>
         <div class="col-md-4 px-1">
             <input type="text"
                    id="authorLabel"
                    th:field="*{authorDtos[__${authorStat.index}__].firstName}"
-                   placeholder="First name"
+                   th:placeholder="#{bookForm.firstName}"
                    class="form-control"
             />
         </div>
         <div class="col-md-5 pl-1">
             <input type="text"
                    th:field="*{authorDtos[__${authorStat.index}__].lastName}"
-                   placeholder="Last name"
+                   th:placeholder="#{bookForm.lastName}"
                    class="form-control"
             />
         </div>
@@ -95,13 +94,13 @@
     <div class="form-group row">
         <label
                 for="locationLabel" class="col-md-3 col-form-label pr-1"
-                th:text="'Location ' + *{__${locationStat.index}__ + 1} + ':'">
+                th:text="#{bookForm.location} + ' ' + *{__${locationStat.index}__ + 1} + ':'">
         </label>
         <div class="col-md-3 px-1">
             <input type="text"
                    id="locationLabel"
                    th:field="*{locationDtos[__${locationStat.index}__].name}"
-                   th:placeholder="#{placeName}"
+                   th:placeholder="#{bookForm.placeName}"
                    class="form-control"
             />
         </div>
@@ -109,7 +108,7 @@
             <input type="text" max="300" step="1"
                    min="0"
                    th:field="*{locationDtos[__${locationStat.index}__].placeCode1}"
-                   th:placeholder="#{placeCode1}"
+                   th:placeholder="#{bookForm.placeCode1}"
                    class="form-control"
                    style="-webkit-appearance: none; margin: 0; -moz-appearance: textfield;"
             />
@@ -118,7 +117,7 @@
             <input type="text" max="300" step="1"
                    min="0"
                    th:field="*{locationDtos[__${locationStat.index}__].placeCode2}"
-                   th:placeholder="#{placeCode2}"
+                   th:placeholder="#{bookForm.placeCode2}"
                    class="form-control"
                    style="-webkit-appearance: none; margin: 0; -moz-appearance: textfield;"
             />

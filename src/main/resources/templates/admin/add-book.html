@@ -8,21 +8,19 @@
 </head>
 <body>
 <div th:replace="~{components/navbar :: navbar}"></div>
-<div th:replace="~{components/title :: title}"></div>
 
-
-<div class="container">
+<div class="container m-3">
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="text-center">Book Form</h2>
+                    <h2 class="text-center" th:text="#{bookForm.bookForm}"></h2>
                 </div>
                 <div th:if="${param.success}">
-                    <div class="alert alert-success">Successfully added new book</div>
+                    <div class="alert alert-success" th:text="#{bookForm.success}"></div>
                 </div>
                 <div th:if="${param.error}">
-                    <div class="alert alert-danger" th:text="'Failed to save book: ' + ${param.errorMessage}"></div>
+                    <div class="alert alert-danger" th:text="#{bookForm.failed} + ' ' + ${param.errorMessage}"></div>
                 </div>
                 <div class="card-body">
                     <form
@@ -46,7 +44,7 @@
                         </div>
                         <hr class="hr" />
                         <div class="form-group mb-3">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" th:text="#{bookForm.submit}"></button>
                         </div>
                     </form>
                 </div>
