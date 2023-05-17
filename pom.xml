@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.qwict</groupId>
     <artifactId>IsBin</artifactId>
-    <version>0.11.2</version>
+    <version>0.11.3</version>
     <name>IsBin</name>
     <description>IsBin</description>
     <properties>
@@ -127,6 +127,12 @@
 
     <build>
         <finalName>IsBin</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+<!--                <filtering>true</filtering>-->
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.asciidoctor</groupId>

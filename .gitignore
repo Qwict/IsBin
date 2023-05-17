@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### code settings ###
-application.properties
+src/main/resources/application.properties
 /src/main/ssl/*
 
 .DS_Store

@@ -85,6 +85,15 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public AuthorDto getByFirstNameAndLastName(String firstName, String lastName) {
+        Author author = authorRepository.findByFirstNameAndLastName(firstName, lastName);
+        if (author == null) {
+            throw new IllegalArgumentException("Author not found");
+        }
+        return mapToAuthorDto(author);
+    }
+
+    @Override
     public AuthorDto mapToAuthorDto(Author author) {
         AuthorDto authorDto = new AuthorDto();
         authorDto.setId(author.getId());

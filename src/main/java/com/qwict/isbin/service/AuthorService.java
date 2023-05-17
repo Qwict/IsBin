@@ -11,4 +11,6 @@ public interface AuthorService {
     AuthorDto mapToAuthorDto(Author author);
     Author getById(String id);
     AuthorDto getAuthorDtoById(String id);
+
+    AuthorDto getByFirstNameAndLastName(String firstName, String lastName);
 }
