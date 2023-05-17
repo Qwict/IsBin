@@ -5,7 +5,7 @@ It also allows administrators to add books to the database. A user can register 
 Depending on the role of a user he or she has access to different parts of the application.
 
 ## TL;DR
-1. This application runs online on [isbin.qwict.com](isbin.qwict.com)
+1. This application runs online on [isbin.qwict.com](https://isbin.qwict.com)
 2. Requirements
 	1. java openjdk 17.0.5 or later
 	2. Apache Maven 3.9.1 or later
@@ -106,15 +106,16 @@ This way you will have a production server with some books, authors and users al
 
 ## REST
 ### Get request voor health van de server
-> To get information about the spring boot application you can `GET http://localhost:9091/api/public/health/version`
+> To get information about the spring boot application you can [GET /api/public/health/version](https://isbin.qwict.com/api/public/health/version)
 
-![[REST-version.png]]
+![REST-version.png](./documentationMedia/REST-version.png)
+
 ### Get request for author
-> Call `GET http://localhost:9091http://localhost:9091/api/public/author/george/orwell`  to look up a specific author by entering their first and last name; This will return a JSON
+> Call [GET /api/public/author/george/orwell](https://isbin.qwict.com/api/public/author/george/orwell)  to look up a specific author by entering their first and last name; This will return a JSON
 
 ![REST-GetAuthor.png](./documentationMedia/REST-GetAuthor.png)
 
 ### Get request for a book
-> By `calling GET http://localhost:9091/api/public/book/{isbn}` it is possible to look up a book by its isbn number.
+> By calling [GET /api/public/book/9780140455526](https://isbin.qwict.com/api/public/book/9780140455526) it is possible to look up a book by its isbn number.
 
 ![REST-isbn.png](./documentationMedia/REST-isbn.png)
