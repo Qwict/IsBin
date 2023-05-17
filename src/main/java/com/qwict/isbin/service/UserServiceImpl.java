@@ -108,8 +108,24 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public void updateUserWithChangeUserDto(ChangeUserDto updatedUser) {
+        System.out.printf("updatedUser: %s\n", updatedUser);
+        User user = userRepository.findById(updatedUser.getId()).orElse(null);
+        user.setUsername(updatedUser.getUsername());
+        user.setEmail(updatedUser.getEmail());
+        user.setMaxFavorites(updatedUser.getMaxFavorites());
 
-    // causes cirtular dependency if taken from UserServiceImpl
+        if (!updatedUser.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+
+
+//        userRepository.save(user);
+    }
+
+
+    // causes circular dependency if taken from UserServiceImpl
     public BookDto mapToBookDto(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());
@@ -140,5 +156,36 @@ public class UserServiceImpl implements UserService {
 
         bookDto.setHearts(book.getUsers().size());
         return bookDto;
+    }
+
+    @Override
+    public List<ChangeUserDto> getAllChangeUserDtos() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::mapToChangeUserDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ChangeUserDto getChangeUserDtoById(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        return mapToChangeUserDto(user);
+    }
+
+    public ChangeUserDto mapToChangeUserDto(User user) {
+        ChangeUserDto changeUserDto = new ChangeUserDto();
+        System.out.printf("User id: %s", user.getId());
+        changeUserDto.setId(user.getId());
+        System.out.printf(" change user id: %s\n", changeUserDto.getId());
+
+        changeUserDto.setUsername(user.getUsername());
+        changeUserDto.setEmail(user.getEmail());
+        changeUserDto.setMaxFavorites(user.getMaxFavorites());
+        changeUserDto.setRoles(user.getRoles().stream()
+                .map((role) -> roleService.mapToRoleDto(role))
+                .collect(Collectors.toList())
+        );
+        changeUserDto.setFavoritedBooksCount(user.getBooks().size());
+        return changeUserDto;
     }
 }
