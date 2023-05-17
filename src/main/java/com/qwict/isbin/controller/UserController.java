@@ -1,73 +1,41 @@
 package com.qwict.isbin.controller;
 
 
-import com.qwict.isbin.dto.AuthUserDto;
+import com.qwict.isbin.domein.DomeinController;
+import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.dto.UserDto;
 import com.qwict.isbin.model.Book;
 import com.qwict.isbin.model.User;
+import com.qwict.isbin.service.AuthorService;
 import com.qwict.isbin.service.BookService;
 import com.qwict.isbin.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequestMapping("/user")
 @Controller
 public class UserController {
-
+    @Autowired
     private UserService userService;
+    @Autowired
     private BookService bookService;
+    @Autowired
+    private AuthorService authorService;
+    private final DomeinController domeinController = new DomeinController();
 
-    public UserController(UserService userService, BookService bookService){
-        this.userService = userService;
-        this.bookService = bookService;
-    }
-
-//    @PostMapping("/user/book/{id}")
-    public ModelAndView addBookToFavorites(@PathVariable String id){
-
-        User user = userService.findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        Book book = bookService.findBookById(id);
-        user.getBooks().stream().filter(b -> String.valueOf(b.getId()).equals(String.valueOf(book.getId())))
-            .findFirst().ifPresentOrElse(
-                b -> {
-                    System.out.printf("Book %s is already in favorites%n", b.getTitle());
-                    user.getBooks().remove(b);
-
-                },
-                () -> {
-                    System.out.printf("Book %s added to favorites%n", book.getTitle());
-                    user.getBooks().add(book);
-                }
-        );
-
-        if (user.getMaxFavorites() < user.getBooks().size()) {
-            System.out.println("User has reached max favorites");
-            return new ModelAndView("redirect:/max-favorites-reached");
-//            return "redirect:/max-favorites-reached";
-        }
-
-        userService.updateUser(user);
-        ModelAndView mv = new ModelAndView("redirect:/user/favorites");
-        mv.addObject("authUser", userService.mapToAuthenticatedUserDto(user));
-        return mv;
-
-//        user.addBookToFavorites(book);
-//        userService.saveUser(userService.mapToUserDto(user));
-//        return "redirect:/";
-//        return "redirect:/user/favorites";
-    }
-
-    @PostMapping("/user/book/{id}")
+    @PostMapping("/book/{id}")
     public String favoriteBook(@PathVariable String id, Model model, HttpServletRequest request) {
         // Get the URL of the current page
         String referer = request.getHeader("Referer");
@@ -99,49 +67,7 @@ public class UserController {
         return "redirect:" + referer;
     }
 
-    @RequestMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("activePage", "login");
-        model.addAttribute("title", "ISBIN login");
-        model.addAttribute("message", "Welcome to the ISBIN login page!");
-        return "login";
-    }
-
-    @RequestMapping("/register")
-    public String register(Model model) {
-        UserDto user = new UserDto();
-        model.addAttribute("activePage", "register");
-        model.addAttribute("title", "ISBIN register");
-        model.addAttribute("message", "Welcome to the ISBIN register page!");
-
-        model.addAttribute("user", user);
-        return "register";
-    }
-
-    @PostMapping("/register/save")
-    public String registration(@Valid @ModelAttribute("user") UserDto userDto,
-                               BindingResult result,
-                               Model model){
-        model.addAttribute("activePage", "register");
-        model.addAttribute("title", "ISBIN register");
-        model.addAttribute("message", "Welcome to the ISBIN register page!");
-
-        User existingUser = userService.findUserByEmail(userDto.getEmail());
-        if(existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()){
-            result.rejectValue("email", null,
-                    "There is already an account registered with the same email");
-        }
-
-        if(result.hasErrors()){
-            model.addAttribute("user", userDto);
-            return "/register";
-        }
-
-        userService.saveUser(userDto);
-        return "redirect:/login";
-    }
-
-    @RequestMapping("/user/favorites")
+    @RequestMapping("/favorites")
     public String favorites(Model model) {
         model.addAttribute("loggedIn", true);
         model.addAttribute("isAdmin", true);
@@ -155,14 +81,58 @@ public class UserController {
         List<Book> books = user.getBooks();
         List<BookDto> bookDtos = books.stream().map(book -> bookService.mapToBookDto(book)).collect(Collectors.toList());
         model.addAttribute("bookDtos", bookDtos);
-        return "favorites";
+        return "user/favorites";
     }
 
-    @GetMapping("/owner/registered-users")
-    public String users(Model model){
-        List<UserDto> users = userService.findAllUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("activePage", "owner");
-        return "registered-users";
+
+    @RequestMapping(value = "/catalog")
+    public String catalog(Model model) {
+        model.addAttribute("activePage", "book");
+        model.addAttribute("title", "ISBIN Catalog");
+        model.addAttribute("message", "Welcome to the ISBIN Catalog page! This page is for logged in users.");
+
+        List<BookDto> bookDtos = new ArrayList<>();
+        List<Book> books = bookService.findAll();
+        books.stream().forEach(book -> {
+            bookDtos.add(bookService.mapToBookDto(book));
+        });
+        model.addAttribute("bookDtos", bookDtos);
+        return "user/catalog";
+    }
+
+
+    @GetMapping("/search")
+    public String search(
+            @RequestParam String searchTerm,
+            Model model
+    ) {
+        model.addAttribute("activePage", "book");
+        model.addAttribute("title", "ISBIN Search");
+        model.addAttribute("message", "Welcome to the ISBIN Search page!");
+        model.addAttribute("searchTerm", searchTerm);
+
+        // check if searchTerm can be parsed to a number
+        try {
+            String searchTermNoSpaceNoDash = domeinController.formatISBNToString(searchTerm);
+            Long.parseLong(searchTermNoSpaceNoDash);
+            Book book = bookService.findBookByIsbn(searchTermNoSpaceNoDash);
+            if (book != null) {
+                model.addAttribute("activePage", "book");
+                return String.format("redirect:/book/%s", book.getId());
+            } else {
+                model.addAttribute("searchTerm", searchTerm);
+                return String.format("redirect:/book/%s", searchTermNoSpaceNoDash);
+            }
+        } catch (NumberFormatException e) {
+            System.out.printf("The search term %s is not a number.\n", searchTerm);
+        }
+
+        model.addAttribute("activePage", "author");
+        List<AuthorDto> authorDtos = authorService.searchAuthorsBySearchTerm(searchTerm);
+        model.addAttribute("authorDtos", authorDtos);
+
+        List<BookDto> bookDtos = bookService.searchBooksByAuthorDtos(authorDtos);
+        model.addAttribute("bookDtos", bookDtos);
+        return "user/search-results";
     }
 }

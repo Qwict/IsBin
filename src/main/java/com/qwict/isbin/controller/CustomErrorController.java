@@ -33,8 +33,8 @@ public class CustomErrorController implements ErrorController {
                 model.addAttribute("title", "Error");
                 model.addAttribute("message", "An error has occurred.");
             }
-            return "status-error";
+            return "public/status-error";
         }
-        return "error";
+        return "public/error";
     }
 }

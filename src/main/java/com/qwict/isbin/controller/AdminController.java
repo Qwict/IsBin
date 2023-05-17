@@ -51,7 +51,7 @@ public class AdminController {
         book.setLocationDtos(locationDtos);
 
         model.addAttribute("book", book);
-        return "add-book";
+        return "admin/add-book";
     }
 
     @RequestMapping("/edit-book/{id}")
@@ -79,10 +79,10 @@ public class AdminController {
         }
 
         model.addAttribute("book", book);
-        return "add-book";
+        return "admin/add-book";
     }
 
-    @PostMapping("/book")
+    @PostMapping("/add-book")
     public String registration(
             @Valid @ModelAttribute("book") BookDto bookDto,
             BindingResult result,
@@ -101,10 +101,10 @@ public class AdminController {
         if (result.hasErrors()) {
             if (isEdit) {
                 // This does not seem to work (validation also doesn't work on edit)
-//                return String.format("/admin/edit-book/%s", splitReferer[splitReferer.length - 1]);
+//                return String.format("admin/edit-book/%s", splitReferer[splitReferer.length - 1]);
                 return String.format("redirect:%s?error", referer);
             }
-            return "/add-book";
+            return "admin/add-book";
         }
 
         try {

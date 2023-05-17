@@ -3,14 +3,18 @@ package com.qwict.isbin.controller;
 import com.qwict.isbin.domein.DomeinController;
 import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
+import com.qwict.isbin.dto.UserDto;
 import com.qwict.isbin.model.Book;
+import com.qwict.isbin.model.User;
 import com.qwict.isbin.service.AuthorService;
 import com.qwict.isbin.service.BookService;
+import com.qwict.isbin.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +22,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class ScreenController {
-    private final BookService bookService;
-    private final AuthorService authorService;
+    @Autowired
+    private UserService userService;
 
-    private final DomeinController domeinController = new DomeinController();
-    public ScreenController(BookService bookService, AuthorService authorService) {
-        this.bookService = bookService;
-        this.authorService = authorService;
-    }
+    @Autowired
+    private BookService bookService;
+
+    @Autowired
+    private AuthorService authorService;
+
 
     @RequestMapping("/home")
     public String home(Model model) {
@@ -42,7 +47,7 @@ public class ScreenController {
             bookDtos.add(bookService.mapToBookDto(book));
         }
         model.addAttribute("bookDtos", bookDtos);
-        return "home";
+        return "public/home";
     }
 
     @RequestMapping
@@ -60,44 +65,49 @@ public class ScreenController {
             bookDtos.add(bookService.mapToBookDto(book));
         }
         model.addAttribute("bookDtos", bookDtos);
-        return "home";
+        return "public/home";
     }
 
+    @RequestMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("activePage", "login");
+        model.addAttribute("title", "ISBIN login");
+        model.addAttribute("message", "Welcome to the ISBIN login page!");
+        return "public/login";
+    }
 
-    @GetMapping("/search/")
-    public String search(
-            @RequestParam String searchTerm,
-            Model model
-    ) {
-        model.addAttribute("activePage", "book");
-        model.addAttribute("title", "ISBIN Search");
-        model.addAttribute("message", "Welcome to the ISBIN Search page!");
-        model.addAttribute("searchTerm", searchTerm);
+    @RequestMapping("/register")
+    public String register(Model model) {
+        UserDto user = new UserDto();
+        model.addAttribute("activePage", "register");
+        model.addAttribute("title", "ISBIN register");
+        model.addAttribute("message", "Welcome to the ISBIN register page!");
 
-        // check if searchTerm can be parsed to a number
-        try {
-            String searchTermNoSpaceNoDash = domeinController.formatISBNToString(searchTerm);
-            Long.parseLong(searchTermNoSpaceNoDash);
-            Book book = bookService.findBookByIsbn(searchTermNoSpaceNoDash);
-            if (book != null) {
-                model.addAttribute("activePage", "book");
-                return String.format("redirect:/book/%s", book.getId());
-            } else {
-                model.addAttribute("searchTerm", searchTerm);
-                return String.format("redirect:/book/%s", searchTermNoSpaceNoDash);
-            }
-        } catch (NumberFormatException e) {
-            System.out.printf("The search term %s is not a number.\n", searchTerm);
+        model.addAttribute("user", user);
+        return "public/register";
+    }
+
+    @PostMapping("/register/save")
+    public String registration(@Valid @ModelAttribute("user") UserDto userDto,
+                               BindingResult result,
+                               Model model){
+        model.addAttribute("activePage", "register");
+        model.addAttribute("title", "ISBIN register");
+        model.addAttribute("message", "Welcome to the ISBIN register page!");
+
+        User existingUser = userService.findUserByEmail(userDto.getEmail());
+        if(existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()){
+            result.rejectValue("email", null,
+                    "There is already an account registered with the same email");
         }
 
-        model.addAttribute("activePage", "author");
-        List<AuthorDto> authorDtos = authorService.searchAuthorsBySearchTerm(searchTerm);
-        model.addAttribute("authorDtos", authorDtos);
+        if(result.hasErrors()){
+            model.addAttribute("user", userDto);
+            return "public/register";
+        }
 
-        List<BookDto> bookDtos = bookService.searchBooksByAuthorDtos(authorDtos);
-        model.addAttribute("bookDtos", bookDtos);
-        return "/search/search-results";
+        userService.saveUser(userDto);
+        return "redirect:/login";
     }
-
 
 }

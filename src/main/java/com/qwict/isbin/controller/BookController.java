@@ -1,29 +1,16 @@
 package com.qwict.isbin.controller;
 
-import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
-import com.qwict.isbin.dto.LocationDto;
-import com.qwict.isbin.dto.UserDto;
-import com.qwict.isbin.model.Author;
 import com.qwict.isbin.model.Book;
-import com.qwict.isbin.model.Location;
-import com.qwict.isbin.model.User;
-import com.qwict.isbin.repository.LocationRepository;
 import com.qwict.isbin.service.AuthorService;
 import com.qwict.isbin.service.BookService;
 import com.qwict.isbin.service.LocationService;
-import jakarta.validation.Valid;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -54,21 +41,6 @@ public class BookController {
 //
 //        return "book";
 //    }
-
-    @RequestMapping(value = "/user/catalog")
-    public String catalog(Model model) {
-        model.addAttribute("activePage", "book");
-        model.addAttribute("title", "ISBIN Catalog");
-        model.addAttribute("message", "Welcome to the ISBIN Catalog page! This page is for logged in users.");
-
-        List<BookDto> bookDtos = new ArrayList<>();
-        List<Book> books = bookService.findAll();
-        books.stream().forEach(book -> {
-            bookDtos.add(bookService.mapToBookDto(book));
-        });
-        model.addAttribute("bookDtos", bookDtos);
-        return "catalog";
-    }
 
     @RequestMapping(value = "/book/{id}")
     public String getBookById(@PathVariable("id") String id, Model model) {
@@ -122,7 +94,7 @@ public class BookController {
         }
 
         model.addAttribute("coverURL", coverURL);
-        return "book";
+        return "public/book";
     }
 
     @RequestMapping(value = "/book/most-popular")
@@ -137,7 +109,7 @@ public class BookController {
         List<BookDto> bookDtos = bookService.getMostPopularBookDtos();
 
         model.addAttribute("bookDtos", bookDtos);
-        return "most-popular";
+        return "public/most-popular";
     }
 
 

@@ -1,9 +1,6 @@
 package com.qwict.isbin.controller;
 
 import com.qwict.isbin.dto.AuthorDto;
-import com.qwict.isbin.dto.BookDto;
-import com.qwict.isbin.model.Author;
-import com.qwict.isbin.model.Book;
 import com.qwict.isbin.service.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -11,9 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class AuthorController {
@@ -48,6 +42,6 @@ public class AuthorController {
         model.addAttribute("author", authorFromDatabase);
         model.addAttribute("bookDtos", authorFromDatabase.getWritten());
 
-        return "/author/author";
+        return "public/author";
     }
 }

@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.qwict</groupId>
     <artifactId>IsBin</artifactId>
-    <version>0.11.1</version>
+    <version>0.11.2</version>
     <name>IsBin</name>
     <description>IsBin</description>
     <properties>
@@ -125,52 +125,34 @@
 <!--        </dependency>-->
     </dependencies>
 
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.asciidoctor</groupId>-->
-<!--                <artifactId>asciidoctor-maven-plugin</artifactId>-->
-<!--                <version>2.2.1</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>generate-docs</id>-->
-<!--                        <phase>prepare-package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>process-asciidoc</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <backend>html</backend>-->
-<!--                            <doctype>book</doctype>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <dependencies>-->
-<!--                    <dependency>-->
-<!--                        <groupId>org.springframework.restdocs</groupId>-->
-<!--                        <artifactId>spring-restdocs-asciidoctor</artifactId>-->
-<!--                        <version>${spring-restdocs.version}</version>-->
-<!--                    </dependency>-->
-<!--                </dependencies>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <excludes>-->
-<!--                        <exclude>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
-
-    <!--  based on tutorial (https://www.javaguides.net/2018/10/user-registration-module-using-springboot-springmvc-springsecurity-hibernate5-thymeleaf-mysql.html)  -->
     <build>
         <finalName>IsBin</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>generate-docs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html</backend>
+                            <doctype>book</doctype>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.springframework.restdocs</groupId>
+                        <artifactId>spring-restdocs-asciidoctor</artifactId>
+                        <version>${spring-restdocs.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -185,5 +167,24 @@
             </plugin>
         </plugins>
     </build>
+
+    <!--  based on tutorial (https://www.javaguides.net/2018/10/user-registration-module-using-springboot-springmvc-springsecurity-hibernate5-thymeleaf-mysql.html)  -->
+<!--    <build>-->
+<!--        <finalName>IsBin</finalName>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <excludes>-->
+<!--                        <exclude>-->
+<!--                            <groupId>org.projectlombok</groupId>-->
+<!--                            <artifactId>lombok</artifactId>-->
+<!--                        </exclude>-->
+<!--                    </excludes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 </project>
