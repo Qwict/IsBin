@@ -65,6 +65,22 @@ There is no big difference between running with the in development and running i
 Recommended for production: start the application one time in development; this will seed the database with some books and users. After that enable all the production settings in the application.properties file and remove the developer settings. Reinstall the application with maven to jar and run the jar again with java. 
 This way you will have a production server with some books, authors and users already in the database.
 
+## IsBin database
+In the IsBin database there are 4 tables:
+1. The book table
+   1. The book_author table
+   2. The book_user table
+2. The author table
+   1. The author_book table
+3. The user table
+   1. The user_book table
+   2. The user_role table
+4. The role table
+
+Users are saved in the database with an encrypted password; the password is encrypted with BCrypt.
+
+![IsBin-ERD.png](./documentationMedia/IsBin-ERD.png)
+
 ## Screenshots
 > An example of the detailpage for a book (The Art of War).
 
