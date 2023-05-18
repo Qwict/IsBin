@@ -109,9 +109,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found in database"));
+        if (user.getRoles().contains(roleService.findRoleByName("ROLE_OWNER"))) {
+            throw new IllegalArgumentException("Cannot delete owner");
+        }
+        userRepository.deleteById(id);
+    }
+
+    @Override
     public void updateUserWithChangeUserDto(ChangeUserDto updatedUser) {
-        System.out.printf("updatedUser: %s\n", updatedUser);
+        System.out.printf("updatedUser: %s with id: %d\n", updatedUser, updatedUser.getId());
         User user = userRepository.findById(updatedUser.getId()).orElse(null);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found in database");
+        }
         user.setUsername(updatedUser.getUsername());
         user.setEmail(updatedUser.getEmail());
         user.setMaxFavorites(updatedUser.getMaxFavorites());
@@ -120,8 +132,17 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
 
-
-//        userRepository.save(user);
+        Role roleUser = roleService.findRoleByName("ROLE_USER");
+        Role roleAdmin = roleService.findRoleByName("ROLE_ADMIN");
+        Role roleOwner = roleService.findRoleByName("ROLE_OWNER");
+        user.getRoles().clear();
+        if (updatedUser.getUpdateToRole() == 0)
+            user.getRoles().add(roleUser);
+        if (updatedUser.getUpdateToRole() == 1)
+            user.getRoles().addAll(Arrays.asList(roleUser, roleAdmin));
+        if (updatedUser.getUpdateToRole() == 2)
+            user.getRoles().addAll(Arrays.asList(roleUser, roleAdmin, roleOwner));
+        userRepository.save(user);
     }
 
 
@@ -174,10 +195,7 @@ public class UserServiceImpl implements UserService {
 
     public ChangeUserDto mapToChangeUserDto(User user) {
         ChangeUserDto changeUserDto = new ChangeUserDto();
-        System.out.printf("User id: %s", user.getId());
         changeUserDto.setId(user.getId());
-        System.out.printf(" change user id: %s\n", changeUserDto.getId());
-
         changeUserDto.setUsername(user.getUsername());
         changeUserDto.setEmail(user.getEmail());
         changeUserDto.setMaxFavorites(user.getMaxFavorites());

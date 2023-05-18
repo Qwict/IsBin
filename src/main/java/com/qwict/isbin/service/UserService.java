@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserService {
         void saveUser(UserDto userDto);
         void updateUser(User user);
+        void deleteUserById(Long id);
         void updateUserWithChangeUserDto(ChangeUserDto updatedUser);
         User findUserByEmail(String email);
         List<UserDto> findAllUsers();

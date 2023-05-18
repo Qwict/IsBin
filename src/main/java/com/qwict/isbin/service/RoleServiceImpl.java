@@ -5,6 +5,8 @@ import com.qwict.isbin.model.Role;
 import com.qwict.isbin.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -27,5 +29,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role saveRole(Role role) {
         return roleRepository.save(role);
+    }
+
+    @Override
+    public List<Role> findAllRoles() {
+        return roleRepository.findAll();
     }
 }

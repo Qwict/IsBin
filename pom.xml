@@ -10,13 +10,20 @@
     </parent>
     <groupId>com.qwict</groupId>
     <artifactId>IsBin</artifactId>
-    <version>0.12.0</version>
+    <version>0.12.1</version>
     <name>IsBin</name>
     <description>IsBin</description>
     <properties>
         <java.version>17</java.version>
     </properties>
     <dependencies>
+
+<!--        For development -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
 
 <!-- Voor Validatie -->
         <dependency>
@@ -112,12 +119,7 @@
             <artifactId>thymeleaf-spring6</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-configuration-processor</artifactId>-->

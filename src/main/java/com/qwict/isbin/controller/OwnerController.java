@@ -32,9 +32,26 @@ public class OwnerController {
         return "owner/edit-user";
     }
 
-    @PostMapping("/edit-user")
+
+    // Somehow the use of the @PathVariable makes sure that the id is not reset to 0 (because primary datatype)
+    // I do not use the {id} anywhere but because of it the id is not reset to 0 (maybe because of form in html)
+    @PostMapping("/edit-user/{id}")
     public String editUser(@ModelAttribute("user") ChangeUserDto user){
-        userService.updateUserWithChangeUserDto(user);
+        try {
+            userService.updateUserWithChangeUserDto(user);
+        } catch (Exception e) {
+            return String.format("redirect:/owner/registered-users?error&errorMessage=%s", e.getMessage());
+        }
+        return "redirect:/owner/registered-users";
+    }
+
+    @GetMapping("/delete-user/{id}")
+    public String deleteUser(@PathVariable(name = "id") Long id){
+        try {
+            userService.deleteUserById(id);
+        } catch (Exception e) {
+            return String.format("redirect:/owner/registered-users?error&errorMessage=%s", e.getMessage());
+        }
         return "redirect:/owner/registered-users";
     }
 

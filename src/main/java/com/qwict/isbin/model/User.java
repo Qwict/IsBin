@@ -54,7 +54,7 @@ public class User {
     private List<Role> roles = new ArrayList<>();
 
 // User is the owning side of books (a user has many books in his favorites)
-    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.DETACH)
     @JoinTable(
             name="users_books",
             joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},

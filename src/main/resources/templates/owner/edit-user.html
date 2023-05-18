@@ -10,12 +10,12 @@
 <div th:replace="~{components/navbar :: navbar}"></div>
 <div th:replace="~{components/title :: title}"></div>
 
-<div class="container m-3">
+<div class="container mt-6">
   <div class="row">
     <div class="col-md-6 offset-md-3">
       <div class="card">
         <div class="card-header">
-          <h2 class="text-center" th:text="'Edit user' + ${user.username}"></h2>
+          <h2 class="text-center" th:text="'Edit user: ' + ${user.username}"></h2>
         </div>
         <div th:if="${param.error}">
           <div class="alert alert-danger" th:text="${param.errorMessage}"></div>
@@ -24,7 +24,7 @@
           <form
                   method="post"
                   role="form"
-                  th:action="@{/owner/edit-user}"
+                  th:action="@{/owner/edit-user/{id}(id=${user.id})}"
                   th:object="${user}"
           >
             <div class="form-group row">
@@ -98,34 +98,26 @@
               </div>
               <p th:errors="*{maxFavorites}" class="text-danger ml-3"></p>
             </div>
-
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value=0 th:field="*{updateToRole}"
-                th:checked="${user.roles.size() == 1}"
-              >
-              <label class="form-check-label" for="exampleRadios1">
-                User
-              </label>
+              <input class="form-check-input" type="radio" name="roleRadio" id="userRadio" value=0 th:field="*{updateToRole}">
+              <label class="form-check-label" for="userRadio">User</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value=1 th:field="*{updateToRole}"
-                th:checked="${user.roles.size() == 2}"
-              >
-              <label class="form-check-label" for="exampleRadios2">
+              <input class="form-check-input" type="radio" name="roleRadio" id="adminRadio" value=1 checked="checked" th:field="*{updateToRole}">
+              <label class="form-check-label" for="adminRadio">
                 Admin
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value=2 th:field="*{updateToRole}"
-                th:checked="${user.roles.size() == 3}"
-              >
-              <label class="form-check-label" for="exampleRadios3">
-                Owner
-              </label>
+              <input class="form-check-input" type="radio" name="roleRadio" id="ownerRadio" value=2 th:field="*{updateToRole}">
+              <label class="form-check-label" for="ownerRadio">Owner</label>
             </div>
             <hr class="hr" />
             <div class="form-group mb-3">
-              <button type="submit" class="btn btn-primary">Update user</button>
+              <a href="/owner/registered-users" class="btn btn-danger">
+                Cancel
+              </a>
+              <button type="submit" class="btn btn-success ml-auto" style="float: right;">Update</button>
             </div>
 
           </form>
