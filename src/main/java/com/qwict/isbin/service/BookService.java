@@ -16,6 +16,7 @@ public interface BookService {
 
     void saveBook(BookDto bookDto, BindingResult result, boolean isEdit);
 
+    void deleteBook(String id);
     Book findBookByIsbn(String isbn);
     List<BookDto> findAllBooks();
 

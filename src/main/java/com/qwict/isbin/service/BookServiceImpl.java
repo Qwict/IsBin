@@ -9,9 +9,11 @@ import com.qwict.isbin.dto.LocationDto;
 import com.qwict.isbin.model.Author;
 import com.qwict.isbin.model.Book;
 import com.qwict.isbin.model.Location;
+import com.qwict.isbin.model.User;
 import com.qwict.isbin.repository.AuthorRepository;
 import com.qwict.isbin.repository.BookRepository;
 import com.qwict.isbin.repository.LocationRepository;
+import com.qwict.isbin.repository.UserRepository;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.json.simple.JSONObject;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,13 +33,16 @@ public class BookServiceImpl implements BookService {
     private final DomeinController domeinController = new DomeinController();
     private final AuthorRepository authorRepository;
     private final LocationRepository locationRepository;
+    private final UserRepository userRepository;
 
     public BookServiceImpl(BookRepository bookRepository, UserService userService,
-                           AuthorRepository authorRepository, LocationRepository locationRepository) {
+                           AuthorRepository authorRepository, LocationRepository locationRepository,
+                           UserRepository userRepository) {
         this.bookRepository = bookRepository;
         this.userService = userService;
         this.authorRepository = authorRepository;
         this.locationRepository = locationRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -133,6 +138,36 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public void deleteBook(String id) {
+        Book bookToDelte = bookRepository.findById(Long.valueOf(id)).orElse(null);
+
+        if (bookToDelte == null) {
+            System.out.printf("Book to delete not found: %s\n", id);
+            throw new IllegalArgumentException("Book not found");
+        }
+
+        List<Location> locationsToRemove = new ArrayList<>(bookToDelte.getLocations());
+        for (Location location : locationsToRemove) {
+            bookToDelte.getLocations().remove(location);
+            bookRepository.save(bookToDelte);
+        }
+
+        // TODO: this is very bad, imagine 200.000 likes on a book, this will take forever
+        for (User user : bookToDelte.getUsers()) {
+            user.getBooks().remove(bookToDelte);
+            userRepository.save(user);
+        }
+
+        for (Author author : bookToDelte.getWriters()) {
+            author.getWritten().remove(bookToDelte);
+            authorRepository.save(author);
+        }
+
+        bookRepository.delete(bookToDelte);
+        System.out.printf("Book deleted: %s\n", bookToDelte.getTitle());
+    }
+
+    @Override
     public List<BookDto> findAllBooks() {
         List<Book> books = bookRepository.findAll();
         return books.stream()
@@ -183,7 +218,7 @@ public class BookServiceImpl implements BookService {
                 books.stream().filter((b) -> b.getId().equals(book.getId()))
                         .findFirst()
                         .ifPresent((b) -> {
-                                bookDto.setFavorited(true);
+                            bookDto.setFavorited(true);
                         });
             }
         }

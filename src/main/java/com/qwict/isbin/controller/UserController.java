@@ -4,21 +4,17 @@ package com.qwict.isbin.controller;
 import com.qwict.isbin.domein.DomeinController;
 import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
-import com.qwict.isbin.dto.UserDto;
 import com.qwict.isbin.model.Book;
 import com.qwict.isbin.model.User;
 import com.qwict.isbin.service.AuthorService;
 import com.qwict.isbin.service.BookService;
 import com.qwict.isbin.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +31,7 @@ public class UserController {
     private AuthorService authorService;
     private final DomeinController domeinController = new DomeinController();
 
-    @PostMapping("/book/{id}")
+    @GetMapping("/book/{id}")
     public String favoriteBook(@PathVariable String id, Model model, HttpServletRequest request) {
         // Get the URL of the current page
         String referer = request.getHeader("Referer");
@@ -99,7 +95,6 @@ public class UserController {
         model.addAttribute("bookDtos", bookDtos);
         return "user/catalog";
     }
-
 
     @GetMapping("/search")
     public String search(

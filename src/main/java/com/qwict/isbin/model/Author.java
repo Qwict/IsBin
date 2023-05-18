@@ -29,12 +29,10 @@ public class Author {
 
     @Column(name="first_name", nullable=false)
     @NotBlank
-    @Size(min=2, max=60)
     private String firstName;
 
     @Column(name="last_name", nullable=false)
     @NotBlank
-    @Size(min=2, max=60)
     private String lastName;
 
 //  Author is the owning side of books (an author has many books)

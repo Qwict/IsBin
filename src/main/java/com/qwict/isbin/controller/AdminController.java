@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +77,27 @@ public class AdminController {
 
         model.addAttribute("book", book);
         return "admin/add-book";
+    }
+
+    @GetMapping("/delete-book/{id}")
+    public String deleteBook(@PathVariable("id") String id, HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+        try {
+            bookService.deleteBook(id);
+        } catch (IllegalArgumentException e) {
+            return String.format("redirect:%s?error&errorMessage=%s", referer, e.getMessage());
+        }
+
+        // If the refere is a detail page then redirect to home instead
+        String[] splitReferer = referer.split("/");
+        if (
+                Objects.equals(splitReferer[splitReferer.length - 2], "book") &&
+                        !Objects.equals(splitReferer[splitReferer.length - 1], "most-popular")) {
+            return "redirect:/home";
+        }
+
+        // Todo: create an alert that says the book has been deleted
+        return "redirect:" + referer;
     }
 
     @PostMapping("/add-book")

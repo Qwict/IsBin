@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.List;
 import java.util.Set;
 
-import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.CascadeType.*;
 
 
 @Getter
@@ -41,18 +41,13 @@ public class Book {
 
 
     // Book is the owning side of locations (a book has many locations)
-    @OneToMany(cascade=ALL, mappedBy="book")
+    @OneToMany(mappedBy="book", cascade = ALL, orphanRemoval = true)
     private List<Location> locations;
 
     // Book is the inverse side of authors (a book is owned by an author)
-    @ManyToMany(mappedBy= "written")
+    // TODO: this should be a Set, not a List
+    @ManyToMany(mappedBy="written")
     private List<Author> writers;
-//    private Set<Author> writtenBy;
-
-
-    // Book is the inverse side of favoritedBy (a book is favorited by a user)
-//    @ManyToMany(mappedBy="favoritedBooks")
-//    private Set<User> favoritedBy;
 
     @ManyToMany(mappedBy="books")
     private List<User> users;
