@@ -110,7 +110,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarProfileDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{navbar.profile}">
                     </a>
-                    <div th:object="${authenticatedUser}" class="dropdown-menu p-3"
+                    <div th:object="${authenticatedUser}" class="dropdown-menu dropdown-menu-right p-3"
                          aria-labelledby="navbarProfileDropdown"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
@@ -129,19 +129,20 @@
                         </svg>
                         <td nowrap th:text="#{navbar.favoritesList}"></td>
                         <div th:replace="~{components/UserComponents :: favbarNoText}"></div>
+                        <div class="dropdown-divider"></div>
+                        <div>
+                            <a th:href="@{/logout}">
+                                <button class="btn btn-outline-success my-2 my-sm-0"
+                                        th:classappend="${activePage == 'logout' ? 'active' : ''}" th:text="#{navbar.logout}">
+                                </button>
+                            </a>
+                        </div>
                     </div>
                 </li>
             </ul>
 
 
             <div class="my-2 my-lg-0">
-                <div sec:authorize="isAuthenticated()">
-                    <a th:href="@{/logout}">
-                        <button class="btn btn-outline-success my-2 my-sm-0"
-                                th:classappend="${activePage == 'logout' ? 'active' : ''}" th:text="#{navbar.logout}">
-                        </button>
-                    </a>
-                </div>
                 <div sec:authorize="!isAuthenticated()">
                     <a th:href="@{/login}">
                         <button class="btn btn-outline-success my-2 my-sm-0"
