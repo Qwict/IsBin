@@ -6,11 +6,13 @@ Depending on the role of a user he or she has access to different parts of the a
 
 ## TL;DR
 1. This application runs online on [isbin.qwict.com](https://isbin.qwict.com)
-2. Requirements
+2. The trello-page for this application can be found here: [trello.com/isbin-application](https://trello.com/b/5xWz5DxY/isbin-application)
+3. A diagram representing the ERD of database can be found here: [drawsql.app/teams/qwict/diagrams/isbin](https://drawsql.app/teams/qwict/diagrams/isbin)
+4. Requirements
 	1. java openjdk 17.0.5 or later
 	2. Apache Maven 3.9.1 or later
 	3. A MySQL server with an empty schema (with SSL for production)
-3. To install it: 
+5. To install it: 
 	1. clone
 	2. create and fill in application.properties in `/src/main/resources`
 	3. from the root build to jar with `maven install`
@@ -27,7 +29,7 @@ Depending on the role of a user he or she has access to different parts of the a
 ```sh
 git clone https://github.com/JorisVanDuyseHogent/IsBin.git
 ```
-2. Create the required `application.properties` file in `/src/main/resources/application.properties`, remember to replace all {text} with your information curly brackets included :)
+2. Create or rename `application.properties.example` to the required `application.properties` file in `/src/main/resources/application.properties`, remember to replace all {text} with your information curly brackets included :)
 ```sh
 # ------------- Development settings ------------
 spring.datasource.url=jdbc:mysql://localhost:3306/{your_database_name}?serverTimezone=UTC
