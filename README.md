@@ -29,7 +29,7 @@ Depending on the role of a user he or she has access to different parts of the a
 ```sh
 git clone https://github.com/JorisVanDuyseHogent/IsBin.git
 ```
-2. Create the required `application.properties` file in `/src/main/resources/application.properties`, remember to replace all {text} with your information curly brackets included :)
+2. Create or rename `application.properties.example` to the required `application.properties` file in `/src/main/resources/application.properties`, remember to replace all {text} with your information curly brackets included :)
 ```sh
 # ------------- Development settings ------------
 spring.datasource.url=jdbc:mysql://localhost:3306/{your_database_name}?serverTimezone=UTC
