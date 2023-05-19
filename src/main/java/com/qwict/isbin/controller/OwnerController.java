@@ -1,7 +1,6 @@
 package com.qwict.isbin.controller;
 
 import com.qwict.isbin.dto.ChangeUserDto;
-import com.qwict.isbin.dto.UserDto;
 import com.qwict.isbin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

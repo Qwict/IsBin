@@ -11,13 +11,13 @@ import java.util.Scanner;
 
 public class RemoteAPI {
     public static JSONObject get(String urlString) throws IOException {
-        System.out.printf("INFO -- ApiCall.get(%s)%n", urlString);
+//        System.out.printf("INFO -- ApiCall.get(%s)%n", urlString);
         URL url = new URL(urlString);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setDoOutput(true);
         int responseCode = con.getResponseCode();
-        System.out.println("\tResponse Code : " + responseCode);
+//        System.out.println("\tResponse Code : " + responseCode);
         if (responseCode != 200) {
             throw new RuntimeException("HttpResponseCode: " + responseCode);
         } else {
@@ -38,7 +38,7 @@ public class RemoteAPI {
                 e.printStackTrace();
             }
             con.disconnect();
-            System.out.printf("\tResponse JSONObject: %s%n", jsonData);
+//            System.out.printf("\tResponse JSONObject: %s%n", jsonData);
             return jsonData;
         }
     }

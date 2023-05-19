@@ -56,7 +56,7 @@ public class AuthorServiceImpl implements AuthorService {
         authorsMatchLastName.forEach(author -> {
             if (author != null) {
                 AuthorDto authorDto = mapToAuthorDto(author);
-                System.out.printf("Added author %s %s to authorMatchedDtos%n", author.getFirstName(), author.getLastName());
+//                System.out.printf("Added author %s %s to authorMatchedDtos%n", author.getFirstName(), author.getLastName());
                 if (!authorMatchedDtos.contains(authorDto)) {
                     authorMatchedDtos.add(authorDto);
                 }
@@ -68,7 +68,7 @@ public class AuthorServiceImpl implements AuthorService {
         authorsMatchFirstName.forEach(author -> {
             if (author != null) {
                 AuthorDto authorDto = mapToAuthorDto(author);
-                System.out.printf("Added author %s %s to authorMatchedDtos%n", author.getFirstName(), author.getLastName());
+//                System.out.printf("Added author %s %s to authorMatchedDtos%n", author.getFirstName(), author.getLastName());
                 if (!authorMatchedDtos.contains(authorDto)) {
                     authorMatchedDtos.add(authorDto);
                 }

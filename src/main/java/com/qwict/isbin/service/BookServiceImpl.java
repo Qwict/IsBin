@@ -94,14 +94,14 @@ public class BookServiceImpl implements BookService {
         List<AuthorDto> authorDtos = bookDto.getAuthorDtos();
         for (AuthorDto authorDto : authorDtos) {
             if (!authorDto.getFirstName().isEmpty() && !authorDto.getLastName().isEmpty()) {
-                System.out.printf("Looking in database for author: %s %s\n", authorDto.getFirstName(), authorDto.getLastName());
+//                System.out.printf("Looking in database for author: %s %s\n", authorDto.getFirstName(), authorDto.getLastName());
                 Author authorFromDatabase = authorRepository.findByFirstNameAndLastName(authorDto.getFirstName(), authorDto.getLastName());
 
                 if (authorFromDatabase != null) {
-                    System.out.printf("Found author in database: %s %s\n", authorFromDatabase.getFirstName(), authorFromDatabase.getLastName());
+//                    System.out.printf("Found author in database: %s %s\n", authorFromDatabase.getFirstName(), authorFromDatabase.getLastName());
                     addBookToAuthor(authorFromDatabase, book);
                 } else {
-                    System.out.printf("Author not found in database: %s %s\n", authorDto.getFirstName(), authorDto.getLastName());
+//                    System.out.printf("Author not found in database: %s %s\n", authorDto.getFirstName(), authorDto.getLastName());
                     Author newAuthor = new Author();
                     newAuthor.setFirstName(authorDto.getFirstName());
                     newAuthor.setLastName(authorDto.getLastName());
@@ -124,9 +124,9 @@ public class BookServiceImpl implements BookService {
                     locationRepository.save(newLocation);
                 } else {
                     if (locationFromDatabase.getBook() != null) {
-                        System.out.printf("Location already has a book: %s\n", locationFromDatabase.getName());
+                        System.out.printf("WARNING -- BookServiceImpl -- saveBook\n\tLocation already has a book: %s\n", locationFromDatabase.getName());
                     } else {
-                        System.out.printf("Location has no book yet: %s\n", locationFromDatabase.getName());
+//                        System.out.printf("Location has no book yet: %s\n", locationFromDatabase.getName());
                         locationFromDatabase.setBook(book);
                         locationRepository.save(locationFromDatabase);
                     }
@@ -134,7 +134,7 @@ public class BookServiceImpl implements BookService {
             }
         }
 //        throw new NotYetImplementedException("this method is not yet implemented");
-        System.out.printf("Book saved: %s\n", book.getTitle());
+        System.out.printf("INFO -- BookServiceImpl -- saveBook\n\tBook saved: %s\n", book.getTitle());
     }
 
     @Override
@@ -142,7 +142,7 @@ public class BookServiceImpl implements BookService {
         Book bookToDelte = bookRepository.findById(Long.valueOf(id)).orElse(null);
 
         if (bookToDelte == null) {
-            System.out.printf("Book to delete not found: %s\n", id);
+            System.out.printf("ERROR -- BookServiceImpl -- deleteBook()\n\tBook to delete not found: %s\n", id);
             throw new IllegalArgumentException("Book not found");
         }
 
@@ -164,7 +164,7 @@ public class BookServiceImpl implements BookService {
         }
 
         bookRepository.delete(bookToDelte);
-        System.out.printf("Book deleted: %s\n", bookToDelte.getTitle());
+        System.out.printf("INFO -- BookServiceImpl -- deleteBook()\n\tBook deleted: %s\n", bookToDelte.getTitle());
     }
 
     @Override

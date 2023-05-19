@@ -1,5 +1,6 @@
 package com.qwict.isbin;
 
+import com.qwict.isbin.domein.DomeinController;
 import com.qwict.isbin.validator.BookDtoValidator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,6 +28,11 @@ public class IsBinApplication {
     @Bean
     public BookDtoValidator bookValidator() {
         return new BookDtoValidator();
+    }
+
+    @Bean
+    public DomeinController domeinController() {
+        return new DomeinController();
     }
 
     public static void main(String[] args) {

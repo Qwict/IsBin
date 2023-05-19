@@ -1,11 +1,8 @@
 package com.qwict.isbin.dto;
 
-import com.qwict.isbin.model.Author;
-import com.qwict.isbin.model.Location;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter

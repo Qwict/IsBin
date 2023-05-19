@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserWithChangeUserDto(ChangeUserDto updatedUser) {
-        System.out.printf("updatedUser: %s with id: %d\n", updatedUser, updatedUser.getId());
+        System.out.printf("INFO -- UserServiceImpl -- updateUserWithChangeUserDto\n\tupdatedUser: %s with id: %d\n", updatedUser, updatedUser.getId());
         User user = userRepository.findById(updatedUser.getId()).orElse(null);
         if (user == null) {
             throw new IllegalArgumentException("User not found in database");

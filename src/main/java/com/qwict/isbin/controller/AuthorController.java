@@ -2,6 +2,7 @@ package com.qwict.isbin.controller;
 
 import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.service.AuthorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,11 +12,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class AuthorController {
-    private final AuthorService authorService;
 
-    public AuthorController(AuthorService authorService) {
-        this.authorService = authorService;
-    }
+    @Autowired
+    private AuthorService authorService;
 
     @RequestMapping("/author/{id}")
     public String getAuthorById(@PathVariable("id") String id, Model model) {

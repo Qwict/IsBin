@@ -29,7 +29,8 @@ public class UserController {
     private BookService bookService;
     @Autowired
     private AuthorService authorService;
-    private final DomeinController domeinController = new DomeinController();
+    @Autowired
+    private DomeinController domeinController;
 
     @GetMapping("/book/{id}")
     public String favoriteBook(@PathVariable String id, Model model, HttpServletRequest request) {
@@ -41,18 +42,18 @@ public class UserController {
         user.getBooks().stream().filter(b -> String.valueOf(b.getId()).equals(String.valueOf(book.getId())))
                 .findFirst().ifPresentOrElse(
                         b -> {
-                            System.out.printf("Book %s is already in favorites%n", b.getTitle());
+//                            System.out.printf("Book %s is already in favorites%n", b.getTitle());
                             user.getBooks().remove(b);
 
                         },
                         () -> {
-                            System.out.printf("Book %s added to favorites%n", book.getTitle());
+//                            System.out.printf("Book %s added to favorites%n", book.getTitle());
                             user.getBooks().add(book);
                         }
                 );
 
         if (user.getMaxFavorites() < user.getBooks().size()) {
-            System.out.println("User has reached max favorites");
+//            System.out.println("User has reached max favorites");
             return "redirect:" + referer;
         }
 
@@ -119,7 +120,7 @@ public class UserController {
                 return String.format("redirect:/book/%s", searchTermNoSpaceNoDash);
             }
         } catch (NumberFormatException e) {
-            System.out.printf("The search term %s is not a number.\n", searchTerm);
+//            System.out.printf("The search term %s is not a number.\n", searchTerm);
         }
 
         model.addAttribute("activePage", "author");

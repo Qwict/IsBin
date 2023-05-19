@@ -25,7 +25,7 @@ public class InitDataConfig implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (Objects.equals(IsBinApplication.getEnv(), "development")) {
-            System.out.printf("ADDING DATA TO DATABASE...%n");
+            System.out.println("INFO -- InitDataConfig -- ADDING DATA TO DATABASE...");
             addRolesToDatabase();
             addUsersToDatabase();
             addBooksToDatabase();
@@ -36,7 +36,7 @@ public class InitDataConfig implements CommandLineRunner {
             updateUsersWithRoles();
             updateUsersWithBooks();
         } else {
-            System.out.printf("SKIPPING ADDING DATA TO DATABASE...%n");
+            System.out.println("INFO -- InitDataConfig -- SKIPPING ADDING DATA TO DATABASE...");
         }
     }
 

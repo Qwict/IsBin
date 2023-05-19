@@ -29,12 +29,10 @@ public class AdminController {
     @RequestMapping("/add-book")
     public String addBook(Model model) {
         BookDto book = new BookDto();
-//        model.addAttribute("title", "ISBIN add book");
-//        model.addAttribute("message", "Welcome to the ISBIN add book page!");
         model.addAttribute("activePage", "book");
 
         List<AuthorDto> authorDtos = new ArrayList<>();
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             authorDtos.add(new AuthorDto());
         }
 
@@ -57,8 +55,6 @@ public class AdminController {
 
         BookDto book = bookService.mapToBookDto(bookFromDatabase);
         book.setPrice(bookFromDatabase.getPrice().toString());
-//        model.addAttribute("title", "ISBIN edit book");
-//        model.addAttribute("message", "Welcome to the ISBIN edit book page!");
         model.addAttribute("activePage", "book");
 
         if (book.getAuthorDtos() == null) {
@@ -88,7 +84,7 @@ public class AdminController {
             return String.format("redirect:%s?error&errorMessage=%s", referer, e.getMessage());
         }
 
-        // If the refere is a detail page then redirect to home instead
+        // If the referer is a detail page then redirect to home instead -> delete a book means its details are no longer available
         String[] splitReferer = referer.split("/");
         if (
                 Objects.equals(splitReferer[splitReferer.length - 2], "book") &&

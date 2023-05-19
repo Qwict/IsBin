@@ -6,6 +6,7 @@ import com.qwict.isbin.dto.RoleDto;
 import com.qwict.isbin.dto.SearchDto;
 import com.qwict.isbin.model.User;
 import com.qwict.isbin.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,11 +16,8 @@ import java.util.List;
 
 @ControllerAdvice
 public class GlobalControllerAdvice {
-    UserService userService;
-
-    public GlobalControllerAdvice(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
 //    // TODO: why does this not work!
 //    @ModelAttribute("authenticatedUser")

@@ -2,11 +2,10 @@ package com.qwict.isbin.controller;
 
 import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.model.Book;
-import com.qwict.isbin.service.AuthorService;
 import com.qwict.isbin.service.BookService;
-import com.qwict.isbin.service.LocationService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,28 +18,9 @@ import java.util.List;
 
 @Controller
 public class BookController {
-    private final BookService bookService;
-    private final AuthorService authorService;
-    private final LocationService locationService;
 
-    public BookController(
-            BookService bookService, AuthorService authorService,
-            LocationService locationService
-    ) {
-        this.bookService = bookService;
-        this.authorService = authorService;
-        this.locationService = locationService;
-    }
-
-//    @RequestMapping("/book")
-//    public String book(Model model) {
-//        model.addAttribute("title", "ISBIN book");
-//        model.addAttribute("message", "Welcome to the ISBIN book page!");
-//
-////            model.addAttribute("book", "book");
-//
-//        return "book";
-//    }
+    @Autowired
+    private BookService bookService;
 
     @RequestMapping(value = "/book/{id}")
     public String getBookById(@PathVariable("id") String id, Model model) {
@@ -65,7 +45,6 @@ public class BookController {
         String coverURL = "/images/bookPlaceholder.jpg";
 
         model.addAttribute("book", bookDto);
-        System.out.printf("bookDto: %s\n", bookDto);
         JSONObject response = bookService.getBookFromRemoteAPI(bookFromDatabase.getIsbn());
 
         JSONObject remoteBook = (JSONObject) response.get(String.format("ISBN:%s", bookFromDatabase.getIsbn()));
@@ -82,11 +61,9 @@ public class BookController {
                 coverURL = String.format("https://covers.openlibrary.org/b/id/%s-L.jpg", coverIds.get(0));
             }
 
-            // date part
             String remotePublishDate = (String) details.get("publish_date");
             model.addAttribute("remotePublishDate", remotePublishDate);
 
-            // description part
             String remoteDescription = (String) details.get("description");
             model.addAttribute("remoteDescription", remoteDescription);
         } else {
@@ -111,10 +88,5 @@ public class BookController {
         model.addAttribute("bookDtos", bookDtos);
         return "public/most-popular";
     }
-
-
-//    TODO: add a search by isbn
-//    @RequestMapping(value = "/book/search/isbn/{isbn}")
-
 
 }

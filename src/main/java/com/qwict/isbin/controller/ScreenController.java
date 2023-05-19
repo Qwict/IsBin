@@ -1,7 +1,5 @@
 package com.qwict.isbin.controller;
 
-import com.qwict.isbin.domein.DomeinController;
-import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.dto.UserDto;
 import com.qwict.isbin.model.Book;
@@ -27,10 +25,6 @@ public class ScreenController {
 
     @Autowired
     private BookService bookService;
-
-    @Autowired
-    private AuthorService authorService;
-
 
     @RequestMapping("/home")
     public String home(Model model) {
