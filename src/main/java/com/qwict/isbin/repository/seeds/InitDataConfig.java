@@ -66,7 +66,7 @@ public class InitDataConfig implements CommandLineRunner {
 
     private void addBooksToDatabase() {
         // sunTzu
-        Book artOfWar = new Book("9780140455526", "The Art of War", 29.99);
+        Book artOfWar = new Book("9780140455526", "The Art of War", null);
         // george orwell
         Book nineteenEight = new Book("9781432839680", "1984", 9.99);
         Book animalFarm = new Book("9781986799270", "Animal Farm", 9.99);

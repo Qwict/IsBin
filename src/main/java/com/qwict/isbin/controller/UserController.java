@@ -37,6 +37,7 @@ public class UserController {
         // Get the URL of the current page
         String referer = request.getHeader("Referer");
 
+        // TODO: this should be in the service layer
         User user = userService.findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         Book book = bookService.findBookById(id);
         user.getBooks().stream().filter(b -> String.valueOf(b.getId()).equals(String.valueOf(book.getId())))
@@ -44,6 +45,7 @@ public class UserController {
                         b -> {
 //                            System.out.printf("Book %s is already in favorites%n", b.getTitle());
                             user.getBooks().remove(b);
+                            userService.updateUser(user);
 
                         },
                         () -> {
@@ -54,14 +56,13 @@ public class UserController {
 
         if (user.getMaxFavorites() < user.getBooks().size()) {
 //            System.out.println("User has reached max favorites");
-            return "redirect:" + referer;
+            return String.format("redirect:%s?errorMessage=Max+favorites+reached!", referer);
         }
 
-        userService.updateUser(user);
         model.addAttribute("authUser", userService.mapToAuthenticatedUserDto(user));
-
+        userService.updateUser(user);
 //        redirectAttributes.addFlashAttribute("successMessage", "Book added to favorites!");
-        return "redirect:" + referer;
+        return String.format("redirect:%s?successMessage=Book+added+to+favorites!", referer);
     }
 
     @RequestMapping("/favorites")

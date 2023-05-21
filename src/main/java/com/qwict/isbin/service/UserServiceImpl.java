@@ -1,6 +1,7 @@
 package com.qwict.isbin.service;
 
 import com.qwict.isbin.dto.*;
+import com.qwict.isbin.mapper.BookMapper;
 import com.qwict.isbin.model.*;
 import com.qwict.isbin.repository.UserRepository;
 import org.springframework.security.core.Authentication;
@@ -8,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList())
         );
         authenticatedUserDto.setBooks(user.getBooks().stream()
-                .map((book) -> mapToBookDto(book))
+                .map((book) -> BookMapper.mapToBookDtoForUserService(book))
                 .collect(Collectors.toList())
         );
 
@@ -147,37 +147,40 @@ public class UserServiceImpl implements UserService {
 
 
     // causes circular dependency if taken from UserServiceImpl
-    public BookDto mapToBookDto(Book book) {
-        BookDto bookDto = new BookDto();
-        bookDto.setId(book.getId());
-        bookDto.setTitle(book.getTitle());
-        bookDto.setIsbn(book.getIsbn());
-        bookDto.setPrice(String.format("€%s", book.getPrice()));
-
-        for (Author author : book.getWriters()) {
-            AuthorDto authorDto = new AuthorDto();
-            authorDto.setFirstName(author.getFirstName());
-            authorDto.setLastName(author.getLastName());
-            if (bookDto.getAuthorDtos() == null) {
-                bookDto.setAuthorDtos(new ArrayList<>());
-            }
-            bookDto.getAuthorDtos().add(authorDto);
-        }
-
-        for (Location location : book.getLocations()) {
-            LocationDto locationDto = new LocationDto();
-            locationDto.setName(location.getName());
-            locationDto.setPlaceCode1(location.getPlaceCode1());
-            locationDto.setPlaceCode2(location.getPlaceCode2());
-            if (bookDto.getLocationDtos() == null) {
-                bookDto.setLocationDtos(new ArrayList<>());
-            }
-            bookDto.getLocationDtos().add(locationDto);
-        }
-
-        bookDto.setHearts(book.getUsers().size());
-        return bookDto;
-    }
+//    public BookDto mapToBookDto(Book book) {
+//        BookDto bookDto = new BookDto();
+//        bookDto.setId(book.getId());
+//        bookDto.setTitle(book.getTitle());
+//        bookDto.setIsbn(book.getIsbn());
+//
+//        if (book.getPrice() != null) {
+//            bookDto.setPrice(String.format("€%s", book.getPrice()));
+//        }
+//
+//        for (Author author : book.getWriters()) {
+//            AuthorDto authorDto = new AuthorDto();
+//            authorDto.setFirstName(author.getFirstName());
+//            authorDto.setLastName(author.getLastName());
+//            if (bookDto.getAuthorDtos() == null) {
+//                bookDto.setAuthorDtos(new ArrayList<>());
+//            }
+//            bookDto.getAuthorDtos().add(authorDto);
+//        }
+//
+//        for (Location location : book.getLocations()) {
+//            LocationDto locationDto = new LocationDto();
+//            locationDto.setName(location.getName());
+//            locationDto.setPlaceCode1(location.getPlaceCode1());
+//            locationDto.setPlaceCode2(location.getPlaceCode2());
+//            if (bookDto.getLocationDtos() == null) {
+//                bookDto.setLocationDtos(new ArrayList<>());
+//            }
+//            bookDto.getLocationDtos().add(locationDto);
+//        }
+//
+//        bookDto.setHearts(book.getUsers().size());
+//        return bookDto;
+//    }
 
     @Override
     public List<ChangeUserDto> getAllChangeUserDtos() {

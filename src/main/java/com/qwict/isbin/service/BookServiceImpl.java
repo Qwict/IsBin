@@ -199,13 +199,16 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toList());
     }
 
+    // TODO: add this code to the mapper to avoid code duplication
     @Override
     public BookDto mapToBookDto(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());
         bookDto.setTitle(book.getTitle());
         bookDto.setIsbn(book.getIsbn());
-        bookDto.setPrice(String.format("€%s", book.getPrice()));
+        if (book.getPrice() != null) {
+            bookDto.setPrice(String.format("€%.2f", book.getPrice()));
+        }
 
         // get the current authenticated user
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated() ||
