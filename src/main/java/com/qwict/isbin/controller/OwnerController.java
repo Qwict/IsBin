@@ -5,6 +5,7 @@ import com.qwict.isbin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +36,14 @@ public class OwnerController {
     // Somehow the use of the @PathVariable makes sure that the id is not reset to 0 (because primary datatype)
     // I do not use the {id} anywhere but because of it the id is not reset to 0 (maybe because of form in html)
     @PostMapping("/edit-user/{id}")
-    public String editUser(@ModelAttribute("user") ChangeUserDto user){
+    public String editUser(@ModelAttribute("user") ChangeUserDto user,
+                           BindingResult result,
+                           Model model
+    ) {
+        if (result.hasErrors()) {
+            model.addAttribute("activePage", "owner");
+            return "owner/edit-user";
+        }
         try {
             userService.updateUserWithChangeUserDto(user);
         } catch (Exception e) {
@@ -49,10 +57,9 @@ public class OwnerController {
         try {
             userService.deleteUserById(id);
         } catch (Exception e) {
-            return String.format("redirect:/owner/registered-users?error&errorMessage=%s", e.getMessage());
+            return String.format("redirect:/owner/registered-users?error&errorMessage=%s", e.getMessage().replace(' ', '+'));
         }
         return "redirect:/owner/registered-users";
     }
-
 
 }

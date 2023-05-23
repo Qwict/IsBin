@@ -86,14 +86,12 @@ public class AdminController {
 
         // If the referer is a detail page then redirect to home instead -> delete a book means its details are no longer available
         String[] splitReferer = referer.split("/");
-        if (
-                Objects.equals(splitReferer[splitReferer.length - 2], "book") &&
-                        !Objects.equals(splitReferer[splitReferer.length - 1], "most-popular")) {
+        if (Objects.equals(splitReferer[splitReferer.length - 2], "book") && Objects.equals(splitReferer[splitReferer.length - 1].split("\\?")[0], id)) {
             return "redirect:/home";
         }
 
         // Todo: create an alert that says the book has been deleted
-        return "redirect:" + referer;
+        return "redirect:" + referer.split("\\?")[0];
     }
 
     @PostMapping("/add-book")

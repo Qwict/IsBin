@@ -193,7 +193,12 @@ public class BookServiceImpl implements BookService {
 
         List<Book> books = bookRepository.findAll();
         Collections.sort(books, (b1, b2) -> b2.getUsers().size() - b1.getUsers().size());
-        List<Book> topTen = books.subList(0, 10);
+        List<Book> topTen = new ArrayList<>();
+        try {
+            topTen = books.subList(0, 10);
+        } catch (IndexOutOfBoundsException e) {
+            topTen = books.subList(0, books.size());
+        }
         return topTen.stream()
                 .map((book) -> mapToBookDto(book))
                 .collect(Collectors.toList());

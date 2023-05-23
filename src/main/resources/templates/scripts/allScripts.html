@@ -6,6 +6,16 @@
             $('[data-toggle="tooltip"]').tooltip({'placement': 'bottom'});
         });
     </script>
+    <div th:replace="~{/components/Modal :: deleteUserModal}"></div>
+    <div th:replace="~{/components/Modal :: deleteBookModal}"></div>
+    <script type="text/javascript">
+        var url = window.location.href;
+        if(url.indexOf('?clickedUser=') != -1) {
+            $('#deleteUserModal').modal('show');
+        } if(url.indexOf('?clickedBook=') != -1) {
+            $('#deleteBookModal').modal('show');
+        }
+    </script>
     <script>
         window.onload = function() {
             let previousScrollPosition = localStorage.getItem('scrollPosition');
@@ -30,4 +40,5 @@
 <!--            loading.style.display = "none";-->
 <!--        };-->
 <!--    </script>-->
+
 </div>
