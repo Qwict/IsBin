@@ -6,6 +6,11 @@
             $('[data-toggle="tooltip"]').tooltip({'placement': 'bottom'});
         });
     </script>
+
+
+    <div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="~{components/CustomModals :: DeleteBookModal}"></div>
+    <div sec:authorize="hasRole('ROLE_OWNER')" th:replace="~{components/CustomModals :: DeleteUserModal}"></div>
+
     <script type="text/javascript">
         var url = window.location.href;
         if(url.indexOf('?clickedUser=') != -1) {
