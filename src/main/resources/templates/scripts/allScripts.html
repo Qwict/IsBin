@@ -6,8 +6,6 @@
             $('[data-toggle="tooltip"]').tooltip({'placement': 'bottom'});
         });
     </script>
-    <div th:replace="~{/components/Modal :: deleteUserModal}"></div>
-    <div th:replace="~{/components/Modal :: deleteBookModal}"></div>
     <script type="text/javascript">
         var url = window.location.href;
         if(url.indexOf('?clickedUser=') != -1) {
