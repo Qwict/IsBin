@@ -67,6 +67,17 @@ There is no big difference between running with the in development and running i
 Recommended for production: start the application one time in development; this will seed the database with some books and users. After that enable all the production settings in the application.properties file and remove the developer settings. Reinstall the application with maven to jar and run the jar again with java. 
 This way you will have a production server with some books, authors and users already in the database.
 
+## Seeded Users and data
+When starting in development, the database will be seeded by the file: `com/qwict/isbin/repository/seeds/InitDataConfig.java`.
+This seeding script will create three Users with different Roles:
+1. owner@qwict.com with `password: owner@qwict.com`
+2. admin@qwict.com with `password: admin@qwict.com`
+3. user@qwict.com with `password: user@qwict.com`
+
+> This means that after startup in development, you can use these accounts to test the different roles. The owner is able to change passwords. So if you want to run this page on the internet, make sure to change the passwords first!
+
+It will also add Books to the database, all these Books have Authors which will also be added, and some Books have Users that liked them (which makes the most-popular page work). Some Locations will also be created.
+
 ## IsBin database
 In the IsBin database there are 4 tables:
 1. The book table
@@ -137,3 +148,57 @@ Users are saved in the database with an encrypted password; the password is encr
 > By calling [GET /api/public/book/9780140455526](https://isbin.qwict.com/api/public/book/9780140455526) it is possible to look up a book by its isbn number.
 
 ![REST-isbn.png](./documentationMedia/REST-isbn.png)
+
+## Tests
+### ApiControllerTest
+![ApiControllerTest.png](./documentationMedia/ApiControllerTest.png)
+
+> The GetBook() test runs the [GET /api/public/book/{isbn}](https://isbin.qwict.com/api/public/book/9780140455526) 
+> endpoint and checks if the status is OK. It also checks if the bookServiceMock is called with the correct isbn number.
+```java
+@Test
+public void test_GetBook() throws Exception {
+	MockitoAnnotations.openMocks(this);
+	apiController = new ApiController();
+	mockMvc = standaloneSetup(apiController).build();
+	ReflectionTestUtils.setField(apiController, "bookService", bookServiceMock);
+	Book book = new Book("9780201633610", "Design Patterns", 28.99);
+	Mockito.when(bookServiceMock.findBookByIsbn("9780201633610")).thenReturn(book);
+	mockMvc.perform(MockMvcRequestBuilders.get("/api/public/book/9780201633610")).andExpect(status().isOk());
+	Mockito.verify(bookServiceMock).findBookByIsbn("9780201633610");
+	mockMvc.perform(MockMvcRequestBuilders.get("/api/public/book/9780201633610"))
+			.andExpect(status().isOk());
+}
+```
+
+> The GetAuthor() test runs the [GET /api/public/author/{firstName}/{lastName}](https://isbin.qwict.com/api/public/author/george/orwell) 
+> endpoint and checks if the status is OK. It also checks if the authorServiceMock is called with the correct first and last name.
+```java
+@Test
+public void test_GetAuthor() throws Exception {
+	MockitoAnnotations.openMocks(this);
+	apiController = new ApiController();
+	mockMvc = standaloneSetup(apiController).build();
+	ReflectionTestUtils.setField(apiController, "bookService", bookServiceMock);
+	ReflectionTestUtils.setField(apiController, "authorService", authorServiceMock);
+	ReflectionTestUtils.setField(apiController, "authorRepository", authorRepositoryMock);
+
+	Book book = new Book("9780201633610", "Design Patterns", 28.99);
+	Mockito.when(bookServiceMock.findBookByIsbn("9780201633610")).thenReturn(book);
+	bookServiceMock.mapToBookDto(book);
+
+	Author author1 = new Author("Erich", "Gamma");
+	author1.setWritten(List.of(book));
+	Author author2 = new Author("Richard", "Helm");
+	author2.setWritten(List.of(book));
+	Author author3 = new Author("Ralph", "Johnson");
+	author3.setWritten(List.of(book));
+	Mockito.when(authorRepositoryMock.saveAll(List.of(author1, author2, author3))).thenReturn(List.of(author1, author2, author3));
+
+	AuthorDto author1Dto = authorServiceMock.mapToAuthorDto(author1);
+	Mockito.when(authorServiceMock.getByFirstNameAndLastName("Erich", "Gamma")).thenReturn(author1Dto);
+	mockMvc.perform(MockMvcRequestBuilders.get("/api/public/author/Erich/Gamma")).andExpect(status().isOk());
+
+	Mockito.verify(authorServiceMock).getByFirstNameAndLastName("Erich", "Gamma");
+}
+```

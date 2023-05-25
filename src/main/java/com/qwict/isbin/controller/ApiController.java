@@ -4,6 +4,7 @@ import com.qwict.isbin.IsBinApplication;
 import com.qwict.isbin.dto.AuthorDto;
 import com.qwict.isbin.dto.BookDto;
 import com.qwict.isbin.model.Book;
+import com.qwict.isbin.repository.AuthorRepository;
 import com.qwict.isbin.service.AuthorService;
 import com.qwict.isbin.service.BookService;
 import org.json.simple.JSONObject;
@@ -20,7 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
     @Autowired
     private AuthorService authorService;
-
+    @Autowired
+    private AuthorRepository authorRepository;
     @Autowired
     private BookService bookService;
 
