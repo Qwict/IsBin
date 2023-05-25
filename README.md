@@ -8,16 +8,20 @@ Depending on the role of a user he or she has access to different parts of the a
 1. This application runs online on [isbin.qwict.com](https://isbin.qwict.com)
 2. The trello-page for this application can be found here: [trello.com/isbin-application](https://trello.com/b/5xWz5DxY/isbin-application)
 3. A diagram representing the ERD of database can be found here: [drawsql.app/teams/qwict/diagrams/isbin](https://drawsql.app/teams/qwict/diagrams/isbin)
-4. Requirements
+4. A public Github repository for this project is available here: [JorisVanDuyseHogent/IsBin](https://github.com/JorisVanDuyseHogent/IsBin)
+5. Requirements
 	1. java openjdk 17.0.5 or later
 	2. Apache Maven 3.9.1 or later
 	3. A MySQL server with an empty schema (with SSL for production)
-5. To install it: 
+6. To install it: 
 	1. clone
 	2. create and fill in application.properties in `/src/main/resources`
 	3. from the root build to jar with `maven install`
 	4. from the root run the jar with `java -jar target/IsBin.jar`
 	5. the application should start; go to [localhost:9091](http://localhost:9091) or whatever port you use.
+7. Rest: this page also has a [REST API](https://isbin.qwict.com/api/public/health/version) that can return Authors (by first and last name) and Books(by isbn13)
+8. When running the application in development, it will seed the database schema (Books, Users, Roles, Authors, Locations)
+9. After running in development you can test the different roles with the Users that where seeded, see Seeded Users and data for more info
 
 ## Requirements
 1. Java openjdk 17.0.5 or later
