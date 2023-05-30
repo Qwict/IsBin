@@ -137,14 +137,11 @@ public class UserServiceImpl implements UserService {
         Role roleAdmin = roleService.findRoleByName("ROLE_ADMIN");
         Role roleOwner = roleService.findRoleByName("ROLE_OWNER");
         user.getRoles().clear();
-//        if (updatedUser.getUpdateToRole() == 0)
-        if (Objects.equals(updatedUser.getUpdateToRole(), "user"))
+        if (updatedUser.getUpdateToRole() == 0)
             user.getRoles().add(roleUser);
-//        if (updatedUser.getUpdateToRole() == 1)
-        if (Objects.equals(updatedUser.getUpdateToRole(), "admin"))
+        if (updatedUser.getUpdateToRole() == 1)
             user.getRoles().addAll(Arrays.asList(roleUser, roleAdmin));
-//        if (updatedUser.getUpdateToRole() == 2)
-        if (Objects.equals(updatedUser.getUpdateToRole(), "owner"))
+        if (updatedUser.getUpdateToRole() == 2)
             user.getRoles().addAll(Arrays.asList(roleUser, roleAdmin, roleOwner));
         userRepository.save(user);
     }
