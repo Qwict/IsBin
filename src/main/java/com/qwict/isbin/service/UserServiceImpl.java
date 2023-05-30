@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -136,51 +137,17 @@ public class UserServiceImpl implements UserService {
         Role roleAdmin = roleService.findRoleByName("ROLE_ADMIN");
         Role roleOwner = roleService.findRoleByName("ROLE_OWNER");
         user.getRoles().clear();
-        if (updatedUser.getUpdateToRole() == 0)
+//        if (updatedUser.getUpdateToRole() == 0)
+        if (Objects.equals(updatedUser.getUpdateToRole(), "user"))
             user.getRoles().add(roleUser);
-        if (updatedUser.getUpdateToRole() == 1)
+//        if (updatedUser.getUpdateToRole() == 1)
+        if (Objects.equals(updatedUser.getUpdateToRole(), "admin"))
             user.getRoles().addAll(Arrays.asList(roleUser, roleAdmin));
-        if (updatedUser.getUpdateToRole() == 2)
+//        if (updatedUser.getUpdateToRole() == 2)
+        if (Objects.equals(updatedUser.getUpdateToRole(), "owner"))
             user.getRoles().addAll(Arrays.asList(roleUser, roleAdmin, roleOwner));
         userRepository.save(user);
     }
-
-
-    // causes circular dependency if taken from UserServiceImpl
-//    public BookDto mapToBookDto(Book book) {
-//        BookDto bookDto = new BookDto();
-//        bookDto.setId(book.getId());
-//        bookDto.setTitle(book.getTitle());
-//        bookDto.setIsbn(book.getIsbn());
-//
-//        if (book.getPrice() != null) {
-//            bookDto.setPrice(String.format("€%s", book.getPrice()));
-//        }
-//
-//        for (Author author : book.getWriters()) {
-//            AuthorDto authorDto = new AuthorDto();
-//            authorDto.setFirstName(author.getFirstName());
-//            authorDto.setLastName(author.getLastName());
-//            if (bookDto.getAuthorDtos() == null) {
-//                bookDto.setAuthorDtos(new ArrayList<>());
-//            }
-//            bookDto.getAuthorDtos().add(authorDto);
-//        }
-//
-//        for (Location location : book.getLocations()) {
-//            LocationDto locationDto = new LocationDto();
-//            locationDto.setName(location.getName());
-//            locationDto.setPlaceCode1(location.getPlaceCode1());
-//            locationDto.setPlaceCode2(location.getPlaceCode2());
-//            if (bookDto.getLocationDtos() == null) {
-//                bookDto.setLocationDtos(new ArrayList<>());
-//            }
-//            bookDto.getLocationDtos().add(locationDto);
-//        }
-//
-//        bookDto.setHearts(book.getUsers().size());
-//        return bookDto;
-//    }
 
     @Override
     public List<ChangeUserDto> getAllChangeUserDtos() {
@@ -207,6 +174,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList())
         );
         changeUserDto.setFavoritedBooksCount(user.getBooks().size());
+        changeUserDto.setUpdateToRole(user.getRoles().size() - 1);
         return changeUserDto;
     }
 }

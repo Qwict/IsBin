@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.qwict</groupId>
     <artifactId>IsBin</artifactId>
-    <version>0.13.6</version>
+    <version>0.13.7</version>
     <name>IsBin</name>
     <description>IsBin</description>
     <properties>

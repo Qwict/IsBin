@@ -13,9 +13,8 @@ import java.util.List;
 
 public interface BookService {
     Book findBookById(String id);
-
+    Book getMostRecentBook();
     void saveBook(BookDto bookDto, BindingResult result, boolean isEdit);
-
     void deleteBook(String id);
     Book findBookByIsbn(String isbn);
     List<BookDto> findAllBooks();

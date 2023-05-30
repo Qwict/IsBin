@@ -68,6 +68,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Book getMostRecentBook() {
+        return bookRepository.findTopByOrderByIdDesc();
+    }
+
+    @Override
     public void saveBook(BookDto bookDto, BindingResult result, boolean isEdit) {
         Book book = new Book();
         book.setTitle(bookDto.getTitle());

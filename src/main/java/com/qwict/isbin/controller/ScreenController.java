@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/")
@@ -36,11 +37,26 @@ public class ScreenController {
         model.addAttribute("message", "Welcome to the ISBIN home page!");
 
         List<BookDto> bookDtos = new ArrayList<>();
-        List<Book> books = bookService.findAll();
-        for (Book book : books) {
+        List<Book> allBooks = bookService.findAll();
+        List<Book> books = new ArrayList<>();
+        Random randy = new Random();
+        for(int i = 0; i < 10; i++) {
+            Book randomBook = (allBooks.get(randy.nextInt(allBooks.size())));
+            if(!books.contains(randomBook)) {
+                books.add(randomBook);
+            } else {
+                i--;
+            }
+        }
+
+        Book mostRecentBook = bookService.getMostRecentBook();
+
+
+        for(Book book : books) {
             bookDtos.add(bookService.mapToBookDto(book));
         }
         model.addAttribute("bookDtos", bookDtos);
+        model.addAttribute("book", bookService.mapToBookDto(mostRecentBook));
         return "public/home";
     }
 
