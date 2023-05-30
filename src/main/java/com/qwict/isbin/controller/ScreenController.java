@@ -29,10 +29,7 @@ public class ScreenController {
 
     @RequestMapping("/home")
     public String home(Model model) {
-        model.addAttribute("loggedIn", true);
-        model.addAttribute("isAdmin", false);
         model.addAttribute("activePage", "home");
-
         model.addAttribute("title", "ISBIN Home");
         model.addAttribute("message", "Welcome to the ISBIN home page!");
 
@@ -62,20 +59,7 @@ public class ScreenController {
 
     @RequestMapping
     public String index(Model model) {
-        model.addAttribute("loggedIn", true);
-        model.addAttribute("isAdmin", false);
-        model.addAttribute("activePage", "home");
-
-        model.addAttribute("title", "ISBIN Home");
-        model.addAttribute("message", "Welcome to the ISBIN home page!");
-
-        List<BookDto> bookDtos = new ArrayList<>();
-        List<Book> books = bookService.findAll();
-        for (Book book : books) {
-            bookDtos.add(bookService.mapToBookDto(book));
-        }
-        model.addAttribute("bookDtos", bookDtos);
-        return "public/home";
+        return home(model);
     }
 
     @RequestMapping("/login")
