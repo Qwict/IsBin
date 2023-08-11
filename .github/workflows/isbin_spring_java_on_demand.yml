@@ -21,7 +21,7 @@ jobs:
             pm2 delete isbin_java_prod
 
             rm -rf IsBin
-            git clone git@github.com-isbin:JorisVanDuyseHogent/IsBin.git
+            git clone git@github.com-isbin:qwict/IsBin.git
             cd IsBin/
             git status
             

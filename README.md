@@ -8,7 +8,7 @@ Depending on the role of a user he or she has access to different parts of the a
 1. This application runs online on [isbin.qwict.com](https://isbin.qwict.com)
 2. The trello-page for this application can be found here: [trello.com/isbin-application](https://trello.com/b/5xWz5DxY/isbin-application)
 3. A diagram representing the ERD of database can be found here: [drawsql.app/teams/qwict/diagrams/isbin](https://drawsql.app/teams/qwict/diagrams/isbin)
-4. A public Github repository for this project is available here: [JorisVanDuyseHogent/IsBin](https://github.com/JorisVanDuyseHogent/IsBin)
+4. A public Github repository for this project is available here: [github.com/qwict/IsBin](https://github.com/qwict/IsBin)
 5. Requirements
 	1. java openjdk 17.0.5 or later
 	2. Apache Maven 3.9.1 or later
@@ -31,7 +31,7 @@ Depending on the role of a user he or she has access to different parts of the a
 ## Installation
 1. Clone the repository to your device: ```
 ```sh
-git clone https://github.com/JorisVanDuyseHogent/IsBin.git
+git clone https://github.com/Qwict/IsBin.git
 ```
 2. Create or rename `application.properties.example` to the required `application.properties` file in `/src/main/resources/application.properties`, remember to replace all {text} with your information curly brackets included :)
 ```sh
