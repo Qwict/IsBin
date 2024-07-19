@@ -62,7 +62,7 @@ public class UserController {
         model.addAttribute("authUser", userService.mapToAuthenticatedUserDto(user));
         userService.updateUser(user);
 //        redirectAttributes.addFlashAttribute("successMessage", "Book added to favorites!");
-        return String.format("redirect:%s?successMessage=Book+added+to+favorites!", referer);
+        return String.format("redirect:%s?book_added_to_favorites", referer);
     }
 
     @RequestMapping("/favorites")

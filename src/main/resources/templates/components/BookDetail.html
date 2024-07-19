@@ -8,6 +8,9 @@
 <!--        </div>-->
         <div class="col-7 mt-5">
             <div class="card">
+                <div th:if="${param.book_added_to_favorites}">
+                    <div class="alert alert-success" th:text="#{book.added_to_favorite}"></div>
+                </div>
                 <div class="card-header">
                     <p class="card-text" th:text="${book.isbn}"></p>
                 </div>
