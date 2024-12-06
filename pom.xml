@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.qwict</groupId>
     <artifactId>IsBin</artifactId>
-    <version>0.13.12</version>
+    <version>0.13.13</version>
     <name>IsBin</name>
     <description>IsBin</description>
     <properties>
@@ -82,6 +82,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
